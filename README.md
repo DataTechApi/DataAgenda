@@ -158,15 +158,31 @@ Abaixo está a estrutura real do projeto:
 
 ## 📊 Backlog do Produto
 
-| #  | Prioridade | User Story                                                                                                   | Sprint | Status       |
-|----|------------|--------------------------------------------------------------------------------------------------------------|--------|--------------|
-| 1  | Alta       | Como gestor, quero visualizar o perfil dos colaboradores, para buscar novos talentos para meu setor.    | 1     | Pendente   |
-| 2  | Alta       | Como gestor, quero visualizar um Dashboard, para que eu possa ver a relação de competência de uma área, ou de diversos colaboradores.| 2      | Pendente  |
-| 3  | Média      | Como usuário, quero realizar uma auto avaliação, para saber se a visão do meu gestor está contingente.  | 2      | Pendente|
-| 4  | Alta       | Como gestor, quero filtrar as competências do colaborador para saber se encaixa em outra atividade.     | 2     | Pendente    |
-| 5  | Alta       | Como usuário, quero cadastrar minhas competências para ficar à mostra a todos os supervisores/diretores que tiverem interesse. | 1      | Pendente |
-| 6 | Média       | Como usuário, eu quero visualizar os perfis dos colegas em uma interface intuitiva, com cards organizados por competências, setor e nível de proficiência, para que eu possa navegar e identificar talentos internos. | 1      | Pendente|
-| 7  | Média       | Como usuário, quero que o produto seja entregue com todas a documentações e manuais de usuário, para que haja uma melhor organização e orientação quando formos usar o sistema | 3  | Pendente|
+| #   | Épico                                | Prioridade | User Story                                                                                                   | Sprint | Status    |
+|-----|--------------------------------------|------------|--------------------------------------------------------------------------------------------------------------|--------|-----------|
+| 1   | Épico 1: Cadastro e Gestão de Ativos | Alta       | História 1.1: Como gestor, quero cadastrar barcos, plataformas e torres para que sejam monitorados individualmente. | 1      | Pendente  |
+| 1.1 |                                      | Alta       | Tarefa: Criar formulário de cadastro de ativos.                                                              | 1      | Pendente  |
+| 1.2 |                                      | Alta       | Tarefa: Implementar banco de dados com atributos (nome, localização, tipo, responsável).                      | 1      | Pendente  |
+| 2   | Épico 1: Cadastro e Gestão de Ativos | Alta       | História 1.2: Como técnico, quero visualizar a lista de ativos cadastrados para identificar onde realizar manutenção. | 2      | Pendente  |
+| 2.1 |                                      | Alta       | Tarefa: Tela de listagem com filtros (tipo, status, localização).                                             | 2      | Pendente  |
+| 3   | Épico 2: Agendamento de Chamados     | Alta       | História 2.1: Como gestor, quero agendar manutenções preventivas para cada ativo, definindo data e periodicidade. | 2      | Pendente  |
+| 3.1 |                                      | Alta       | Tarefa: Criar calendário integrado.                                                                          | 2      | Pendente  |
+| 3.2 |                                      | Alta       | Tarefa: Implementar lógica de recorrência (semanal, mensal, trimestral).                                     | 2      | Pendente  |
+| 4   | Épico 2: Agendamento de Chamados     | Alta       | História 2.2: Como técnico, quero receber notificações de chamados agendados para não perder prazos.          | 2      | Pendente  |
+| 4.1 |                                      | Alta       | Tarefa: Sistema de alertas.                                                                                  | 2      | Pendente  |
+| 4.2 |                                      | Alta       | Tarefa: Configuração de lembretes automáticos.                                                               | 2      | Pendente  |
+| 5   | Épico 3: Gestão de Chamados          | Alta       | História 3.1: Como técnico, quero registrar o status do chamado (pendente, em andamento, concluído) para manter controle. | 3      | Pendente  |
+| 5.1 |                                      | Alta       | Tarefa: Criar painel de acompanhamento.                                                                      | 3      | Pendente  |
+| 5.2 |                                      | Alta       | Tarefa: Implementar atualização de status em tempo real.                                                     | 3      | Pendente  |
+| 5.3 |                                      | Alta       | Tarefa: Implementar uma "Log" no chamado para monitoramento.                                                 | 3      | Pendente  |
+| 6   | Épico 3: Gestão de Chamados          | Alta       | História 3.2: Como gestor, quero visualizar relatórios de chamados concluídos para avaliar eficiência da equipe. | 3      | Pendente  |
+| 6.1 |                                      | Alta       | Tarefa: Visualização dos Logs e relatórios para o gestor.                                                    | 3      | Pendente  |
+| 7   | Épico 5: Segurança e Acesso          | Alta       | História 5.1: Como administrador, quero controlar permissões de acesso para garantir que apenas usuários autorizados possam agendar ou editar chamados. | 1      | Pendente  |
+| 7.1 |                                      | Alta       | Tarefa: Implementar autenticação e perfis de usuário.                                                        | 1      | Pendente  |
+| 7.2 |                                      | Alta       | Tarefa: Criar níveis de acesso (gestor, técnico, administrador).                                             | 1      | Pendente  |
+| 8   | Épico 6: Usabilidade e Experiência   | Média      | História 6.1: Como gestor, quero uma interface intuitiva para visualizar rapidamente o status dos ativos.     | 2      | Pendente  |
+| 8.1 |                                      | Média      | Tarefa: Criar dashboards visuais com gráficos e indicadores.                                                 | 2      | Pendente  |
+
 
 ## Backlog das Sprints 
 
