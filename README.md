@@ -1,58 +1,3 @@
-Primeiro readme
-
-Backlog de produto - versão alfa 
-
-Épico 1: Cadastro e Gestão de Ativos
-História 1.1: Como gestor, quero cadastrar barcos, plataformas e torres para que sejam monitorados individualmente.
-
-Tarefa: Criar formulário de cadastro de ativos.
-
-Tarefa: Implementar banco de dados com atributos (nome, localização, tipo, responsável).
-
-História 1.2: Como técnico, quero visualizar a lista de ativos cadastrados para identificar onde realizar manutenção.
-
-Tarefa: Tela de listagem com filtros (tipo, status, localização).
-
-Épico 2: Agendamento de Chamados
-História 2.1: Como gestor, quero agendar manutenções preventivas para cada ativo, definindo data e periodicidade.
-
-Tarefa: Criar calendário integrado.
-
-Tarefa: Implementar lógica de recorrência (semanal, mensal, trimestral).
-
-História 2.2: Como técnico, quero receber notificações de chamados agendados para não perder prazos.
-
-Tarefa: Sistema de alertas
-
-Tarefa: Configuração de lembretes automáticos.
-
-Épico 3: Gestão de Chamados
-História 3.1: Como técnico, quero registrar o status do chamado (pendente, em andamento, concluído) para manter controle.
-
-Tarefa: Criar painel de acompanhamento.
-
-Tarefa: Implementar atualização de status em tempo real.
-
-Tarefa: Implementar uma "Log" no chamado para monitoramento
-
-História 3.2: Como gestor, quero visualizar relatórios de chamados concluídos para avaliar eficiência da equipe.
-
-Tarefa: Visualização dos Logs e relatórios para o gestor
-
-Épico 5: Segurança e Acesso
-História 5.1: Como administrador, quero controlar permissões de acesso para garantir que apenas usuários autorizados possam agendar ou editar chamados.
-
-Tarefa: Implementar autenticação e perfis de usuário.
-
-Tarefa: Criar níveis de acesso (gestor, técnico, administrador).
-
-Épico 6: Usabilidade e Experiência
-
-História 6.1: Como gestor, quero uma interface intuitiva para visualizar rapidamente o status dos ativos.
-
-Tarefa: Criar dashboards visuais com gráficos e indicadores.
-
-
 <img src = "assets/cabecalho.png">
 
 # API 4ºBD
@@ -102,7 +47,7 @@ O objetivo é **facilitar a vizualização e gerenciamento das manutenções pre
 |------------|-------------|
 | **Back-end** | Java 21 • Spring Boot • JPA • Maven |
 | **Front-end** | Thymeleaf |
-| **Banco de Dados** | MySQL |
+| **Banco de Dados** | Postgres |
 | **Documentação de API** | Swagger (OpenAPI) |
 | **Controle de Versão** | Git • GitHub |
 | **IDE’s** | IntelliJ IDEA • VS Code |
@@ -134,7 +79,7 @@ Abaixo está a estrutura real do projeto:
 
 | Sprint | Período | Principais Entregas | Status |
 |---------|----------|---------------------|---------|
-| **Sprint 1** | 08/09 a 28/09 | Setup de ambiente, Criação BD, lista de ativos, lógica de recorrência |  Em andamento |
+| **Sprint 1** | 08/09 a 28/09 | Setup de ambiente, Criação BD, lista de sistemas, lógica de recorrência |  Em andamento |
 | **Sprint 2** | 06/10 a 26/10 | Sistema de alerta, lembretes automáticos, Gestão de chamados, segurança e acesso, relatórios |  Pendente |
 | **Sprint 3** | 03/11 a 23/11 | Usabilidade e experiência, documentações, Correção de Bugs, Deploy para produção | Pendente |
 
@@ -160,37 +105,21 @@ Abaixo está a estrutura real do projeto:
 
 | #   | Épico                                | Prioridade | User Story                                                                                                   | Sprint | Status    |
 |-----|--------------------------------------|------------|--------------------------------------------------------------------------------------------------------------|--------|-----------|
-| 1   | Épico 1: Cadastro e Gestão de Ativos | Alta       | História 1.1: Como gestor, quero cadastrar barcos, plataformas e torres para que sejam monitorados individualmente. | 1      | Pendente  |
-| 1.1 |                                      | Alta       | Tarefa: Criar formulário de cadastro de ativos.                                                              | 1      | Pendente  |
-| 1.2 |                                      | Alta       | Tarefa: Implementar banco de dados com atributos (nome, localização, tipo, responsável).                      | 1      | Pendente  |
-| 2   | Épico 1: Cadastro e Gestão de Ativos | Alta       | História 1.2: Como técnico, quero visualizar a lista de ativos cadastrados para identificar onde realizar manutenção. | 2      | Pendente  |
-| 2.1 |                                      | Alta       | Tarefa: Tela de listagem com filtros (tipo, status, localização).                                             | 2      | Pendente  |
-| 3   | Épico 2: Agendamento de Chamados     | Alta       | História 2.1: Como gestor, quero agendar manutenções preventivas para cada ativo, definindo data e periodicidade. | 2      | Pendente  |
-| 3.1 |                                      | Alta       | Tarefa: Criar calendário integrado.                                                                          | 2      | Pendente  |
-| 3.2 |                                      | Alta       | Tarefa: Implementar lógica de recorrência (semanal, mensal, trimestral).                                     | 2      | Pendente  |
-| 4   | Épico 2: Agendamento de Chamados     | Alta       | História 2.2: Como técnico, quero receber notificações de chamados agendados para não perder prazos.          | 2      | Pendente  |
-| 4.1 |                                      | Alta       | Tarefa: Sistema de alertas.                                                                                  | 2      | Pendente  |
-| 4.2 |                                      | Alta       | Tarefa: Configuração de lembretes automáticos.                                                               | 2      | Pendente  |
-| 5   | Épico 3: Gestão de Chamados          | Alta       | História 3.1: Como técnico, quero registrar o status do chamado (pendente, em andamento, concluído) para manter controle. | 3      | Pendente  |
-| 5.1 |                                      | Alta       | Tarefa: Criar painel de acompanhamento.                                                                      | 3      | Pendente  |
-| 5.2 |                                      | Alta       | Tarefa: Implementar atualização de status em tempo real.                                                     | 3      | Pendente  |
-| 5.3 |                                      | Alta       | Tarefa: Implementar uma "Log" no chamado para monitoramento.                                                 | 3      | Pendente  |
-| 6   | Épico 3: Gestão de Chamados          | Alta       | História 3.2: Como gestor, quero visualizar relatórios de chamados concluídos para avaliar eficiência da equipe. | 3      | Pendente  |
-| 6.1 |                                      | Alta       | Tarefa: Visualização dos Logs e relatórios para o gestor.                                                    | 3      | Pendente  |
-| 7   | Épico 5: Segurança e Acesso          | Alta       | História 5.1: Como administrador, quero controlar permissões de acesso para garantir que apenas usuários autorizados possam agendar ou editar chamados. | 1      | Pendente  |
-| 7.1 |                                      | Alta       | Tarefa: Implementar autenticação e perfis de usuário.                                                        | 1      | Pendente  |
-| 7.2 |                                      | Alta       | Tarefa: Criar níveis de acesso (gestor, técnico, administrador).                                             | 1      | Pendente  |
-| 8   | Épico 6: Usabilidade e Experiência   | Média      | História 6.1: Como gestor, quero uma interface intuitiva para visualizar rapidamente o status dos ativos.     | 2      | Pendente  |
-| 8.1 |                                      | Média      | Tarefa: Criar dashboards visuais com gráficos e indicadores.                                                 | 2      | Pendente  |
-
+| 1   | Épico 1: Cadastro e Gestão de Ativos | Alta       | História 1: Como técnico, quero visualizar a lista de ativos cadastrados para identificar onde realizar manutenção. | 2      | Pendente  |
+| 2   | Épico 2: Agendamento de Chamados     | Alta       | História 2: Como gestor, quero agendar manutenções preventivas para cada ativo, definindo data e periodicidade. | 2      | Pendente  |
+| 3   | Épico 3: Notificação de Chamados     | Alta       | História 3: Como técnico, quero receber notificações de chamados agendados para não perder prazos.          | 2      | Pendente  |
+| 4   | Épico 4: Gestão de Chamados          | Alta       | História 4: Como técnico, quero registrar o status do chamado (pendente, em andamento, concluído) para manter controle. | 3      | Pendente  |
+| 5   | Épico 5: Visualização de Chamados          | Alta       | História 5: Como gestor, quero visualizar relatórios de chamados concluídos para avaliar eficiência da equipe. | 3      | Pendente  |
+| 6   | Épico 6: Segurança e Acesso          | Alta       | História 6: Como administrador, quero controlar permissões de acesso para garantir que apenas usuários autorizados possam agendar ou editar chamados. | 1      | Pendente  |
+| 7   | Épico 7: Usabilidade e Experiência   | Média      | História 7: Como gestor, quero uma interface intuitiva para visualizar rapidamente o status dos ativos.     | 2      | Pendente  |
 
 ## Backlog das Sprints 
 
 | **Sprint** | **Link** |
 |-------------|------------|
-| `Sprint1` | https://github.com/orgs/DataTechApi/projects/8 |
-| `Sprint2` | https://github.com/orgs/DataTechApi/projects/9 |
-| `Sprint3` | https://github.com/orgs/DataTechApi/projects/10 |
+| `Sprint1` | https://github.com/orgs/DataTechApi/projects/11 |
+| `Sprint2` | https://github.com/orgs/DataTechApi/projects/12 |
+| `Sprint3` | https://github.com/orgs/DataTechApi/projects/13 |
 
 🧩 Definition of Ready (DoR) e ✅ Definition of Done (DoD)
 📌 Definition of Ready (DoR)
@@ -220,14 +149,13 @@ Uma *User Story* é considerada **concluída** quando:
 
 | # | User Story (Resumo) | 🧩 DoR Específico | ✅ DoD Específico |
 |:-:|----------------------|------------------|------------------|
-| **1** | Visualizar perfil dos colaboradores | Mockups prontos e estrutura do banco definida | Perfis listados e filtráveis por setor; PO validou usabilidade |
-| **2** | Dashboard de competências | Métricas e dados a exibir definidos | Dashboard funcional mostrando relação de competências por área |
-| **3** | Autoavaliação do usuário | Campos da autoavaliação definidos | Usuário consegue avaliar e salvar competências; dados persistem corretamente |
-| **4** | Filtrar competências | Critérios de filtro definidos (por cargo, área, skill) | Filtros funcionam e retornam resultados esperados |
-| **5** | Alocar colaborador em skill desejada | Lógica de alocação e permissões definidas | Colaborador alocado corretamente; gestor visualiza atualização |
-| **6** | Cadastrar competências | Campos de cadastro definidos e validados | Competências salvas e visíveis aos gestores |
-| **7** | Visualizar colegas com cards | Estrutura dos cards e layout definidos | Cards exibem colegas, competências e setores corretamente |
-| **8** | Entrega com documentação | Itens de documentação definidos e revisados | Sistema entregue com manual e instruções completas |
+| **1** | Visualização de sistemas e chamados | Mockups prontos e estrutura do banco definida | sistemas listados e minimamente interativos |
+| **2** | Agendamento de Chamados | Sistemas cadastrados e front minimamente integrado | Possibilidade de agendamento de chamados para cada sistema |
+| **3** | Notificação de Chamados | Chamados devidamente interativos e agendados | Técnico receber com clareza a notificação de chamados agendados |
+| **4** | Gestão de Chamados | Sistema de chamados bem definidos logicamente e no FrontEnd | Possibilidade do técnico conseguir manipular status do chamado |
+| **5** | Visualização de Chamados | Lógica de agendamento e status do chamado definidos | Gestor conseguir visualizar plenamente Logs de chamados e sistemas |
+| **6** | Segurança e Acesso | Lógicas de gestão de chamados e cadastros devidamente implementados | Controles de acesso a técnicos estiverem alinhados |
+| **7** | Usabilidade e Experiência | Protótipo de tela criado | Interface intuitiva e validade pelo usuário |
 
 
 ## 🌿 Estratégia de Branch
