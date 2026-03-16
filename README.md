@@ -144,7 +144,7 @@ cd dataagenda
 
 | Nome | Função |
 |-----|-------|
-| Jackson Tadeu | Scru Master |
+| Jackson Tadeu | Scrum Master |
 | Cauê Gandini | Product Owner |
 | Davi Gramacho | Desenvolvedor |
 | Abimael Santos | Desenvolvedor |
