@@ -1,9 +1,7 @@
 # API 4º Semestre BD  
 # DATAGENDA
 
-<img src="assets/cabecalho.png">
-
-## DataTech
+## Grupo DataTech
 
 | [Desafio](#-desafio) | [Solução](#-solução) | [Backlog do Produto](#-backlog-do-produto) | [DoR](#-dor---definition-of-ready) | [DoD](#-dod---definition-of-done) | [Cronograma de Sprints](#-cronograma-de-sprints) | [Tecnologias](#-tecnologias) | [Manual de Instalação](#-manual-de-instalação) | [Equipe](#-equipe) |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|
