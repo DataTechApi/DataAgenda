@@ -1,0 +1,20 @@
+# Ignorar pasta target (build do Maven)
+target/
+
+# Ignorar arquivos de log
+*.log
+
+# Ignorar arquivos compilados e pacotes
+*.class
+*.jar
+*.war
+*.ear
+
+# Ignorar relatórios de teste
+surefire-reports/
+
+# Ignorar configurações locais do VS Code
+.vscode/
+
+# Ignorar configurações de devcontainer
+.devcontainer/
