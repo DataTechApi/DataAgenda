@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    hostname: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root # Replace with a strong password
+      MYSQL_DATABASE: agendadb     # Optional: Create a default database
+         # Optional: Set password for the default user
+    ports:
+      - "3306:3306" # Maps container port 3306 to host port 3306
+    volumes:
+      - mysql_data:/var/lib/mysql # Persist data in a named volume
+volumes:
+  mysql_data:

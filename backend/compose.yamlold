@@ -1,12 +1,9 @@
-version: '3.8'
 
-volumes:
-  mysql-data:
 
 services:
   app:
     container_name: java-agenda
-    build: 
+    build:
       context: .
       dockerfile: Dockerfile
     environment:
@@ -19,14 +16,14 @@ services:
 
     volumes:
       - ../..:/workspaces:cached
-      
+
     # Mantém o container ativo
     command: sleep infinity
 
     depends_on:
       - db
 
-    
+
 
   db:
     container_name: mysqlagenda
@@ -34,7 +31,7 @@ services:
     restart: unless-stopped
    
     volumes:
-      - mysql-data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: agendadb
