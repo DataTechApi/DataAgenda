@@ -1,0 +1,43 @@
+
+
+services:
+  app:
+    container_name: java-agenda
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Variáveis de conexão com o MySQL
+      MYSQL_HOST: db
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: agendadb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Mantém o container ativo
+    command: sleep infinity
+
+    depends_on:
+      - db
+
+
+
+  db:
+    container_name: mysqlagenda
+    image: mysql:8.0
+    restart: unless-stopped
+   
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: agendadb
+      
+
+    ports:
+      - "3306:3306"
+
+  
