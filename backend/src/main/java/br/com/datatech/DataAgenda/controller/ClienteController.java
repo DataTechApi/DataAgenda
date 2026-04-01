@@ -1,6 +1,7 @@
 package br.com.datatech.DataAgenda.controller;
 
 import br.com.datatech.DataAgenda.entity.Cliente;
+import br.com.datatech.DataAgenda.entity.dto.request.ClienteDTORequest;
 import br.com.datatech.DataAgenda.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +22,7 @@ public class ClienteController {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo cliente", description = "Endpoint para cadastrar um novo cliente no DataAgenda")
-    public ResponseEntity cadastrarCliente(@RequestBody Cliente cliente){
+    public ResponseEntity cadastrarCliente(@RequestBody ClienteDTORequest cliente){
         clienteService.cadastrarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente cadastrado com sucesso!!!");
 
