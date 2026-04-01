@@ -2,13 +2,15 @@ package br.com.datatech.DataAgenda.controller;
 
 import br.com.datatech.DataAgenda.entity.Cliente;
 import br.com.datatech.DataAgenda.service.ClienteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/clientes")
-
+@Tag(name = "Cliente", description = "Endpoints para gerenciamento de clientes")
 public class ClienteController {
 
     private final ClienteService clienteService;
@@ -18,16 +20,19 @@ public class ClienteController {
     }
 
     @PostMapping
+    @Operation(summary = "Cadastrar um novo cliente", description = "Endpoint para cadastrar um novo cliente no DataAgenda")
     public ResponseEntity cadastrarCliente(@RequestBody Cliente cliente){
         clienteService.cadastrarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente cadastrado com sucesso!!!");
 
     }
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar cliente por ID", description = "Endpoint para buscar um cliente pelo seu ID no DataAgenda")
     public ResponseEntity buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
     @GetMapping("/buscartodos")
+    @Operation(summary = "Listar todos os clientes", description = "Endpoint para listar todos os clientes cadastrados no DataAgenda")
     public ResponseEntity listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
