@@ -25,8 +25,10 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void cadastrarCliente(ClienteDTORequest request) {
         if(request == null ||
-            request.getNome() == null ||
-            request.getLocalidade().isBlank()) {
+                request.getNome().isBlank()||
+                request.getNome().isEmpty() ||
+                request.getLocalidade().isEmpty()||
+                request.getLocalidade().isBlank()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente com informações inválidas!");
             }
             Cliente clienteEntity = model.map(request, Cliente.class);
