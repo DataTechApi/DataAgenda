@@ -1,16 +1,14 @@
 services:
-  db:
-    image: mysql:8.0
-    container_name: mysql_db
-    hostname: mysql_db
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root # Replace with a strong password
-      MYSQL_DATABASE: agendadb     # Optional: Create a default database
-         # Optional: Set password for the default user
+  oracle-db:
+    image: gvenzl/oracle-xe:latest
+    container_name: agenda-db
     ports:
-      - "3306:3306" # Maps container port 3306 to host port 3306
+      - "1522:1521"   # Porta padrão do Oracle Listener
+      - "5500:5500"   # Porta para Oracle EM Express
+    environment:
+      ORACLE_PASSWORD: "admin123"   # Defina a senha do usuário SYS, SYSTEM e PDBADMIN
     volumes:
-      - mysql_data:/var/lib/mysql # Persist data in a named volume
+      - oracle-data:/opt/oracle/oradata  # Persistência dos dados
+
 volumes:
-  mysql_data:
+  oracle-data:
