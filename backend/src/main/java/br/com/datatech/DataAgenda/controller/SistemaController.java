@@ -1,6 +1,7 @@
 package br.com.datatech.DataAgenda.controller;
 
 import br.com.datatech.DataAgenda.entity.Sistema;
+import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
 import br.com.datatech.DataAgenda.service.SistemaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +22,7 @@ public class SistemaController {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo sistema", description = "Endpoint para cadastrar um novo sistema no DataAgenda")
-    public ResponseEntity cadastrarSistema(@RequestBody Sistema sistema) {
+    public ResponseEntity cadastrarSistema(@RequestBody SistemaDTORequest sistema) {
         sistemaService.cadastrarSistema(sistema);
         return ResponseEntity.status(HttpStatus.CREATED).body("Sistema cadastrado com sucesso!");
     }
