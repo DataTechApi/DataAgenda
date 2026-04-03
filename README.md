@@ -48,15 +48,25 @@ O objetivo é **facilitar a visualização e gerenciamento das manutenções pre
 
 # 📋 Backlog do Produto
 
-| Rank | Prioridade | User Story | Sprint | Status |
-|----|----|----|----|----|
-| 1 | Alta | Como técnico, quero visualizar a lista de ativos cadastrados para identificar onde realizar manutenção | 2 | Pendente |
-| 2 | Alta | Como gestor, quero agendar manutenções preventivas para cada ativo | 2 | Pendente |
-| 3 | Alta | Como técnico, quero receber notificações de chamados agendados | 2 | Pendente |
-| 4 | Alta | Como técnico, quero registrar o status do chamado | 3 | Pendente |
-| 5 | Alta | Como gestor, quero visualizar relatórios de chamados concluídos | 3 | Pendente |
-| 6 | Alta | Como administrador, quero controlar permissões de acesso | 1 | Pendente |
-| 7 | Média | Como gestor, quero uma interface intuitiva para visualizar rapidamente o status dos ativos | 2 | Pendente |
+# 📋 Backlog do Produto
+
+| Rank | Prioridade | User Story | Sprint Sugerida | Status |
+|-----|-----------|------------|----------------|--------|
+| 1 | Alta | Como **administrador**, quero cadastrar ativos da empresa para que possam receber manutenções | Sprint 1 | Pendente |
+| 2 | Alta | Como **administrador**, quero cadastrar técnicos responsáveis pelas manutenções | Sprint 1 | Pendente |
+| 3 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados | Sprint 1 | Pendente |
+| 4 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados | Sprint 1 | Pendente |
+| 5 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo | Sprint 2 | Pendente |
+| 6 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema | Sprint 2 | Pendente |
+| 7 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado | Sprint 2 | Pendente |
+| 8 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim | Sprint 2 | Pendente |
+| 9 | Alta | Como **técnico**, quero alterar o status do chamado (pendente, em andamento, concluído) | Sprint 2 | Pendente |
+| 10 | Média | Como **técnico**, quero registrar observações ou descrição da manutenção realizada | Sprint 2 | Pendente |
+| 11 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status | Sprint 3 | Pendente |
+| 12 | Média | Como **gestor**, quero visualizar o histórico de manutenções de um ativo | Sprint 3 | Pendente |
+| 13 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas | Sprint 3 | Pendente |
+| 14 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções (concluídas, pendentes e atrasadas) | Sprint 3 | Pendente |
+| 15 | Baixa | Como **administrador**, quero gerenciar permissões de usuários do sistema | Sprint 3 | Pendente |
 
 ---
 
@@ -107,8 +117,8 @@ Uma **User Story é considerada concluída** quando:
 | Categoria | Tecnologias |
 |-----------|-------------|
 | **Back-end** | Java 21 • Spring Boot • JPA • Maven |
-| **Front-end** | Thymeleaf |
-| **Banco de Dados** | PostgreSQL |
+| **Front-end** | Vue |
+| **Banco de Dados** | OracleDB |
 | **Documentação da API** | Swagger |
 | **Controle de Versão** | Git • GitHub |
 | **IDE** | IntelliJ IDEA • VS Code |
@@ -123,7 +133,7 @@ Uma **User Story é considerada concluída** quando:
 
 - Java 21+
 - Maven
-- PostgreSQL
+- Docker
 - Git
 
 ---
