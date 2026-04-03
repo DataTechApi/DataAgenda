@@ -48,25 +48,22 @@ O objetivo é **facilitar a visualização e gerenciamento das manutenções pre
 
 # 📋 Backlog do Produto
 
-# 📋 Backlog do Produto
-
 | Rank | Prioridade | User Story | Sprint Sugerida | Status |
 |-----|-----------|------------|----------------|--------|
-| 1 | Alta | Como **administrador**, quero cadastrar ativos da empresa para que possam receber manutenções | Sprint 1 | Pendente |
-| 2 | Alta | Como **administrador**, quero cadastrar técnicos responsáveis pelas manutenções | Sprint 1 | Pendente |
-| 3 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados | Sprint 1 | Pendente |
-| 4 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados | Sprint 1 | Pendente |
-| 5 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo | Sprint 2 | Pendente |
-| 6 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema | Sprint 2 | Pendente |
-| 7 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado | Sprint 2 | Pendente |
-| 8 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim | Sprint 2 | Pendente |
-| 9 | Alta | Como **técnico**, quero alterar o status do chamado (pendente, em andamento, concluído) | Sprint 2 | Pendente |
-| 10 | Média | Como **técnico**, quero registrar observações ou descrição da manutenção realizada | Sprint 2 | Pendente |
-| 11 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status | Sprint 3 | Pendente |
-| 12 | Média | Como **gestor**, quero visualizar o histórico de manutenções de um ativo | Sprint 3 | Pendente |
-| 13 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas | Sprint 3 | Pendente |
-| 14 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções (concluídas, pendentes e atrasadas) | Sprint 3 | Pendente |
-| 15 | Baixa | Como **administrador**, quero gerenciar permissões de usuários do sistema | Sprint 3 | Pendente |
+| 1 | Alta | Como **administrador**, quero cadastrar ativos da empresa para que possam receber manutenções | Sprint 1 | Em progresso |
+| 2 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados | Sprint 1 | Em progresso |
+| 3 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados | Sprint 1 | Em progresso |
+| 4 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo | Sprint 2 | Pendente |
+| 5 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema | Sprint 2 | Pendente |
+| 6 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado | Sprint 2 | Pendente |
+| 7 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim | Sprint 2 | Pendente |
+| 8 | Alta | Como **técnico**, quero alterar o status do chamado (pendente, em andamento, concluído) | Sprint 2 | Pendente |
+| 9 | Média | Como **técnico**, quero registrar observações ou descrição da manutenção realizada | Sprint 2 | Pendente |
+| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status | Sprint 3 | Pendente |
+| 11 | Média | Como **gestor**, quero visualizar o histórico de manutenções de um ativo | Sprint 3 | Pendente |
+| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas | Sprint 3 | Pendente |
+| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções (concluídas, pendentes e atrasadas) | Sprint 3 | Pendente |
+| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários do sistema | Sprint 3 | Pendente |
 
 ---
 
@@ -98,9 +95,9 @@ Uma **User Story é considerada concluída** quando:
 
 | Sprint | Período | Principais Entregas |
 |------|------|------|
-| Sprint 1 | 08/09 – 28/09 | Setup do ambiente, criação do banco de dados, lógica inicial |
+| Sprint 1 | 08/09 – 28/09 | Estrutura do banco, backend inicial, cadastro básico|
 | Sprint 2 | 06/10 – 26/10 | Sistema de alertas, gestão de chamados, segurança |
-| Sprint 3 | 03/11 – 23/11 | Usabilidade, documentação, correções e deploy |
+| Sprint 3 | 03/11 – 23/11 | Relatórios, documentação, correções e deploy |
 
 ## Backlog das Sprints
 
@@ -156,6 +153,3 @@ cd dataagenda
 | Cauê Gandini | Product Owner |
 | Davi Gramacho | Desenvolvedor |
 | Abimael Santos | Desenvolvedor |
-
-
-
