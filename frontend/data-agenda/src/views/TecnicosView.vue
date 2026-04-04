@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="page-wrapper">
     <h2 class="title">Técnicos</h2>
     <div class="stats-row">
       <div class="stat-card">
@@ -47,14 +47,63 @@ const tecnicos = [
 </script>
 
 <style scoped>
-.title { color: #333; }
-.stats-row { display: flex; gap: 20px; margin-bottom: 35px; max-width: 600px; }
-.stat-card { background: white; padding: 20px; border-radius: 12px; flex: 1; text-align: center; border: 1px solid #eee; }
-.tech-table th { background: #0066ff; color: white; }
-/* ... reuso estilos do dashboard ... */
-.table-container { background: white; border-radius: 12px; overflow: hidden; border: 1px solid #eee; }
-table { width: 100%; border-collapse: collapse; }
-th { padding: 15px; text-align: left; }
-td { padding: 15px; border-bottom: 1px solid #f1f1f1; }
-tr:nth-child(even) { background: #eee; }
+.page-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.title {
+  color: #333;
+  margin-bottom: 24px;
+}
+
+.stats-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 35px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  flex: 1;
+  min-width: 160px;
+  text-align: center;
+  border: 1px solid #eee;
+}
+
+.table-container {
+  background: white;
+  border-radius: 12px;
+  overflow-x: auto;
+  border: 1px solid #eee;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+.tech-table th {
+  background: #0066ff;
+  color: white;
+  padding: 15px;
+  text-align: left;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid #f1f1f1;
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:nth-child(even) {
+  background: #f7f9fc;
+}
 </style>
