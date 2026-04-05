@@ -188,6 +188,14 @@ A estrutura básica de um commit segue o padrão:
 
 ---
 
+## Videos 
+
+# Video Sprint1 
+
+[Assistir vídeo](VideoSprint1.mp4)
+
+---
+
 
 ## 👥 Equipe
 
