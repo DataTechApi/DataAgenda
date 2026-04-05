@@ -10,15 +10,18 @@
       <thead>
         <tr>
           <th>Ativo (ID)</th>
+          <th>Descrição</th>
           <th>Cliente/Contrato</th>
           <th>Localização</th>
+          <th>Técnico</th>
           <th>Tipo</th>
           <th>Vencimento</th>
+          <th>Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>ATV001</td><td>Avibras</td><td>SJC, Brasil</td><td>Preventiva</td><td>15/10/2026</td></tr>
-        <tr><td>ATV002</td><td>Saudi Aramco</td><td>Dhahran, AS</td><td>Preventiva</td><td>26/03/2026</td></tr>
+        <tr><td>ATV001</td><td>Preventiva sistema Avibras</td><td>Avibras</td><td>SJC, Brasil</td> <td>Vanderley Senna</td><td>Preventiva</td><td>15/10/2026</td><td>Em Andamento</td></tr>
+        <tr><td>ATV002</td><td>Preventiva sistema Saudiaramco</td><td>Saudi Aramco</td><td>Dhahran, AS</td><td>Rogerio Yamaha</td><td>Preventiva</td><td>26/03/2026</td><td>Em Andamento</td></tr>
       </tbody>
     </table>
   </div>

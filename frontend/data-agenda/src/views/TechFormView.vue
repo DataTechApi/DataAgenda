@@ -28,15 +28,6 @@
           <input type="password" placeholder="********" />
         </div>
 
-        <div class="input-wrapper">
-          <label>Tem Faculdade?</label>
-          <select>
-            <option value="" disabled selected>Selecione...</option>
-            <option value="sim">Sim</option>
-            <option value="nao">Não</option>
-          </select>
-        </div>
-
         <button class="btn-submit" @click="handleSave">Cadastrar</button>
       </div>
     </div>

@@ -6,6 +6,7 @@ import EmpresasView from '../views/EmpresasView.vue';
 import TechFormView from '@/views/TechFormView.vue';
 import SistemFormView from '@/views/SistemFormView.vue';
 import EmpresaFormView from '@/views/EmpresaFormView.vue';
+import ManutencaoFormView from '@/views/ManutencaoFormView.vue';
 
 const routes = [
   { path: '/', component: LoginView },
@@ -14,7 +15,8 @@ const routes = [
   { path: '/empresas', component: EmpresasView },
   { path: '/tecnicos/novo', component: TechFormView },
   { path: '/empresas/novo', component: EmpresaFormView },
-  { path: '/empresas/novo-sistema', component: SistemFormView }
+  { path: '/empresas/novo-sistema', component: SistemFormView },
+  { path: '/dashboard/novo', component: ManutencaoFormView}
 ];
 
 const router = createRouter({

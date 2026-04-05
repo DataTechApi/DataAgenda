@@ -6,10 +6,12 @@
         <router-link to="/dashboard">Painel de Controle</router-link>
         <router-link to="/tecnicos">Técnicos</router-link>
         <router-link to="/empresas">Empresas</router-link>
+        
       </div>
       <button v-if="$route.path === '/tecnicos'" @click="$router.push('/tecnicos/novo')" class="btn-nav">Cadastrar Técnico</button>
       <button v-if="$route.path === '/empresas'" @click="$router.push('/empresas/novo-sistema')" class="btn-nav">Adicionar Sistema</button>
       <button v-if="$route.path === '/empresas'" @click="$router.push('/empresas/novo')" class="btn-nav">Cadastrar Empresa</button>
+      <button v-if="$route.path === '/dashboard'" @click="$router.push('/dashboard/novo')" class="btn-nav">Cadastrar Manutenção</button>
     </nav>
 
     <main :class="{ 'content': $route.path !== '/' }">

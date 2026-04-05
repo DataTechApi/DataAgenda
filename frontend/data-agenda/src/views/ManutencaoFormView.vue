@@ -1,30 +1,20 @@
 <template>
-  <div class="form-page">
-    <button class="btn-back" @click="$router.push('/empresas')">
+
+<div class="form-page">
+    <button class="btn-back" @click="$router.push('/dashboard')">
       <span class="arrow">←</span>
     </button>
 
     <div class="form-card">
-      <h2 class="form-title">Cadastro de Sistema</h2>
+      <h2 class="form-title">Cadastro de Manutencoes</h2>
 
-      <div class="form-body">
         <div class="input-wrapper">
-          <label>Numero de série</label>
-          <input type="text" placeholder="Digite o número de série..." />
+          <label>Breve Descrição</label>
+            <input type="text" placeholder="Digite uma breve descrição da manutenção..." />
         </div>
 
         <div class="input-wrapper">
-          <label>Onde o sistema se encontra?</label>
-          <select>
-            <option value="" disabled selected>Selecione...</option>
-            <option value="terra">Terra</option>
-            <option value="mar">Mar</option>
-            <option value="ar">Ar</option>
-          </select>
-        </div>
-
-        <div class="input-wrapper">
-          <label>Empresa responsável</label>
+          <label>Cliente responsavel</label>
           <select>
             <option value="" disabled selected>Selecione...</option>
             <option value="empresa1">Avibras</option>
@@ -34,10 +24,34 @@
           </select>
         </div>
 
+        <div class="input-wrapper">
+          <label>Localização</label>
+          <input type="text" placeholder="Digite a localização da manutenção..." />
+        </div>
+
+        <div class="input-wrapper">
+          <label>Técnico responsável</label>
+             <select>
+            <option value="" disabled selected>Selecione...</option>
+            <option value="t1">Vanderley Senna</option>
+            <option value="t2">Rogerio Yamaha</option>
+            <option value="t3">Pablo Pasqualini</option>
+            <option value="t4">Rogerio Yamaha</option>
+          </select>
+        </div>
+
+        <div class="input-wrapper">
+          <label>Tipo de manutenção</label>
+          <select>
+            <option value="" disabled selected>Selecione...</option>
+            <option value="preventiva">Preventiva</option>
+            <option value="corretiva">Corretiva</option>
+          </select>
+        </div>
+
         <button class="btn-submit" @click="handleSave">Cadastrar</button>
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -46,8 +60,8 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const handleSave = () => {
-  alert('Sistema cadastrado com sucesso! (Simulação)');
-  router.push('/empresas');
+  alert('Manutenção cadastrada com sucesso! (Simulação)');
+  router.push('/dashboard');
 };
 </script>
 

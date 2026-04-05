@@ -63,8 +63,8 @@
 
 <script setup>
 const empresas = [
-  { id: 'EMP 011', nome: 'Embraer', freq: '3 meses', pais: 'Brasil', inicio: '10/10/2023' },
-  { id: 'EMP 030', nome: 'Latam', freq: '4 meses', pais: 'EUA', inicio: '23/11/2024' },
+  { id: 'EMP 011', nome: 'Avibras', freq: '3 meses', pais: 'Brasil', inicio: '10/10/2023' },
+  { id: 'EMP 030', nome: 'Saudi Aramco', freq: '4 meses', pais: 'SA', inicio: '23/11/2024' },
   { id: 'EMP 55', nome: 'Shell', freq: '1 ano', pais: 'UAE', inicio: '23/01/2024' },
   { id: 'EMP 022', nome: 'Consul', freq: '6 meses', pais: 'Brasil', inicio: '09/01/2024' },
 ];
