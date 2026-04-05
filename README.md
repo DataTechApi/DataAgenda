@@ -188,9 +188,9 @@ A estrutura básica de um commit segue o padrão:
 
 ---
 
-## Videos 
+# Videos 
 
-# Video Sprint1 
+## Video Sprint1 
 
 [Assistir vídeo](VideoSprint1.mp4)
 
