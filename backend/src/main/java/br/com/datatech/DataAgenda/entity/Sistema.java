@@ -17,6 +17,7 @@ public class Sistema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String numeroSerie;
 
     @ManyToOne
