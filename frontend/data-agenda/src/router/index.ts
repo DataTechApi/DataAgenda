@@ -4,6 +4,8 @@ import DashboardView from '../views/DashboardView.vue';
 import TecnicosView from '../views/TecnicosView.vue';
 import EmpresasView from '../views/EmpresasView.vue';
 import TechFormView from '@/views/TechFormView.vue';
+import SistemFormView from '@/views/SistemFormView.vue';
+import EmpresaFormView from '@/views/EmpresaFormView.vue';
 
 const routes = [
   { path: '/', component: LoginView },
@@ -11,6 +13,8 @@ const routes = [
   { path: '/tecnicos', component: TecnicosView },
   { path: '/empresas', component: EmpresasView },
   { path: '/tecnicos/novo', component: TechFormView },
+  { path: '/empresas/novo', component: EmpresaFormView },
+  { path: '/empresas/novo-sistema', component: SistemFormView }
 ];
 
 const router = createRouter({
