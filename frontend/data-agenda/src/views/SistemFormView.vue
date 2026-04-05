@@ -1,6 +1,6 @@
 <template>
   <div class="form-page">
-    <button class="btn-back" @click="$router.push('/sistemas')">
+    <button class="btn-back" @click="$router.push('/empresas')">
       <span class="arrow">←</span>
     </button>
 

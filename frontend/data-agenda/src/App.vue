@@ -8,6 +8,8 @@
         <router-link to="/empresas">Empresas</router-link>
       </div>
       <button v-if="$route.path === '/tecnicos'" @click="$router.push('/tecnicos/novo')" class="btn-nav">Cadastrar Técnico</button>
+      <button v-if="$route.path === '/empresas'" @click="$router.push('/empresas/novo-sistema')" class="btn-nav">Adicionar Sistema</button>
+      <button v-if="$route.path === '/empresas'" @click="$router.push('/empresas/novo')" class="btn-nav">Cadastrar Empresa</button>
     </nav>
 
     <main :class="{ 'content': $route.path !== '/' }">
