@@ -7,8 +7,8 @@
           A
         </div>
         <div class="flex flex-col">
-          <span class="text-xl font-black tracking-tighter uppercase leading-none">Anarquia</span>
-          <span class="text-[10px] text-[#00ADEE] font-bold uppercase tracking-widest mt-1">Altave Intelligence</span>
+          <span class="text-xl font-black tracking-tighter uppercase leading-none">DataAgenda</span>
+          <span class="text-[10px] text-[#00ADEE] font-bold uppercase tracking-widest mt-1">Altave</span>
         </div>
       </div>
       
