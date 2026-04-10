@@ -48,22 +48,23 @@ O objetivo é **facilitar a visualização e gerenciamento das manutenções pre
 
 # 📋 Backlog do Produto
 
-| Rank | Prioridade | User Story | Sprint Sugerida | Status |
-|-----|-----------|------------|----------------|--------|
-| 1 | Alta | Como **administrador**, quero visualizar todas as telas que irão compor o sistema | Sprint 1 | Finalizado |
-| 2 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados | Sprint 1 | Finalizado |
-| 3 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados | Sprint 2 | Pendente |
-| 4 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo | Sprint 2 | Pendente |
-| 5 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema | Sprint 2 | Pendente |
-| 6 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado | Sprint 2 | Pendente |
-| 7 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim | Sprint 2 | Pendente |
-| 8 | Alta | Como **técnico**, quero alterar o status do chamado (pendente, em andamento, concluído) | Sprint 2 | Pendente |
-| 9 | Média | Como **técnico**, quero registrar observações ou descrição da manutenção realizada | Sprint 2 | Pendente |
-| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status | Sprint 3 | Pendente |
-| 11 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo | Sprint 3 | Pendente |
-| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas | Sprint 3 | Pendente |
-| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções (concluídas, pendentes e atrasadas) | Sprint 3 | Pendente |
-| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários do sistema | Sprint 3 | Pendente |
+| Rank | Prioridade | User Story | Story Points | Sprint | Requisito | Status |
+|------|-----------|-----------|--------------|--------|-----------|--------|
+| 1 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo, para evitar falhas e manutenções corretivas | 5 | 2 | R02 | ⬜ |
+| 2 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema, para registrar e acompanhar a resolução | 5 | 2 | R02 | ⬜ |
+| 3 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado, para garantir que a manutenção seja executada | 3 | 2 | R02 | ⬜ |
+| 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ⬜ |
+| 5 | Alta | Como **técnico**, quero alterar o status do chamado, para refletir o andamento da manutenção | 3 | 2 | R03 | ⬜ |
+| 6 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | ⬜ |
+| 7 | Alta | Como **administrador**, quero acessar um menu com todas as telas do sistema, para navegar entre as funcionalidades | 3 | 1 | R01 | ⬜ |
+| 8 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados, para acompanhar status e acessar detalhes de cada ativo | 3 | 1 | R01 | ⬜ |
+| 9 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados, para corrigir dados incorretos ou excluir ativos inativos | 5 | 2 | R01 | ⬜ |
+| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos| 5 | 3 | R04 | ⬜ |
+| 11 | Média | Como **técnico**, quero registrar observações da manutenção realizada, para registrar o atedimento e ter um histórico | 2 | 2 | R03 | ⬜ |
+| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | ⬜ |
+| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | ⬜ |
+| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | ⬜ |
+
 
 ---
 
