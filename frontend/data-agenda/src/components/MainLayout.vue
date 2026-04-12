@@ -1,4 +1,6 @@
 <template>
+  
+   
   <div class="flex h-screen bg-[#F8FAFC]">
     <!-- Sidebar ALTAVE -->
     <aside class="w-72 bg-[#002855] text-white flex flex-col shadow-2xl z-20">
@@ -34,6 +36,13 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2" />
           </svg>
           <span class="font-bold">Ordens de Manutenção</span>
+        </router-link>
+
+        <router-link to="/cliente" class="flex items-center space-x-3 p-4 rounded-xl hover:bg-[#003D7A] transition-all group" active-class="bg-[#00ADEE] shadow-lg shadow-[#00ADEE]/20">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012-2" />
+          </svg>
+          <span class="font-bold">Cadastro de Clientes</span>
         </router-link>
       </nav>
 
@@ -75,4 +84,8 @@
 </template>
 
 <script setup>
+
+
+
+
 </script>

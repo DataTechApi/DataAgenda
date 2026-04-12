@@ -1,4 +1,5 @@
 <template>
+ 
   <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col">
     <div class="p-8 border-b border-slate-50 flex justify-between items-center">
       <div>
@@ -13,6 +14,7 @@
       </button>
     </div>
     
+
     <div class="overflow-x-auto">
       <table class="w-full text-left">
         <thead>
@@ -60,6 +62,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useMaintenanceStore } from '../store/maintenanceStore'
+import TheHeader from '../components/TheHeader.vue'
 
 const maintenanceStore = useMaintenanceStore()
 

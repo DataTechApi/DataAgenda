@@ -1,4 +1,5 @@
 <template>
+ 
   <div class="bg-white rounded-2xl shadow-sm border border-slate-100 flex flex-col">
     <div class="p-8 border-b border-slate-50 flex justify-between items-center">
       <div>
@@ -71,6 +72,7 @@
 <script setup>
 import { onMounted } from 'vue'
 import { useAssetStore } from '../store/assetStore'
+import MenuLateral from '../components/MenuLateral.vue'
 
 const assetStore = useAssetStore()
 

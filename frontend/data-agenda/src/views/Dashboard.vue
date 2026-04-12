@@ -1,4 +1,7 @@
+
 <template>
+
+  
   <div>
     <div class="flex justify-between items-end mb-10">
       <div>
@@ -198,6 +201,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useAssetStore } from '../store/assetStore'
 import { useMaintenanceStore } from '../store/maintenanceStore'
+import TheHeader from '../components/TheHeader.vue'
 
 // Pega os stores do Pinia
 const assetStore = useAssetStore()
@@ -219,6 +223,7 @@ const alertAssets = computed(() =>
 const criticalOrders = computed(() => 
   // Se tiver pesquisa, mostra os resultados da pesquisa, senão os 6 primeiros
   searchQuery.value.length > 0 ? maintenanceStore.orders : maintenanceStore.orders.slice(0, 6)
+  
 )
 
 // Ações
