@@ -1,9 +1,16 @@
+<script setup lang="ts">
+
+
+import { RouterView } from 'vue-router';
+import TheHeader from './components/TheHeader.vue';
+import TesteButtonView from './views/TesteButtonView.vue';
+
+
+</script>
+
 <template>
-  <MainLayout>
-    <router-view />
-  </MainLayout>
+ <TheHeader />
+ 
+  
 </template>
 
-<script setup>
-import MainLayout from './components/MainLayout.vue'
-</script>

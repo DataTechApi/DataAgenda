@@ -1,78 +1,118 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-100">
-    <div class="bg-white shadow-lg rounded-lg w-full max-w-md p-8">
-      <h2 class="text-2xl font-bold text-center mb-6">Cadastro de Clientes</h2>
-      
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+  <div class="card">
+    <h2>Cadastro de Cliente</h2>
+    <form @submit.prevent="salvarCliente">
+      <div class="p-fluid p-formgrid p-grid">
+        
         <!-- Nome -->
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Nome</label>
-          <input 
-            v-model="cliente.nome" 
-            type="text" 
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Digite o nome completo"
-            required
-          />
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="nome">Nome</label>
+          <InputText id="nome" v-model="cliente.nome" required placeholder="Home do Cliente"/>
         </div>
 
-        <!-- Email -->
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Email</label>
-          <input 
-            v-model="cliente.email" 
-            type="email" 
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Digite o email"
-            required
-          />
+        <!-- CNPJ -->
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="cnpj">CNPJ</label>
+          <InputMask id="cnpj" v-model="cliente.cnpj" mask="99.999.999/9999-99" placeholder="00.000.000/0000-00" required />
+        </div>
+
+        <!-- Localidade -->
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="localidade">Localidade</label>
+          <InputText id="localidade" v-model="cliente.localidade" placeholder="Cidade/Estado" />
+        </div>
+
+        <!-- Responsável -->
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="responsavel">Responsável</label>
+          <InputText id="responsavel" v-model="cliente.responsavel" placeholder="Nome do Responsável"/>
         </div>
 
         <!-- Telefone -->
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Telefone</label>
-          <input 
-            v-model="cliente.telefone" 
-            type="tel" 
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="(xx) xxxxx-xxxx"
-          />
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="telefone">Telefone</label>
+          <InputMask id="telefone" v-model="cliente.telefone" mask="(99) 99999-9999" placeholder="(xx) xxxxx-xxxx" />
         </div>
 
-        <!-- Endereço -->
-        <div>
-          <label class="block text-gray-700 font-medium mb-1">Endereço</label>
-          <textarea 
-            v-model="cliente.endereco" 
-            class="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Digite o endereço"
-          ></textarea>
+        <!-- Botões -->
+        <div class="p-field p-col-12 botoes">
+          <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
+          <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
         </div>
-
-        <!-- Botão -->
-        <button 
-          type="submit" 
-          class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-500 transition"
-        >
-          Cadastrar
-        </button>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 </template>
 
-<script setup>
-import { reactive } from 'vue'
+<script>
+import { ref } from "vue";
+import InputText from "primevue/inputtext";
+import InputMask from "primevue/inputmask";
+import Button from "primevue/button";
 
-const cliente = reactive({
-  nome: '',
-  email: '',
-  telefone: '',
-  endereco: ''
-})
+export default {
+  name: "CadastroCliente",
+  components: {
+    InputText,
+    InputMask,
+    Button,
+  },
+  setup() {
+    const cliente = ref({
+      nome: "",
+      cnpj: "",
+      localidade: "",
+      responsavel: "",
+      telefone: "",
+    });
 
-function handleSubmit() {
-  console.log('Cliente cadastrado:', cliente)
-  alert(`Cliente ${cliente.nome} cadastrado com sucesso!`)
-}
+    const salvarCliente = () => {
+      console.log("Cliente cadastrado:", cliente.value);
+      alert("Cliente cadastrado com sucesso!");
+      limparFormulario();
+    };
+
+    const limparFormulario = () => {
+      cliente.value = { nome: "", cnpj: "", localidade: "", responsavel: "", telefone: "" };
+    };
+
+    return { cliente, salvarCliente, limparFormulario };
+  },
+};
 </script>
+
+<style scoped>
+.card {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #0f0f0f;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 12px;
+}
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+.horizontal-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem; /* espaço entre linhas */
+}
+.horizontal-field label {
+  width: 120px; /* largura fixa para alinhar */
+  font-weight: 600;
+}
+.horizontal-field input,
+.horizontal-field .p-inputmask {
+  flex: 1;
+}
+.botoes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+</style>

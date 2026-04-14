@@ -1,1 +1,0 @@
-import{l as t}from"./index-h0jT9SUp.js";import{a}from"./index-qFyJwsfU.js";const r=t("asset",{state:()=>({assets:[],loading:!1}),actions:{async fetchAssets(){this.loading=!0;try{const s=await a.get("/api/assets");this.assets=s.data}catch(s){console.error("Error fetching assets:",s)}finally{this.loading=!1}}}});export{r as u};
