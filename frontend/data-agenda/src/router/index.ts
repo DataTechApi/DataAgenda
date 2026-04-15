@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-import CadastroClientesView from '../views/CadastroClientesView.vue'
-import CadastroTecnicosView from '../views/CadastroTecnicosView.vue'
-import CadastroSistemasView from '../views/CadastroSistemasView.vue'
+import CadastroClientesView from '../views/cliente/CadastroClientesView.vue'
+import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
+import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
 import DashboardView from '../views/DashboardView.vue'
-import CadastroManutencoesView from '../views/CadastroManutencoesView.vue'
+import CadastroManutencoesView from '../views/manutencao/CadastroManutencoesView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,22 +15,22 @@ const router = createRouter({
       component: DashboardView,
     },
     {
-      path: '/tecnico',
+      path: '/tecnico/cadastrar',
       name: 'tecnico',
       component: CadastroTecnicosView,
     },
     {
-      path: '/cliente',
+      path: '/cliente/cadastrar',
       name: 'cliente',
       component: CadastroClientesView,
     },
     {
-      path: '/sistema',
+      path: '/sistema/cadastrar',
       name: 'sistema',
       component: CadastroSistemasView,
     },
    {
-      path: '/manutencao',
+      path: '/manutencao/cadastrar',
       name: 'manutencao',
       component: CadastroManutencoesView,
     },
