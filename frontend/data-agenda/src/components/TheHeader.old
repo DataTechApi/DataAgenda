@@ -2,37 +2,43 @@
   <div class="layout">
     <!-- Header -->
     <header class="header">
+      <img src="../assets/logoDataTech.jpeg" alt="Logo" class="logo" />
       <h2>DataAgenda</h2>
     </header>
 
     <!-- Sidebar -->
     <aside class="sidebar">
       <ul>
-        <li>   
-          <i class="pi pi-home"></i>
-          <span>Painel de Controle</span>
-        </li>
         <li>
-        <RouterLink to="/cliente" class="router-link">
-          <i class="pi pi-users"></i>
+          <RouterLink to="/" class="router-link">
+             <i class="pi pi-home"></i>
+             <span>Painel de Controle</span>
+          </RouterLink> 
+          </li>  
+         
+        <li>
           
-          <span>Gestão de Clientes</span>
-        </RouterLink>
+          <RouterLink to="/cliente" class="router-link">
+            <i class="pi pi-users"></i>
+            <span>Gestão de Clientes</span>
+          </RouterLink>
         </li>
         <li>
+          <RouterLink to="/manutencao" class="router-link">
           <i class="pi pi-wrench"></i>
-          <span>Gestão de Manutenções</span>
+          <span>Gestão de Manutenção</span>
+          </RouterLink>
         </li>
         <li>
-            <RouterLink to="/sistema" class="router-link">
-          <i class="pi pi-cog"></i>
-          <span>Gestão de Sistema</span>
+          <RouterLink to="/sistema" class="router-link">
+            <i class="pi pi-cog"></i>
+            <span>Gestão de Sistema</span>
           </RouterLink>
         </li>
         <li>
           <RouterLink to="/tecnico" class="router-link">
-          <i class="pi pi-id-card"></i>
-          <span>Gestão de Técnicos</span>
+            <i class="pi pi-id-card"></i>
+            <span>Gestão de Técnicos</span>
           </RouterLink>
         </li>
       </ul>
@@ -40,25 +46,21 @@
 
     <!-- Main Content -->
     <main class="content">
-      
       <RouterView />
     </main>
   </div>
-  
 </template>
 
 <script setup>
-
 import 'primeicons/primeicons.css'
 import { RouterLink, RouterView } from 'vue-router'
-
 </script>
 
 <style scoped>
 .layout {
   display: grid;
   grid-template-columns: 250px 1fr;
-  grid-template-rows: 80px 1fr; /* Header mais grosso */
+  grid-template-rows: 80px 1fr;
   grid-template-areas:
     "header header"
     "sidebar content";
@@ -68,22 +70,26 @@ import { RouterLink, RouterView } from 'vue-router'
 
 .header {
   grid-area: header;
-  background: #000; /* Fundo preto */
+  background: #000;
   color: white;
   display: flex;
   align-items: center;
   padding: 0 30px;
-  font-size: 2rem; /* Nome maior */
+  font-size: 1.5rem; /* Ajustado para h2 */
   font-weight: bold;
   letter-spacing: 2px;
-  height: 40px;
+}
+
+.logo {
+  height: 80px;
+  margin-right: 15px;
 }
 
 .sidebar {
   grid-area: sidebar;
   background: #000;
   color: #fff;
-  padding: 20px;
+  padding: 10px;
 }
 
 .sidebar ul {

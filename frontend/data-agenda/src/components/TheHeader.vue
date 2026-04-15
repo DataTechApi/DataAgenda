@@ -11,35 +11,125 @@
       <ul>
         <li>
           <RouterLink to="/" class="router-link">
-             <i class="pi pi-home"></i>
-             <span>Painel de Controle</span>
-          </RouterLink> 
-          </li>  
-         
-        <li>
-          
-          <RouterLink to="/cliente" class="router-link">
+            <i class="pi pi-home"></i>
+            <span>Painel de Controle</span>
+          </RouterLink>
+        </li>
+
+        <!-- Gestão de Clientes -->
+        <li @click="toggleMenu('cliente')">
+          <div class="menu-item">
             <i class="pi pi-users"></i>
             <span>Gestão de Clientes</span>
-          </RouterLink>
+            <i :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+          </div>
+          <ul class="submenu" v-show="openMenu === 'cliente'">
+            <li>
+              <RouterLink to="/cliente/cadastrar" class="router-link">
+                <i class="pi pi-plus"></i>
+                <span>Cadastrar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/cliente/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/cliente/alterar" class="router-link">
+                <i class="pi pi-pencil"></i>
+                <span>Alterar</span>
+              </RouterLink>
+            </li>
+          </ul>
         </li>
-        <li>
-          <RouterLink to="/manutencao" class="router-link">
-          <i class="pi pi-wrench"></i>
-          <span>Gestão de Manutenção</span>
-          </RouterLink>
+
+        <!-- Gestão de Manutenção -->
+        <li @click="toggleMenu('manutencao')">
+          <div class="menu-item">
+            <i class="pi pi-wrench"></i>
+            <span>Gestão de Manutenção</span>
+            <i :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+          </div>
+          <ul class="submenu" v-show="openMenu === 'manutencao'">
+            <li>
+              <RouterLink to="/manutencao/cadastrar" class="router-link">
+                <i class="pi pi-plus"></i>
+                <span>Cadastrar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/manutencao/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/manutencao/alterar" class="router-link">
+                <i class="pi pi-pencil"></i>
+                <span>Alterar</span>
+              </RouterLink>
+            </li>
+          </ul>
         </li>
-        <li>
-          <RouterLink to="/sistema" class="router-link">
+
+        <!-- Gestão de Sistema -->
+        <li @click="toggleMenu('sistema')">
+          <div class="menu-item">
             <i class="pi pi-cog"></i>
             <span>Gestão de Sistema</span>
-          </RouterLink>
+            <i :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+          </div>
+          <ul class="submenu" v-show="openMenu === 'sistema'">
+            <li>
+              <RouterLink to="/sistema/cadastrar" class="router-link">
+                <i class="pi pi-plus"></i>
+                <span>Cadastrar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/sistema/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/sistema/alterar" class="router-link">
+                <i class="pi pi-pencil"></i>
+                <span>Alterar</span>
+              </RouterLink>
+            </li>
+          </ul>
         </li>
-        <li>
-          <RouterLink to="/tecnico" class="router-link">
+
+        <!-- Gestão de Técnicos -->
+        <li @click="toggleMenu('tecnico')">
+          <div class="menu-item">
             <i class="pi pi-id-card"></i>
             <span>Gestão de Técnicos</span>
-          </RouterLink>
+            <i :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+          </div>
+          <ul class="submenu" v-show="openMenu === 'tecnico'">
+            <li>
+              <RouterLink to="/tecnico/cadastrar" class="router-link">
+                <i class="pi pi-plus"></i>
+                <span>Cadastrar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/tecnico/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
+            </li>
+            <li>
+              <RouterLink to="/tecnico/alterar" class="router-link">
+                <i class="pi pi-pencil"></i>
+                <span>Alterar</span>
+              </RouterLink>
+            </li>
+          </ul>
         </li>
       </ul>
     </aside>
@@ -54,6 +144,13 @@
 <script setup>
 import 'primeicons/primeicons.css'
 import { RouterLink, RouterView } from 'vue-router'
+import { ref } from 'vue'
+
+const openMenu = ref(null)
+
+function toggleMenu(menu) {
+  openMenu.value = openMenu.value === menu ? null : menu
+}
 </script>
 
 <style scoped>
@@ -75,7 +172,7 @@ import { RouterLink, RouterView } from 'vue-router'
   display: flex;
   align-items: center;
   padding: 0 30px;
-  font-size: 1.5rem; /* Ajustado para h2 */
+  font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 2px;
 }
@@ -95,15 +192,12 @@ import { RouterLink, RouterView } from 'vue-router'
 .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .sidebar li {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   border-radius: 8px;
-  cursor: pointer;
   transition: background 0.3s;
 }
 
@@ -111,9 +205,38 @@ import { RouterLink, RouterView } from 'vue-router'
   background: #2E2E40;
 }
 
+.menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 12px;
+}
+
 .sidebar i {
   margin-right: 10px;
   font-size: 1.2rem;
+}
+
+.arrow {
+  margin-left: auto;
+}
+
+.submenu {
+  list-style: none;
+  padding-left: 25px;
+  margin-top: 5px;
+}
+
+.submenu li {
+  padding: 6px;
+  margin-bottom: 4px;
+  border-radius: 6px;
+  transition: background 0.3s;
+}
+
+.submenu li:hover {
+  background: #3a3a50;
 }
 
 .content {
