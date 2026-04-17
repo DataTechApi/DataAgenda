@@ -1,0 +1,8 @@
+:root {
+  /* A darker, more accessible blue for better contrast on light backgrounds. */
+  --primary-color: #005A9C; 
+  --primary-color-text: #FFFFFF; /* A contrasting text color for the new primary color. */
+
+  /* If you are using PrimeVue, you might need to override specific palette colors like this: */
+  /* --p-blue-500: #005A9C; */
+}

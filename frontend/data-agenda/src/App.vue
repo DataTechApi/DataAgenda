@@ -1,16 +1,15 @@
 <script setup lang="ts">
-
-
 import { RouterView } from 'vue-router';
-import TheHeader from './components/TheHeader.vue';
-import TesteButtonView from './views/TesteButtonView.vue';
-
-
 </script>
 
 <template>
- <TheHeader />
- 
-  
+  <RouterView />
 </template>
 
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0a0e27;
+}
+</style>

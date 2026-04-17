@@ -1,27 +1,40 @@
 <template>
   <div class="layout">
-    <!-- Header -->
+    <!-- Header Superior -->
     <header class="header">
       <img src="../assets/logoDataTech.jpeg" alt="Logo" class="logo" />
-      <h2>DataAgenda</h2>
+      <span>DATA AGENDA</span>
     </header>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Lateral -->
     <aside class="sidebar">
       <ul>
+        <!-- Dashboard Geral -->
         <li>
           <RouterLink to="/" class="router-link">
-            <i class="pi pi-home"></i>
-            <span>Painel de Controle</span>
+            <div class="menu-item">
+              <div class="menu-label">
+                <i class="pi pi-home"></i>
+                <span>Dashboard Geral</span>
+              </div>
+            </div>
           </RouterLink>
         </li>
 
-        <!-- Gestão de Clientes -->
-        <li @click="toggleMenu('cliente')">
+        <!-- Menu Clientes -->
+        <li>
           <div class="menu-item">
-            <i class="pi pi-users"></i>
-            <span>Gestão de Clientes</span>
-            <i :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+            <RouterLink to="/cliente/dashboard" class="router-link">
+              <div class="menu-label">
+                <i class="pi pi-users"></i>
+                <span>Clientes</span>
+              </div>
+            </RouterLink>
+            <i 
+              :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+              class="arrow"
+              @click="toggleMenu('cliente')"
+            ></i>
           </div>
           <ul class="submenu" v-show="openMenu === 'cliente'">
             <li>
@@ -36,50 +49,48 @@
                 <span>Visualizar</span>
               </RouterLink>
             </li>
-            <li>
-              <RouterLink to="/cliente/alterar" class="router-link">
-                <i class="pi pi-pencil"></i>
-                <span>Alterar</span>
-              </RouterLink>
-            </li>
           </ul>
         </li>
 
-        <!-- Gestão de Manutenção -->
-        <li @click="toggleMenu('manutencao')">
+        <!-- Menu Manutenção -->
+        <li>
           <div class="menu-item">
-            <i class="pi pi-wrench"></i>
-            <span>Gestão de Manutenção</span>
-            <i :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+            <RouterLink to="/manutencao/dashboard" class="router-link">
+              <div class="menu-label">
+                <i class="pi pi-wrench"></i>
+                <span>Manutenção</span>
+              </div>
+            </RouterLink>
+            <i 
+              :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+              class="arrow"
+              @click="toggleMenu('manutencao')"
+            ></i>
           </div>
           <ul class="submenu" v-show="openMenu === 'manutencao'">
             <li>
               <RouterLink to="/manutencao/cadastrar" class="router-link">
                 <i class="pi pi-plus"></i>
-                <span>Cadastrar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/manutencao/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/manutencao/alterar" class="router-link">
-                <i class="pi pi-pencil"></i>
-                <span>Alterar</span>
+                <span>Agendar</span>
               </RouterLink>
             </li>
           </ul>
         </li>
 
-        <!-- Gestão de Sistema -->
-        <li @click="toggleMenu('sistema')">
+        <!-- Menu Sistemas -->
+        <li>
           <div class="menu-item">
-            <i class="pi pi-cog"></i>
-            <span>Gestão de Sistema</span>
-            <i :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+            <RouterLink to="/sistema/dashboard" class="router-link">
+              <div class="menu-label">
+                <i class="pi pi-desktop"></i>
+                <span>Sistemas</span>
+              </div>
+            </RouterLink>
+            <i 
+              :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+              class="arrow"
+              @click="toggleMenu('sistema')"
+            ></i>
           </div>
           <ul class="submenu" v-show="openMenu === 'sistema'">
             <li>
@@ -94,21 +105,23 @@
                 <span>Visualizar</span>
               </RouterLink>
             </li>
-            <li>
-              <RouterLink to="/sistema/alterar" class="router-link">
-                <i class="pi pi-pencil"></i>
-                <span>Alterar</span>
-              </RouterLink>
-            </li>
           </ul>
         </li>
 
-        <!-- Gestão de Técnicos -->
-        <li @click="toggleMenu('tecnico')">
+        <!-- Menu Técnico -->
+        <li>
           <div class="menu-item">
-            <i class="pi pi-id-card"></i>
-            <span>Gestão de Técnicos</span>
-            <i :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" class="arrow"></i>
+            <RouterLink to="/tecnico/dashboard" class="router-link">
+              <div class="menu-label">
+                <i class="pi pi-user-edit"></i>
+                <span>Técnico</span>
+              </div>
+            </RouterLink>
+            <i 
+              :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+              class="arrow"
+              @click="toggleMenu('tecnico')"
+            ></i>
           </div>
           <ul class="submenu" v-show="openMenu === 'tecnico'">
             <li>
@@ -117,24 +130,12 @@
                 <span>Cadastrar</span>
               </RouterLink>
             </li>
-            <li>
-              <RouterLink to="/tecnico/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/tecnico/alterar" class="router-link">
-                <i class="pi pi-pencil"></i>
-                <span>Alterar</span>
-              </RouterLink>
-            </li>
           </ul>
         </li>
       </ul>
     </aside>
 
-    <!-- Main Content -->
+    <!-- Conteúdo Dinâmico -->
     <main class="content">
       <RouterView />
     </main>
@@ -188,6 +189,7 @@ function toggleMenu(menu) {
   background: #041628;
   color: #ffffff;
   padding: 10px;
+  overflow-y: auto;
 }
 
 .sidebar ul {
@@ -210,8 +212,14 @@ function toggleMenu(menu) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  cursor: pointer;
+  padding: 0;
+}
+
+.menu-label {
+  display: flex;
+  align-items: center;
   padding: 12px;
+  width: 100%;
 }
 
 .sidebar i {
@@ -220,6 +228,8 @@ function toggleMenu(menu) {
 }
 
 .arrow {
+  padding: 12px;
+  cursor: pointer;
   margin-left: auto;
 }
 
@@ -230,23 +240,28 @@ function toggleMenu(menu) {
 }
 
 .submenu li {
-  padding: 6px;
+  padding: 0;
   margin-bottom: 4px;
   border-radius: 6px;
   transition: background 0.3s;
-}
-
-.submenu li:hover {
-  background: #2d3748;
 }
 
 .content {
   grid-area: content;
   padding: 20px;
   background: #0a0e27;
+  overflow-y: auto;
 }
+
 .router-link {
   color: inherit;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.submenu .router-link {
+  padding: 8px 12px;
 }
 </style>

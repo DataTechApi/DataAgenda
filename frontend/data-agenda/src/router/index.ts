@@ -1,52 +1,89 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import MainLayout from '../layouts/MainLayout.vue'
 
+// Dashboards
+import DashboardView from '../views/DashboardView.vue'
+// Usando lazy loading para os dashboards que ainda serão criados
+const ClienteDashboardView = () => import('../views/cliente/ClienteDashboardView.vue')
+const ManutencaoDashboardView = () => import('../views/manutencao/ManutencaoDashboardView.vue')
+const SistemaDashboardView = () => import('../views/sistema/SistemaDashboardView.vue')
+const TecnicoDashboardView = () => import('../views/tecnico/TecnicoDashboardView.vue')
+
+// Forms and Visualizations
 import CadastroClientesView from '../views/cliente/CadastroClientesView.vue'
 import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
 import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
-import DashboardView from '../views/DashboardView.vue'
 import CadastroManutencoesView from '../views/manutencao/CadastroManutencoesView.vue'
 import VisualizarClienteView from '@/views/cliente/VisualizarClienteView.vue'
 import VisualizarSistemaView from '@/views/sistema/VisualizarSistemaView.vue' 
-
-
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'dashboard',
-      component: DashboardView,
-    },
-    {
-      path: '/tecnico/cadastrar',
-      name: 'tecnico',
-      component: CadastroTecnicosView,
-    },
-    {
-      path: '/cliente/cadastrar',
-      name: 'cliente',
-      component: CadastroClientesView,
-    },
-    {
-      path: '/sistema/cadastrar',
-      name: 'sistema',
-      component: CadastroSistemasView,
-    },
-   {
-      path: '/manutencao/cadastrar',
-      name: 'manutencao',
-      component: CadastroManutencoesView,
-    },
-  {
-      path: '/cliente/visualizar',
-      name: 'visualizacaoCliente',
-      component: VisualizarClienteView,
-    },
-    {
-      path: '/sistema/visualizar',
-      name: 'visualizacaoSistema',
-      component: VisualizarSistemaView,
+      component: MainLayout,
+      children: [
+        {
+          path: '',
+          name: 'dashboard',
+          component: DashboardView,
+        },
+        // Cliente Routes
+        {
+          path: 'cliente/dashboard',
+          name: 'cliente-dashboard',
+          component: ClienteDashboardView,
+        },
+        {
+          path: 'cliente/cadastrar',
+          name: 'cliente-cadastrar',
+          component: CadastroClientesView,
+        },
+        {
+          path: 'cliente/visualizar',
+          name: 'cliente-visualizar',
+          component: VisualizarClienteView,
+        },
+        // Manutencao Routes
+        {
+          path: 'manutencao/dashboard',
+          name: 'manutencao-dashboard',
+          component: ManutencaoDashboardView,
+        },
+        {
+          path: 'manutencao/cadastrar',
+          name: 'manutencao-cadastrar',
+          component: CadastroManutencoesView,
+        },
+        // Sistema Routes
+        {
+          path: 'sistema/dashboard',
+          name: 'sistema-dashboard',
+          component: SistemaDashboardView,
+        },
+        {
+          path: 'sistema/cadastrar',
+          name: 'sistema-cadastrar',
+          component: CadastroSistemasView,
+        },
+        {
+          path: 'sistema/visualizar',
+          name: 'sistema-visualizar',
+          component: VisualizarSistemaView,
+        },
+        // Tecnico Routes
+        {
+          path: 'tecnico/dashboard',
+          name: 'tecnico-dashboard',
+          component: TecnicoDashboardView,
+        },
+        {
+          path: 'tecnico/cadastrar',
+          name: 'tecnico-cadastrar',
+          component: CadastroTecnicosView,
+        },
+      ]
     },
   ],
 })
