@@ -1,15 +1,17 @@
 package br.com.datatech.DataAgenda.service;
 
-import br.com.datatech.DataAgenda.entity.Cliente;
-import br.com.datatech.DataAgenda.entity.dto.request.ClienteDTORequest;
-import br.com.datatech.DataAgenda.repository.ClienteRepository;
+
+import java.util.List;
+import java.util.Optional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
+import br.com.datatech.DataAgenda.entity.Cliente;
+import br.com.datatech.DataAgenda.entity.dto.request.ClienteDTORequest;
+import br.com.datatech.DataAgenda.repository.ClienteRepository;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -24,14 +26,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void cadastrarCliente(ClienteDTORequest request) {
-        if(request == null ||
-                request.getNome().isBlank()||
-                request.getNome().isEmpty() ||
-                request.getLocalidade().isEmpty()||
-                request.getLocalidade().isBlank()) {
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cliente com informações inválidas!");
-            }
-            Cliente clienteEntity = model.map(request, Cliente.class);
+
+        Cliente clienteEntity = model.map(request, Cliente.class);
         clienteRepository.save(clienteEntity);
 
     }

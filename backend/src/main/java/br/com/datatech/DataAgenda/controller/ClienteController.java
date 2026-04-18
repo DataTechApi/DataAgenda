@@ -1,14 +1,19 @@
 package br.com.datatech.DataAgenda.controller;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import br.com.datatech.DataAgenda.entity.Cliente;
 import br.com.datatech.DataAgenda.entity.dto.request.ClienteDTORequest;
 import br.com.datatech.DataAgenda.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/clientes")
 @Tag(name = "Cliente", description = "Endpoints para gerenciamento de clientes")
@@ -29,12 +34,12 @@ public class ClienteController {
     }
     @GetMapping("/{id}")
     @Operation(summary = "Buscar cliente por ID", description = "Endpoint para buscar um cliente pelo seu ID no DataAgenda")
-    public ResponseEntity buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<Optional<Cliente>> buscarPorId(@PathVariable Long id) {
         return ResponseEntity.ok(clienteService.buscarPorId(id));
     }
     @GetMapping("/buscartodos")
     @Operation(summary = "Listar todos os clientes", description = "Endpoint para listar todos os clientes cadastrados no DataAgenda")
-    public ResponseEntity listarTodos() {
+    public ResponseEntity<List<Cliente>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 }

@@ -22,7 +22,7 @@
           </div>
         </div>
 
-        <!-- Responsável + E-mail do Responsável -->
+        <!-- Responsável + E-mail -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="responsavel">Responsável</label>
@@ -34,32 +34,49 @@
           </div>
         </div>
 
-        <!-- Telefone + E-mail do Responsável (linha separada para telefone e email) -->
+        <!-- Telefone + Início do Contrato -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="telefone">Telefone</label>
             <InputMask id="telefone" v-model="cliente.telefone" mask="(99) 99999-9999" placeholder="(xx) xxxxx-xxxx" />
           </div>
           <div class="p-field horizontal-field">
-            <!-- Coluna vazia para manter alinhamento, ou adicionar campo extra -->
             <label for="dataInicio">Início do Contrato</label>
             <InputText id="dataInicio" v-model="cliente.dataInicio" type="date" />
           </div>
         </div>
 
-        <!-- Duração do Contrato + Tempo de Contrato -->
+        <!-- Duração do Contrato -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="duracao">Duração (meses)</label>
             <InputText id="duracao" v-model="cliente.duracao" type="number" min="1" placeholder="Ex: 12" />
           </div>
-          
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div v-if="erro" class="mensagem-erro">
+          {{ erro }}
         </div>
 
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
-          <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
-          <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
+          <Button
+            label="Salvar"
+            icon="pi pi-check"
+            type="submit"
+            class="p-button-success"
+            :loading="loading"
+            :disabled="loading"
+          />
+          <Button
+            label="Limpar"
+            icon="pi pi-refresh"
+            type="button"
+            class="p-button-secondary"
+            :disabled="loading"
+            @click="limparFormulario"
+          />
         </div>
 
       </div>
@@ -69,9 +86,18 @@
 
 <script>
 import { ref } from "vue";
+import axios from "axios";
 import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
+
+// Instância do axios com baseURL configurada
+const api = axios.create({
+  baseURL: "http://localhost:8080",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export default {
   name: "CadastroCliente",
@@ -81,6 +107,9 @@ export default {
     Button,
   },
   setup() {
+    const loading = ref(false);
+    const erro = ref("");
+
     const cliente = ref({
       nome: "",
       cnpj: "",
@@ -93,10 +122,30 @@ export default {
       tempoContrato: "",
     });
 
-    const salvarCliente = () => {
-      console.log("Cliente cadastrado:", cliente.value);
-      alert("Cliente cadastrado com sucesso!");
-      limparFormulario();
+    const salvarCliente = async () => {
+      loading.value = true;
+      erro.value = "";
+
+      try {
+        const response = await api.post("/clientes", cliente.value);
+        console.log("Resposta da API:", response.data);
+        alert("Cliente cadastrado com sucesso!");
+        limparFormulario();
+      } catch (error) {
+        console.error("Erro ao cadastrar cliente:", error);
+
+        if (error.response) {
+          // Erro retornado pelo servidor (4xx, 5xx)
+          erro.value = `Erro ${error.response.status}: ${error.response.data?.message || "Falha ao cadastrar cliente."}`;
+        } else if (error.request) {
+          // Sem resposta do servidor
+          erro.value = "Servidor não respondeu. Verifique se o backend está rodando.";
+        } else {
+          erro.value = "Erro inesperado. Tente novamente.";
+        }
+      } finally {
+        loading.value = false;
+      }
     };
 
     const limparFormulario = () => {
@@ -113,7 +162,7 @@ export default {
       };
     };
 
-    return { cliente, salvarCliente, limparFormulario };
+    return { cliente, loading, erro, salvarCliente, limparFormulario };
   },
 };
 </script>
@@ -134,7 +183,6 @@ h2 {
   color: #2c3e50;
 }
 
-/* Par de campos lado a lado */
 .row-pair {
   display: flex;
   gap: 1.5rem;
@@ -146,7 +194,6 @@ h2 {
   flex: 1;
 }
 
-/* Campo de largura total (Nome) */
 .full-width {
   width: 100%;
 }
@@ -174,5 +221,16 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
+}
+
+.mensagem-erro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 </style>
