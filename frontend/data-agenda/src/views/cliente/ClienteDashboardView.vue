@@ -7,7 +7,7 @@
         <i class="pi pi-users"></i>
         <div class="stat-info">
           <span class="stat-label">Total de Clientes</span>
-          <span class="stat-value">1,284</span>
+          <span class="stat-value">{{ totalClientes }}</span>
         </div>
       </div>
       <div class="stat-card accent">
@@ -32,6 +32,39 @@
     </div>
   </div>
 </template>
+
+<script>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+export default {
+  name: "DashboardClientes",
+  setup() {
+    const totalClientes = ref(0);
+    const URL=  import.meta.env.VITE_API_URL;
+
+    const carregarTotalClientes = async () => {
+      try {
+        // Se você tiver um endpoint dedicado, por exemplo /clientes/count:
+        const response = await axios.get(`${URL}/clientes/contarclientes`);
+        totalClientes.value = response.data;
+
+        // Caso não exista esse endpoint, você pode buscar todos e contar:
+        // const response = await axios.get("http://localhost:8080/clientes");
+        // totalClientes.value = response.data.length;
+      } catch (error) {
+        console.error("Erro ao buscar total de clientes:", error);
+      }
+    };
+
+    onMounted(() => {
+     carregarTotalClientes();
+    });
+
+    return { totalClientes };
+  },
+};
+</script>
 
 <style scoped>
 .dashboard-container {

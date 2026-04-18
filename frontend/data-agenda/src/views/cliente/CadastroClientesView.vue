@@ -93,7 +93,7 @@ import Button from "primevue/button";
 
 // Instância do axios com baseURL configurada
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  URL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },

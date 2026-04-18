@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
@@ -37,31 +38,36 @@ export default {
     Button,
   },
   setup() {
-    const clientes = ref([
-      {
-        nome: "Empresa Alpha",
-        cnpj: "12.345.678/0001-99",
-        localidade: "São Paulo/SP",
-        responsavel: "Maria Silva",
-        telefone: "(11) 98765-4321",
-      },
-      {
-        nome: "Beta Solutions",
-        cnpj: "98.765.432/0001-11",
-        localidade: "Rio de Janeiro/RJ",
-        responsavel: "João Souza",
-        telefone: "(21) 91234-5678",
-      },
-    ]);
+    const clientes = ref([]);
+
+    const URL = import.meta.env.VITE_API_URL;
+
+    const carregarClientes = async () => {
+      try {
+        const response = await axios.get(`${URL}/clientes/buscartodos`);
+        clientes.value = response.data;
+      } catch (error) {
+        console.error("Erro ao buscar clientes:", error);
+      }
+    };
 
     const editarCliente = (cliente) => {
       alert(`Editar cliente: ${cliente.nome}`);
     };
 
-    const excluirCliente = (cliente) => {
-      clientes.value = clientes.value.filter(c => c !== cliente);
-      alert(`Cliente ${cliente.nome} excluído!`);
+    const excluirCliente = async (cliente) => {
+      try {
+        await axios.delete(`${URL}/clientes/${cliente.id}`);
+        clientes.value = clientes.value.filter(c => c.id !== cliente.id);
+        alert(`Cliente ${cliente.nome} excluído!`);
+      } catch (error) {
+        console.error("Erro ao excluir cliente:", error);
+      }
     };
+
+    onMounted(() => {
+      carregarClientes();
+    });
 
     return { clientes, editarCliente, excluirCliente };
   },

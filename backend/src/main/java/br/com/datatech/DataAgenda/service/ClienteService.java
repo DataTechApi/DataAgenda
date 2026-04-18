@@ -15,5 +15,7 @@ public interface ClienteService {
 
     Optional<Cliente> buscarPorId(Long id);
 
+    Long contarClientes();
+
 
 }

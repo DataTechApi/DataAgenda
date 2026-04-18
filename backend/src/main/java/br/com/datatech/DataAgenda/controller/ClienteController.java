@@ -13,7 +13,7 @@ import br.com.datatech.DataAgenda.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/clientes")
 @Tag(name = "Cliente", description = "Endpoints para gerenciamento de clientes")
@@ -41,5 +41,12 @@ public class ClienteController {
     @Operation(summary = "Listar todos os clientes", description = "Endpoint para listar todos os clientes cadastrados no DataAgenda")
     public ResponseEntity<List<Cliente>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
+    }
+
+    @GetMapping("/contarclientes")
+    @Operation(summary = "Contar clientes", description = "Endpoint para contar o número total de clientes cadastrados no DataAgenda")
+    public ResponseEntity<Long> contarClientes() {
+        Long quantidade = clienteService.contarClientes();
+        return ResponseEntity.ok(quantidade);
     }
 }

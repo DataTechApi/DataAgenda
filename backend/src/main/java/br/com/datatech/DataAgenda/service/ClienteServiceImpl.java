@@ -46,4 +46,9 @@ public class ClienteServiceImpl implements ClienteService {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
 
     }
+
+    @Override
+    public Long contarClientes() {
+        return clienteRepository.contarClientes();
+    }
 }
