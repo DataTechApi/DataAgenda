@@ -8,10 +8,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "cliente")
 public class Cliente {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +31,8 @@ public class Cliente {
     private Integer duracaoContrato;
     private Boolean isAtivo = true;
     private String localidade;
-    private LocalDate dataInicioContrato;
+    private LocalDate dataInicioContrato ;
+    private LocalDate dataFimContrato;
 
     @OneToMany(mappedBy = "cliente")
     private Set<Sistema> sistemas;

@@ -109,17 +109,18 @@ export default {
   setup() {
     const loading = ref(false);
     const erro = ref("");
+    const URL = import.meta.env.VITE_API_URL;
 
     const cliente = ref({
       nome: "",
       cnpj: "",
       localidade: "",
-      responsavel: "",
-      email: "",
-      telefone: "",
-      dataInicio: "",
-      duracao: "",
-      tempoContrato: "",
+      nomeResponsavel: "",
+      emailResponsavel: "",
+      telefoneResponsavel: "",
+      dataInicioContrato: "",
+      duracaoContrato: "",
+      duracaoContrato: "",
     });
 
     const salvarCliente = async () => {
@@ -127,7 +128,7 @@ export default {
       erro.value = "";
 
       try {
-        const response = await api.post("/clientes", cliente.value);
+        const response = await api.post(`${URL}/clientes`, cliente.value);
         console.log("Resposta da API:", response.data);
         alert("Cliente cadastrado com sucesso!");
         limparFormulario();
@@ -151,14 +152,14 @@ export default {
     const limparFormulario = () => {
       cliente.value = {
         nome: "",
-        cnpj: "",
-        localidade: "",
-        responsavel: "",
-        email: "",
-        telefone: "",
-        dataInicio: "",
-        duracao: "",
-        tempoContrato: "",
+      cnpj: "",
+      localidade: "",
+      nomeResponsavel: "",
+      emailResponsavel: "",
+      telefoneResponsavel: "",
+      dataInicioContrato: "",
+      duracaoContrato: "",
+      duracaoContrato: "",
       };
     };
 

@@ -51,4 +51,14 @@ public class ClienteServiceImpl implements ClienteService {
     public Long contarClientes() {
         return clienteRepository.contarClientes();
     }
+
+    @Override
+    public void deletarCliente(Long id) {
+        Optional<Cliente> cliente = clienteRepository.findById(id);
+        if(cliente.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
+        clienteRepository.deletarCliente(id);
+        
+
+    }
 }

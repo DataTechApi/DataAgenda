@@ -1,12 +1,11 @@
 <template>
   <div class="card">
-    <h2>Visualização de Clientes</h2>
-    <DataTable :value="clientes" responsiveLayout="scroll" class="p-datatable-custom">
+    <h2>Visualização de Técnicos</h2>
+    <DataTable :value="tecnicos" responsiveLayout="scroll" class="p-datatable-custom">
       <Column field="nome" header="Nome" sortable></Column>
-      <Column field="cnpj" header="CNPJ" sortable></Column>
-      <Column field="localidade" header="Localidade"></Column>
-      <Column field="responsavel" header="Responsável"></Column>
+      <Column field="email" header="Email" sortable></Column>
       <Column field="telefone" header="Telefone"></Column>
+      <Column field="nivel" header="Nível"></Column>
       
       
       <!-- Ações -->
@@ -39,38 +38,38 @@ export default {
     Button,
   },
   setup() {
-    const clientes = ref([]);
+    const tecnicos = ref([]);
 
     const URL = import.meta.env.VITE_API_URL;
 
-    const carregarClientes = async () => {
+    const carregarTecnicos = async () => {
       try {
-        const response = await axios.get(`${URL}/clientes/buscartodos`);
-        clientes.value = response.data;
+        const response = await axios.get(`${URL}/tecnico/buscartodos`);
+        tecnicos.value = response.data;
       } catch (error) {
-        console.error("Erro ao buscar clientes:", error);
+        console.error("Erro ao buscar tecnicos:", error);
       }
     };
 
-    const editarCliente = (cliente) => {
-      alert(`Editar cliente: ${cliente.nome}`);
+    const editarTecnico = (tecnico) => {
+      alert(`Editar técnico: ${tecnico.nome}`);
     };
 
-    const excluirCliente = async (cliente) => {
+    const excluirTecnico = async (tecnico) => {
       try {
-        await axios.delete(`${URL}/clientes/${cliente.id}`);
-        clientes.value = clientes.value.filter(c => c.id !== cliente.id);
-        alert(`Cliente ${cliente.nome} excluído!`);
+        await axios.delete(`${URL}/tecnico/${tecnico.id}`);
+        tecnicos.value = tecnicos.value.filter(t => t.id !== tecnico.id);
+        alert(`Técnico ${tecnico.nome} excluído!`);
       } catch (error) {
-        console.error("Erro ao excluir cliente:", error);
+        console.error("Erro ao excluir técnico:", error);
       }
     };
 
     onMounted(() => {
-      carregarClientes();
+      carregarTecnicos  ();
     });
 
-    return { clientes, editarCliente, excluirCliente };
+    return { tecnicos, editarTecnico, excluirTecnico };
   },
 };
 </script>

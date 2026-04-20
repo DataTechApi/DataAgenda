@@ -45,13 +45,10 @@ export default {
 
     const carregarTotalClientes = async () => {
       try {
-        // Se você tiver um endpoint dedicado, por exemplo /clientes/count:
+       
         const response = await axios.get(`${URL}/clientes/contarclientes`);
         totalClientes.value = response.data;
 
-        // Caso não exista esse endpoint, você pode buscar todos e contar:
-        // const response = await axios.get("http://localhost:8080/clientes");
-        // totalClientes.value = response.data.length;
       } catch (error) {
         console.error("Erro ao buscar total de clientes:", error);
       }

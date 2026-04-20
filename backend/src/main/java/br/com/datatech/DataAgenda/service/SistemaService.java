@@ -13,4 +13,5 @@ public interface SistemaService {
     Optional<Sistema> buscarPorId(Long id);
 
     List<Sistema> listarTodos();
+
 }

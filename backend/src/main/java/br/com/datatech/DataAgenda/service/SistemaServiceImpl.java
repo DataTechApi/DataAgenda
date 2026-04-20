@@ -2,7 +2,7 @@ package br.com.datatech.DataAgenda.service;
 
 import br.com.datatech.DataAgenda.entity.Sistema;
 import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
-import br.com.datatech.DataAgenda.repository.SistemaReepository;
+import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,11 +14,11 @@ import java.util.Optional;
 @Service
 public class SistemaServiceImpl implements SistemaService {
 
-    private final SistemaReepository sistemaReepository;
+    private final SistemaRepository sistemaRepository;
     private final ModelMapper model;
 
-    public SistemaServiceImpl(SistemaReepository sistemaReepository, ModelMapper model) {
-        this.sistemaReepository = sistemaReepository;
+    public SistemaServiceImpl(SistemaRepository sistemaRepository, ModelMapper model) {
+        this.sistemaRepository = sistemaRepository;
         this.model = model;
     }
 
@@ -30,12 +30,12 @@ public class SistemaServiceImpl implements SistemaService {
                     "Dados inválidos!!!");
         }
         Sistema sistema= model.map(request,Sistema.class);
-        sistemaReepository.save(sistema);
+        sistemaRepository.save(sistema);
     }
 
     @Override
     public Optional<Sistema> buscarPorId(Long id) {
-        Optional<Sistema> sistema = sistemaReepository.findById(id);
+        Optional<Sistema> sistema = sistemaRepository.findById(id);
         if(sistema.isPresent()){
             return sistema;
         }
@@ -44,6 +44,6 @@ public class SistemaServiceImpl implements SistemaService {
 
     @Override
     public List<Sistema> listarTodos() {
-        return sistemaReepository.findAll();
+        return sistemaRepository.findAll();
     }
 }

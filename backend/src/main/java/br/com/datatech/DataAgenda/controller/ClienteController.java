@@ -27,7 +27,7 @@ public class ClienteController {
 
     @PostMapping
     @Operation(summary = "Cadastrar um novo cliente", description = "Endpoint para cadastrar um novo cliente no DataAgenda")
-    public ResponseEntity cadastrarCliente(@RequestBody ClienteDTORequest cliente){
+    public ResponseEntity<String> cadastrarCliente(@RequestBody ClienteDTORequest cliente){
         clienteService.cadastrarCliente(cliente);
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente cadastrado com sucesso!!!");
 
@@ -49,4 +49,10 @@ public class ClienteController {
         Long quantidade = clienteService.contarClientes();
         return ResponseEntity.ok(quantidade);
     }
+    @PutMapping("/{id}")
+    @Operation(summary = "Deletar cliente", description = "Endpoint para deletar um cliente pelo seu ID no DataAgenda")
+    public ResponseEntity<String> deletarCliente(@PathVariable Long id) {
+        clienteService.deletarCliente(id); 
+        return ResponseEntity.ok("Cliente deletado com sucesso!!!");
+    } 
 }

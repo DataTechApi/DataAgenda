@@ -10,12 +10,13 @@ const SistemaDashboardView = () => import('../views/sistema/SistemaDashboardView
 const TecnicoDashboardView = () => import('../views/tecnico/TecnicoDashboardView.vue')
 
 // Forms and Visualizations
-import CadastroClientesView from '../views/cliente/CadastroClientesView.vue'
-import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
-import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
-import CadastroManutencoesView from '../views/manutencao/CadastroManutencoesView.vue'
 import VisualizarClienteView from '@/views/cliente/VisualizarClienteView.vue'
-import VisualizarSistemaView from '@/views/sistema/VisualizarSistemaView.vue' 
+import VisualizarSistemaView from '@/views/sistema/VisualizarSistemaView.vue'
+import CadastroClientesView from '../views/cliente/CadastroClientesView.vue'
+import CadastroManutencoesView from '../views/manutencao/CadastroManutencoesView.vue'
+import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
+import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
+import VisualizarTecnicoView from '../views/tecnico/VisualizarTecnicoView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -82,6 +83,11 @@ const router = createRouter({
           path: 'tecnico/cadastrar',
           name: 'tecnico-cadastrar',
           component: CadastroTecnicosView,
+        },
+        {
+          path: 'tecnico/visualizar',
+          name: 'tecnico-visualizar',
+          component: VisualizarTecnicoView,
         },
       ]
     },

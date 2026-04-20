@@ -129,6 +129,12 @@
                 <i class="pi pi-plus"></i>
                 <span>Cadastrar</span>
               </RouterLink>
+            </li>t
+            <li>
+              <RouterLink to="/tecnico/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
             </li>
           </ul>
         </li>
