@@ -42,4 +42,8 @@ public class TecnicoServiceImpl implements TecnicoService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Técnico não encontrado!");
     }
+    @Override
+    public Long contarTecnicosAtivos() {
+        return tecnicoRepository.contarTecnicosAtivos();
+    }
 }

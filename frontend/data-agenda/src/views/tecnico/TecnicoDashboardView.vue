@@ -7,7 +7,7 @@
         <i class="pi pi-briefcase"></i>
         <div class="stat-info">
           <span class="stat-label">Técnicos Ativos</span>
-          <span class="stat-value">12</span>
+          <span class="stat-value">{{ totalTecnicosAtivos }}</span>
         </div>
       </div>
       <div class="stat-card accent">
@@ -32,6 +32,35 @@
     </div>
   </div>
 </template>
+<script>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+export default {
+  name: "DashboardTecnicos",
+  setup() {
+    const totalTecnicosAtivos= ref(0);
+    const URL=  import.meta.env.VITE_API_URL;
+
+    const carregarTotalTecnicos = async () => {
+      try {
+       
+        const response = await axios.get(`${URL}/tecnico/contartecnicosativos`);
+        totalTecnicosAtivos.value = response.data;
+
+      } catch (error) {
+        console.error("Erro ao buscar total de técnicos ativos:", error);
+      }
+    };
+
+    onMounted(() => {
+     carregarTotalTecnicos();
+    });
+
+    return { totalTecnicosAtivos };
+  },
+};
+</script>
 
 <style scoped>
 .dashboard-container {

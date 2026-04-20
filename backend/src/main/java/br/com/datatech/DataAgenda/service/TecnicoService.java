@@ -13,4 +13,6 @@ public interface TecnicoService {
     List<Tecnico> listarTodos();
 
     Optional<Tecnico> buscarPorId(Long id);
+
+    Long contarTecnicosAtivos();
 }

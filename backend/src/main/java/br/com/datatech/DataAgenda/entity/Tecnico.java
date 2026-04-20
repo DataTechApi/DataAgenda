@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
+@Data   
 @AllArgsConstructor
 @NoArgsConstructor
 public class Tecnico {

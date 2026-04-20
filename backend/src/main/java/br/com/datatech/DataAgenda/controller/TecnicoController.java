@@ -53,5 +53,11 @@ public class TecnicoController{
         return ResponseEntity.ok(tecnicoOpt.get());
         
     }
+    @GetMapping("/contartecnicosativos")
+    @Operation(summary = "Contar técnicos ativos", description = "Endpoint para contar o número total de técnicos ativos cadastrados no DataAgenda")
+    public ResponseEntity<Long> contarTecnicosAtivos() {
+        Long quantidade = tecnicoService.contarTecnicosAtivos();
+        return ResponseEntity.ok(quantidade);
+    }
 }
 
