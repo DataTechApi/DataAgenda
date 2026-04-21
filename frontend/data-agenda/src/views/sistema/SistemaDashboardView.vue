@@ -7,7 +7,7 @@
         <i class="pi pi-desktop"></i>
         <div class="stat-info">
           <span class="stat-label">Sistemas Ativos</span>
-          <span class="stat-value">42</span>
+          <span class="stat-value">{{ totalSistemas }}</span>
         </div>
       </div>
       <div class="stat-card accent">
@@ -32,6 +32,35 @@
     </div>
   </div>
 </template>
+
+<script>
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+export default {
+  name: "DashboardSistemas",
+  setup() {
+    const totalSistemas = ref(0);
+    const URL=import.meta.env.VITE_API_URL;
+
+    const carregarTotalSistemas = async () => {
+      try {
+       
+        const response = await axios.get(`${URL}/sistema/contarsistemas`);
+        totalSistemas.value = response.data;
+      } catch (error) {
+        console.error("Erro ao buscar total de sistemas:", error);
+      }
+    };
+
+    onMounted(() => {
+     carregarTotalSistemas();
+    });
+
+    return { totalSistemas };
+  },
+};
+</script>
 
 <style scoped>
 .dashboard-container {

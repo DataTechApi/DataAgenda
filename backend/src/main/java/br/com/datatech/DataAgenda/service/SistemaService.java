@@ -15,4 +15,6 @@ public interface SistemaService {
 
     List<SistemaDTOResponse> listarTodos();
 
+    Long contarSistemas();
+
 }

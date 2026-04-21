@@ -51,4 +51,8 @@ public class SistemaServiceImpl implements SistemaService {
                 .toList();
         return sistemaDTOResponses;
     }
+    @Override
+    public Long contarSistemas() {
+        return sistemaRepository.contarSistemas();
+    }
 }

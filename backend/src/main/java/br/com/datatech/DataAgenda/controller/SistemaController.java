@@ -44,4 +44,10 @@ public class SistemaController {
     public ResponseEntity<List<SistemaDTOResponse>> listarTodos() {
         return ResponseEntity.ok(sistemaService.listarTodos());
     }
+    @GetMapping("/contarsistemas")
+    @Operation(summary = "Contar sistemas", description = "Endpoint para contar o número total de sistemas cadastrados no DataAgenda")
+    public ResponseEntity<Long> contarSistemas() {
+        Long quantidade = sistemaService.contarSistemas();
+        return ResponseEntity.ok(quantidade);
+    }
 }
