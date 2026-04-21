@@ -4,8 +4,8 @@
     <DataTable :value="sistemas" responsiveLayout="scroll" class="tabela-sistemas">
       <Column field="nome" header="Nome" />
       <Column field="tipoSistema" header="Tipo de Sistema" />
-      <Column field="status" header="Status" />
-      <Column field="dataCadastro" header="Data de Cadastro" />
+      <Column field="cliente.nome" header="Cliente" />
+      <Column field="dataCadastro" header="Data de Cadastro" :body="formatarData" />
 
       <!-- Coluna de Ações usando template -->
       <Column header="Ações">
@@ -29,10 +29,12 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import axios from "axios";
+import { ref, onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+
 
 export default {
   name: "ListaSistemas",
@@ -42,31 +44,42 @@ export default {
     Button,
   },
   setup() {
-    const sistemas = ref([
-      {
-        nome: "Sistema de Controle",
-        numeroSerie: "ABC123456",
-        status: "Ativo",
-        dataCadastro: "14/04/2026",
-      },
-      {
-        nome: "Sistema de Monitoramento",
-        numeroSerie: "XYZ987654",
-        status: "Inativo",
-        dataCadastro: "10/04/2026",
-      },
-    ]);
+  const URL = import.meta.env.VITE_API_URL;
+  const sistemas = ref([]);
 
-    const editarSistema = (sistema) => {
-      alert(`Editar sistema: ${sistema.nome}`);
-    };
+  const carregarSistemas = async () => {
+    try {
+      const response = await axios.get(`${URL}/sistema/buscartodos`);
+      sistemas.value = response.data;
+    } catch (error) {
+      console.error("Erro ao buscar sistemas:", error);
+    }
+  };
 
-    const excluirSistema = (sistema) => {
-      alert(`Excluir sistema: ${sistema.nome}`);
-    };
+  const editarSistema = (sistema) => {
+    alert(`Editar sistema: ${sistema.nome}`);
+  };
 
-    return { sistemas, editarSistema, excluirSistema };
-  },
+  const excluirSistema = (sistema) => {
+    alert(`Excluir sistema: ${sistema.nome}`);
+  };
+
+  const formatarData = (rowData) => {
+    if (!rowData.dataCadastro) return "";
+    const data = new Date(rowData.dataCadastro);
+    const dia = String(data.getDate()).padStart(2, "0");
+    const mes = String(data.getMonth() + 1).padStart(2, "0");
+    const ano = data.getFullYear();
+    return `${dia}${mes}${ano}`;
+  };
+
+  onMounted(() => {
+    carregarSistemas();
+  });
+
+  return { sistemas, editarSistema, excluirSistema, carregarSistemas, formatarData };
+}
+
 };
 </script>
 

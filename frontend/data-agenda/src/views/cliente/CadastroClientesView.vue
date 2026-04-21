@@ -26,11 +26,11 @@
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="responsavel">Responsável</label>
-            <InputText id="responsavel" v-model="cliente.responsavel" placeholder="Nome do Responsável" />
+            <InputText id="responsavel" v-model="cliente.nomeResponsavel" placeholder="Nome do Responsável" />
           </div>
           <div class="p-field horizontal-field">
             <label for="email">E-mail</label>
-            <InputText id="email" v-model="cliente.email" type="email" placeholder="email@empresa.com" />
+            <InputText id="email" v-model="cliente.emailResponsavel" type="email" placeholder="email@empresa.com" />
           </div>
         </div>
 
@@ -38,11 +38,11 @@
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="telefone">Telefone</label>
-            <InputMask id="telefone" v-model="cliente.telefone" mask="(99) 99999-9999" placeholder="(xx) xxxxx-xxxx" />
+            <InputMask id="telefone" v-model="cliente.telefoneResponsavel" mask="(99) 99999-9999" placeholder="(xx) xxxxx-xxxx" />
           </div>
           <div class="p-field horizontal-field">
             <label for="dataInicio">Início do Contrato</label>
-            <InputText id="dataInicio" v-model="cliente.dataInicio" type="date" />
+            <InputText id="dataInicio" v-model="cliente.dataInicioContrato" type="date" />
           </div>
         </div>
 
@@ -50,7 +50,7 @@
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="duracao">Duração (meses)</label>
-            <InputText id="duracao" v-model="cliente.duracao" type="number" min="1" placeholder="Ex: 12" />
+            <InputText id="duracao" v-model="cliente.duracaoContrato" type="number" min="1" placeholder="Ex: 12" />
           </div>
         </div>
 

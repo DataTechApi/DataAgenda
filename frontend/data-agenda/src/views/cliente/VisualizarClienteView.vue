@@ -5,8 +5,8 @@
       <Column field="nome" header="Nome" sortable></Column>
       <Column field="cnpj" header="CNPJ" sortable></Column>
       <Column field="localidade" header="Localidade"></Column>
-      <Column field="responsavel" header="Responsável"></Column>
-      <Column field="telefone" header="Telefone"></Column>
+      <Column field="nomeResponsavel" header="Responsável"></Column>
+      <Column field="telefoneResponsavel" header="Telefone"></Column>
       
       
       <!-- Ações -->
