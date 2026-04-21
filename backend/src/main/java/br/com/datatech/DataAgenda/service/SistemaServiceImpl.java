@@ -24,11 +24,7 @@ public class SistemaServiceImpl implements SistemaService {
 
     @Override
     public void cadastrarSistema(SistemaDTORequest request) {
-        if(request.getNumeroSerie().isBlank()||
-            request.getNumeroSerie().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Dados inválidos!!!");
-        }
+        
         Sistema sistema= model.map(request,Sistema.class);
         sistemaRepository.save(sistema);
     }

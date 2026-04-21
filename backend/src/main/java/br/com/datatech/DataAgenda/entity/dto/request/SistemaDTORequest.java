@@ -8,5 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SistemaDTORequest {
-    private String numeroSerie;
+
+    
+    private String tipoSistema;
 }
