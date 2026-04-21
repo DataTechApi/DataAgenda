@@ -1,7 +1,9 @@
 package br.com.datatech.DataAgenda.service;
 
+import br.com.datatech.DataAgenda.entity.Cliente;
 import br.com.datatech.DataAgenda.entity.Sistema;
 import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.response.SistemaDTOResponse;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -16,16 +18,19 @@ public class SistemaServiceImpl implements SistemaService {
 
     private final SistemaRepository sistemaRepository;
     private final ModelMapper model;
+    private final ClienteService clienteService;
 
-    public SistemaServiceImpl(SistemaRepository sistemaRepository, ModelMapper model) {
+    public SistemaServiceImpl(SistemaRepository sistemaRepository, ModelMapper model, ClienteService clienteService) {
         this.sistemaRepository = sistemaRepository;
         this.model = model;
+        this.clienteService = clienteService;
     }
 
     @Override
     public void cadastrarSistema(SistemaDTORequest request) {
-        
+        Optional<Cliente> cliente = clienteService.buscarPorId(request.getClienteId());
         Sistema sistema= model.map(request,Sistema.class);
+        sistema.setCliente(cliente.get());
         sistemaRepository.save(sistema);
     }
 
@@ -39,7 +44,11 @@ public class SistemaServiceImpl implements SistemaService {
     }
 
     @Override
-    public List<Sistema> listarTodos() {
-        return sistemaRepository.findAll();
+    public List<SistemaDTOResponse> listarTodos() {
+        List<Sistema> sistemas = sistemaRepository.findAll();
+        List<SistemaDTOResponse> sistemaDTOResponses = sistemas.stream()
+                .map(sistema -> model.map(sistema, SistemaDTOResponse.class))
+                .toList();
+        return sistemaDTOResponses;
     }
 }

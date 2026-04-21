@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SistemaDTORequest {
 
-    
+    private Long clienteId;
     private String tipoSistema;
 }

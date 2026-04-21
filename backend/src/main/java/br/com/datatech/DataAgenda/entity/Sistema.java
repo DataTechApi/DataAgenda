@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Random;
 
 
 
 @Entity
+@Setter
+@Getter
 public class Sistema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,19 +21,14 @@ public class Sistema {
 
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     private TipoSistema tipoSistema ;
-
-    public TipoSistema getTipoSistema() {
-        return tipoSistema;
-    }
-
-    public void setTipoSistema(TipoSistema tipoSistema) {
-        this.tipoSistema = tipoSistema;
-    }
 
     private LocalDate dataProximaManutencao;
 
-    private LocalDate dataUltimaManutencao;
+    private Boolean isDisponivel = true;
+
+    private LocalDate dataCadastro = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
@@ -43,79 +42,14 @@ public class Sistema {
     @PrePersist
     public void gerarNome() {
         if (this.tipoSistema != null) {
-            int numeroAleatorio = new Random().nextInt(9000);
             if (this.tipoSistema.equals(TipoSistema.BALAO)) {
-                this.nome = "BALAO - " + numeroAleatorio;
+                int numeroBalao = new Random().nextInt(5000) + 1000; // Gera um número entre 100 e 999
+                this.nome = "BAL-" + numeroBalao;
             } else if (this.tipoSistema.equals(TipoSistema.CAMERAS)) {
-                this.nome = "CAMERAS - " + numeroAleatorio;
+                int numeroCameras = new Random().nextInt(10000) + 5000;
+                this.nome = "CAM-" + numeroCameras;
             }
         }
     }
-
-
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public String getNome() {
-        return nome;
-    }
-
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-
-    public LocalDate getDataProximaManutencao() {
-        return dataProximaManutencao;
-    }
-
-
-    public void setDataProximaManutencao(LocalDate dataProximaManutencao) {
-        this.dataProximaManutencao = dataProximaManutencao;
-    }
-
-
-    public LocalDate getDataUltimaManutencao() {
-        return dataUltimaManutencao;
-    }
-
-
-    public void setDataUltimaManutencao(LocalDate dataUltimaManutencao) {
-        this.dataUltimaManutencao = dataUltimaManutencao;
-    }
-
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-
-    public List<Manutencao> getManutencoes() {
-        return manutencoes;
-    }
-
-
-    public void setManutencoes(List<Manutencao> manutencoes) {
-        this.manutencoes = manutencoes;
-    }
-
-
-
-    
-
 
 }

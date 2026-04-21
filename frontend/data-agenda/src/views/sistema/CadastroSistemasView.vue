@@ -4,16 +4,37 @@
     <form @submit.prevent="salvarSistema">
       <div class="p-fluid p-formgrid p-grid">
 
-        <!-- Nome -->
+        <!-- Tipo de Sistema -->
         <div class="p-field p-col-12 p-md-6 horizontal-field">
-          <label for="nome">Nome</label>
-          <InputText id="nome" v-model="sistema.nome" required />
+          <label for="tipoSistema">Tipo de Sistema</label>
+          <Dropdown 
+            id="tipoSistema" 
+            v-model="sistema.tipoSistema" 
+            :options="tipoSistema" 
+            optionLabel="label" 
+            optionValue="value" 
+            placeholder="Selecione o tipo" 
+            required 
+          />
         </div>
 
-        <!-- Número de Série -->
+        <!-- Cliente -->
         <div class="p-field p-col-12 p-md-6 horizontal-field">
-          <label for="numeroSerie">Número de Série</label>
-          <InputText id="numeroSerie" v-model="sistema.numeroSerie" required />
+          <label for="cliente">Cliente</label>
+          <Dropdown 
+            id="cliente" 
+            v-model="sistema.clienteId" 
+            :options="clientes" 
+            optionLabel="nome" 
+            optionValue="id" 
+            placeholder="Selecione o cliente" 
+            required 
+          />
+        </div>
+
+        <!-- Mensagem de erro -->
+        <div v-if="erro" class="mensagem-erro">
+          {{ erro }}
         </div>
 
         <!-- Botões -->
@@ -26,65 +47,117 @@
   </div>
 </template>
 
+
 <script>
-import { ref } from "vue";
-import InputText from "primevue/inputtext";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export default {
   name: "CadastroSistema",
   components: {
-    InputText,
+    Dropdown,
     Button,
   },
   setup() {
+    const loading = ref(false);
+    const erro = ref("");
+    const URL = import.meta.env.VITE_API_URL;
+
     const sistema = ref({
-      nome: "",
-      numeroSerie: "",
+      tipoSistema: "",
+      clienteId: "",
     });
 
-    const salvarSistema = () => {
-      console.log("Sistema cadastrado:", sistema.value);
-      alert("Sistema cadastrado com sucesso!");
-      limparFormulario();
+    const tipoSistema = [
+      { label: "Câmeras", value: "CAMERAS" },
+      { label: "Balão", value: "BALAO" },
+    ];
+
+    const clientes = ref([]);
+
+    const carregarClientes = async () => {
+      try {
+        const response = await api.get(`${URL}/clientes/buscartodos`);
+        clientes.value = response.data; 
+      } catch (error) {
+        console.error("Erro ao carregar clientes:", error);
+        erro.value = "Não foi possível carregar a lista de clientes.";
+      }
     };
 
     const limparFormulario = () => {
-      sistema.value = { nome: "", numeroSerie: "" };
+      sistema.value = { tipoSistema: "", clienteId: "" };
     };
 
-    return { sistema, salvarSistema, limparFormulario };
+    const salvarSistema = async () => {
+      loading.value = true;
+      erro.value = "";
+      try {
+        const response = await api.post(`${URL}/sistema`, sistema.value);
+        console.log("Resposta da API:", response.data);
+        limparFormulario();
+        alert("Sistema cadastrado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao cadastrar sistema:", error);
+
+        if (error.response) {
+          erro.value = `Erro ${error.response.status}: ${error.response.data?.message || "Falha ao cadastrar sistema."}`;
+        } else if (error.request) {
+          erro.value = "Servidor não respondeu. Verifique se o backend está rodando.";
+        } else {
+          erro.value = "Erro inesperado. Tente novamente.";
+        }
+      } finally {
+        loading.value = false;
+      }
+    };
+
+    onMounted(() => {
+      carregarClientes();
+    });
+
+    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, loading, erro };
   },
 };
 </script>
+
 
 <style scoped>
 .card {
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f; /* fundo escuro */
+  background: #0f0f0f;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   border-radius: 12px;
-  color: #f5f5f5; /* texto claro para contraste */
+  color: #f5f5f5;
 }
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50; /* destaque no título */
+  color: #2c3e50;
 }
 .horizontal-field {
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-bottom: 1.5rem; /* espaço entre linhas */
+  margin-bottom: 1.5rem;
 }
 .horizontal-field label {
   width: 140px;
   font-weight: 600;
   color: #f5f5f5;
 }
-.horizontal-field input {
+.horizontal-field input, .horizontal-field .p-dropdown {
   flex: 1;
 }
 .botoes {
@@ -92,5 +165,15 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
+}
+.mensagem-erro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 </style>

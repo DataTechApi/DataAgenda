@@ -3,7 +3,7 @@
     <h2>Lista de Sistemas</h2>
     <DataTable :value="sistemas" responsiveLayout="scroll" class="tabela-sistemas">
       <Column field="nome" header="Nome" />
-      <Column field="numeroSerie" header="Número de Série" />
+      <Column field="tipoSistema" header="Tipo de Sistema" />
       <Column field="status" header="Status" />
       <Column field="dataCadastro" header="Data de Cadastro" />
 

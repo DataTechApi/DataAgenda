@@ -4,6 +4,7 @@ package br.com.datatech.DataAgenda.service;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -33,9 +34,15 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public List<Cliente> listarTodos() {
-        return clienteRepository.findAll();
+    public List<ClienteDTOResponse> listarTodos() {
+        List<Cliente> clientes = clienteRepository.findAll();
+        List<ClienteDTOResponse> clienteDTOResponses = clientes.stream()
+                .map(cliente -> model.map(cliente, ClienteDTOResponse.class))
+                .toList();
+        return clienteDTOResponses;
     }
+
+
 
     @Override
     public Optional<Cliente> buscarPorId(Long id) {

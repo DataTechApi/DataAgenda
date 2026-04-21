@@ -3,6 +3,7 @@ package br.com.datatech.DataAgenda.controller;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,7 +40,7 @@ public class ClienteController {
     }
     @GetMapping("/buscartodos")
     @Operation(summary = "Listar todos os clientes", description = "Endpoint para listar todos os clientes cadastrados no DataAgenda")
-    public ResponseEntity<List<Cliente>> listarTodos() {
+    public ResponseEntity<List<ClienteDTOResponse>> listarTodos() {
         return ResponseEntity.ok(clienteService.listarTodos());
     }
 
