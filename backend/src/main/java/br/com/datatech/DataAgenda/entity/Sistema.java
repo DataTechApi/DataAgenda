@@ -34,6 +34,7 @@ public class Sistema {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "sistema")
     private List<Manutencao> manutencoes;
 

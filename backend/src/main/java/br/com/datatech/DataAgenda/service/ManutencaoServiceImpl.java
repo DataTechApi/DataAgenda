@@ -45,8 +45,20 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
-    public List<Manutencao> listarTodas() {
-        return manutencaoRepository.findAll();
+    public List<br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse> listarTodas() {
+        return manutencaoRepository.findAll().stream()
+                .map(m -> br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse.builder()
+                        .id(m.getId())
+                        .descricao(m.getDescricao())
+                        .dataAgendada(m.getDataAgendada())
+                        .dataRealizada(m.getDataRealizada())
+                        .tipoManutencao(m.getTipoManutencao())
+                        .statusManutencao(m.getStatusManutencao())
+                        .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
+                        .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
+                        .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
     }
 
     @Override

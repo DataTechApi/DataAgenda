@@ -10,9 +10,11 @@
   --bg-sidebar: #041628;
   --bg-header: #081a2e;
   --bg-input: #ffffff;
+  --bg-table: #ffffff;
 
   /* Textos */
   --text-main: #ffffff;
+  --text-table: #333333;
   --text-muted: #94a3b8;
   --text-label: #888888;
   --text-input: #333333;
@@ -34,7 +36,9 @@
   --bg-card: #ffffff;
   --bg-sidebar: #f1f5f9;
   --bg-header: #e2e8f0;
+  --bg-table: #ffffff;
   --text-main: #1e293b;
+  --text-table: #1e293b;
   --text-muted: #64748b;
   --border-color: #cbd5e1;
   --bg-input: #f1f5f9;

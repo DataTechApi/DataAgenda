@@ -30,7 +30,7 @@ public class ManutencaoController {
 
     @GetMapping
     @Operation(summary = "Listar todas as manutenções")
-    public ResponseEntity<List<Manutencao>> listarTodas() {
+    public ResponseEntity<List<br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse>> listarTodas() {
         return ResponseEntity.ok(manutencaoService.listarTodas());
     }
 }

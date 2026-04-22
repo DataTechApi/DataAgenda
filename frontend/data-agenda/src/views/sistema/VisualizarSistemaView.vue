@@ -1,13 +1,12 @@
 <template>
   <div class="card">
-    <h2>Lista de Sistemas</h2>
-    <DataTable :value="sistemas" responsiveLayout="scroll" class="tabela-sistemas">
-      <Column field="nome" header="Nome" />
-      <Column field="tipoSistema" header="Tipo de Sistema" />
-      <Column field="cliente.nome" header="Cliente" />
-      <Column field="dataCadastro" header="Data de Cadastro" :body="formatarData" />
+    <h2 class="page-title">Lista de Sistemas</h2>
+    <DataTable :value="sistemas" responsiveLayout="scroll" class="p-datatable-custom" paginator :rows="10">
+      <Column field="nome" header="Nome" sortable />
+      <Column field="tipoSistema" header="Tipo de Sistema" sortable />
+      <Column field="cliente.nome" header="Cliente" sortable />
+      <Column field="dataCadastro" header="Data de Cadastro" :body="formatarData" sortable />
 
-      <!-- Coluna de Ações usando template -->
       <Column header="Ações">
         <template #body="slotProps">
           <div class="acoes">
@@ -28,90 +27,104 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 
+const URL = import.meta.env.VITE_API_URL;
+const sistemas = ref([]);
 
-export default {
-  name: "ListaSistemas",
-  components: {
-    DataTable,
-    Column,
-    Button,
-  },
-  setup() {
-  const URL = import.meta.env.VITE_API_URL;
-  const sistemas = ref([]);
-
-  const carregarSistemas = async () => {
-    try {
-      const response = await axios.get(`${URL}/sistema/buscartodos`);
-      sistemas.value = response.data;
-    } catch (error) {
-      console.error("Erro ao buscar sistemas:", error);
-    }
-  };
-
-  const editarSistema = (sistema) => {
-    alert(`Editar sistema: ${sistema.nome}`);
-  };
-
-  const excluirSistema = (sistema) => {
-    alert(`Excluir sistema: ${sistema.nome}`);
-  };
-
-  const formatarData = (rowData) => {
-    if (!rowData.dataCadastro) return "";
-    const data = new Date(rowData.dataCadastro);
-    const dia = String(data.getDate()).padStart(2, "0");
-    const mes = String(data.getMonth() + 1).padStart(2, "0");
-    const ano = data.getFullYear();
-    return `${dia}${mes}${ano}`;
-  };
-
-  onMounted(() => {
-    carregarSistemas();
-  });
-
-  return { sistemas, editarSistema, excluirSistema, carregarSistemas, formatarData };
-}
-
+const carregarSistemas = async () => {
+  try {
+    const response = await axios.get(`${URL}/sistema/buscartodos`);
+    sistemas.value = response.data;
+  } catch (error) {
+    console.error("Erro ao buscar sistemas:", error);
+  }
 };
+
+const editarSistema = (sistema) => {
+  alert(`Editar sistema: ${sistema.nome}`);
+};
+
+const excluirSistema = (sistema) => {
+  if (confirm(`Deseja excluir o sistema ${sistema.nome}?`)) {
+    // Implementar exclusão real se necessário
+    alert("Implementar exclusão");
+  }
+};
+
+const formatarData = (rowData) => {
+    const value = rowData.dataCadastro;
+    if (!value) return "N/A";
+    
+    if (Array.isArray(value)) {
+        return `${String(value[2]).padStart(2, '0')}/${String(value[1]).padStart(2, '0')}/${value[0]}`;
+    }
+    
+    if (typeof value === 'string' && value.includes('-')) {
+        const [year, month, day] = value.split('-');
+        return `${day}/${month}/${year}`;
+    }
+    
+    return value;
+};
+
+onMounted(carregarSistemas);
 </script>
 
 <style scoped>
 .card {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  background: var(--bg-card);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-radius: 12px;
-  color: #f5f5f5;
 }
-h2 {
+
+.page-title {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: #4a6fa5;
+  font-weight: bold;
 }
-.tabela-sistemas {
-  background: #1c1c1c;
-  border-radius: 8px;
+
+:deep(.p-datatable-custom) {
+  background: var(--bg-table) !important;
+  border-radius: 12px;
   overflow: hidden;
 }
-:deep(.p-datatable-thead > tr > th) {
-  background: #2c2c2c;
-  color: #00ffcc;
-  font-weight: 600;
+
+:deep(.p-datatable-custom .p-datatable-thead > tr > th) {
+  background: #2c3e50 !important;
+  color: #ffffff !important;
+  font-weight: bold;
+  text-align: center;
+  padding: 1rem;
 }
-:deep(.p-datatable-tbody > tr > td) {
-  background: #1c1c1c;
-  color: #f5f5f5;
+
+:deep(.p-datatable-custom .p-datatable-tbody > tr > td) {
+  background: #ffffff !important;
+  color: #333333 !important;
+  text-align: center;
+  padding: 1rem;
+  border-bottom: 1px solid #eeeeee;
 }
+
+:deep(.p-datatable-custom .p-datatable-tbody > tr:hover > td) {
+  background: #f8f9fa !important;
+}
+
+:deep(.p-paginator) {
+    background: #ffffff !important;
+    border: none !important;
+    padding: 1rem;
+}
+
 .acoes {
   display: flex;
   gap: 0.5rem;
