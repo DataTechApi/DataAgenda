@@ -74,6 +74,12 @@
                 <span>Agendar</span>
               </RouterLink>
             </li>
+            <li>
+              <RouterLink to="/manutencao/visualizar" class="router-link">
+                <i class="pi pi-eye"></i>
+                <span>Visualizar</span>
+              </RouterLink>
+            </li>
           </ul>
         </li>
 
@@ -174,15 +180,15 @@ function toggleMenu(menu) {
 
 .header {
   grid-area: header;
-  background: #081a2e;
-  color: #ffffff;
+  background: var(--bg-header);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   padding: 0 30px;
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 2px;
-  border-bottom: 1px solid #1c2b3a;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -192,8 +198,8 @@ function toggleMenu(menu) {
 
 .sidebar {
   grid-area: sidebar;
-  background: #041628;
-  color: #ffffff;
+  background: var(--bg-sidebar);
+  color: var(--text-main);
   padding: 10px;
   overflow-y: auto;
 }
@@ -211,7 +217,7 @@ function toggleMenu(menu) {
 }
 
 .sidebar li:hover {
-  background: #2d3748;
+  background: var(--border-color);
 }
 
 .menu-item {
@@ -255,7 +261,7 @@ function toggleMenu(menu) {
 .content {
   grid-area: content;
   padding: 20px;
-  background: #0a0e27;
+  background: var(--bg-app);
   overflow-y: auto;
 }
 

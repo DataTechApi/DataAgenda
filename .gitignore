@@ -67,3 +67,5 @@ temp/
 .stylelintcache
 .parcel-cache
 .cache/
+/frontend/data-agenda/node_modules
+/frontend/data-agenda/node_modules

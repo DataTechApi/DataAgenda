@@ -14,6 +14,7 @@ import VisualizarClienteView from '@/views/cliente/VisualizarClienteView.vue'
 import VisualizarSistemaView from '@/views/sistema/VisualizarSistemaView.vue'
 import CadastroClientesView from '../views/cliente/CadastroClientesView.vue'
 import CadastroManutencoesView from '../views/manutencao/CadastroManutencoesView.vue'
+import VisualizarManutencoesView from '../views/manutencao/VisualizarManutencoesView.vue'
 import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
 import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
 import VisualizarTecnicoView from '../views/tecnico/VisualizarTecnicoView.vue'
@@ -56,6 +57,11 @@ const router = createRouter({
           path: 'manutencao/cadastrar',
           name: 'manutencao-cadastrar',
           component: CadastroManutencoesView,
+        },
+        {
+          path: 'manutencao/visualizar',
+          name: 'manutencao-visualizar',
+          component: VisualizarManutencoesView,
         },
         // Sistema Routes
         {

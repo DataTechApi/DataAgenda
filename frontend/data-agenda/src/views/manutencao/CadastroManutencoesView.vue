@@ -1,184 +1,367 @@
 <template>
-  <div class="card">
-    <h2>Cadastro de Manutenção</h2>
-    <form @submit.prevent="salvarManutencao">
-      <div class="p-fluid p-formgrid p-grid">
+  <div class="registration-container">
+    <div class="card registration-card">
+      <h2 class="form-title">Cadastro de Manutenção</h2>
+      <form @submit.prevent="salvarManutencao">
+        <div class="p-fluid">
 
-        <!-- Cliente (100% largura, igual aos outros) -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="cliente">Cliente</label>
-          <AutoComplete 
-            id="cliente" 
-            v-model="manutencao.cliente" 
-            :suggestions="clientes" 
-            @complete="buscarClientes" 
-            field="nome" 
-            placeholder="Digite para procurar..." 
-            class="full-width" />
-        </div>
+          <!-- Cliente -->
+          <div class="form-row">
+            <label for="cliente" class="form-label">Cliente</label>
+            <div class="form-input">
+              <AutoComplete 
+                id="cliente" 
+                v-model="selectedCliente" 
+                :suggestions="filteredClientes" 
+                @complete="buscarClientes" 
+                optionLabel="nome"
+                forceSelection
+                placeholder="Digite para procurar..." 
+                class="full-width" />
+            </div>
+          </div>
 
-        <!-- Sistemas (múltiplos) -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="sistemas">Sistemas</label>
-          <MultiSelect 
-            id="sistemas" 
-            v-model="manutencao.sistemas" 
-            :options="sistemas" 
-            optionLabel="nome" 
-            optionValue="id" 
-            display="chip"
-            placeholder="Selecione os sistemas" 
-            class="full-width" />
-        </div>
+          <!-- Sistemas -->
+          <div class="form-row">
+            <label for="sistema" class="form-label">Sistemas</label>
+            <div class="form-input">
+              <Select 
+                id="sistema" 
+                v-model="manutencao.sistemaId" 
+                :options="filteredSistemas" 
+                optionLabel="nome" 
+                optionValue="id" 
+                placeholder="Selecione o sistema" 
+                class="full-width"
+                :disabled="!selectedCliente" />
+            </div>
+          </div>
 
-        <!-- Técnicos (múltiplos) -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="tecnicos">Técnicos</label>
-          <MultiSelect 
-            id="tecnicos" 
-            v-model="manutencao.tecnicos" 
-            :options="tecnicos" 
-            optionLabel="nome" 
-            optionValue="id" 
-            display="chip"
-            placeholder="Selecione os técnicos" 
-            class="full-width" />
-        </div>
+          <!-- Técnicos -->
+          <div class="form-row">
+            <label for="tecnico" class="form-label">Técnicos</label>
+            <div class="form-input">
+              <Select 
+                id="tecnico" 
+                v-model="manutencao.tecnicoId" 
+                :options="tecnicos" 
+                optionLabel="nome" 
+                optionValue="id" 
+                placeholder="Selecione o técnico" 
+                class="full-width" />
+            </div>
+          </div>
 
-        <!-- Data -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="data">Data</label>
-          <InputText id="data" type="date" v-model="manutencao.data" required />
-        </div>
+          <!-- Data -->
+          <div class="form-row">
+            <label for="data" class="form-label">Data</label>
+            <div class="form-input">
+              <DatePicker 
+                id="data" 
+                v-model="manutencao.dataAgendada" 
+                dateFormat="dd/mm/yy"
+                placeholder="dd/mm/aaaa"
+                showIcon
+                class="full-width" />
+            </div>
+          </div>
 
-        <!-- Descrição -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="descricao">Descrição</label>
-          <Textarea id="descricao" v-model="manutencao.descricao" rows="4" autoResize />
-        </div>
+          <!-- Tipo de Manutenção -->
+          <div class="form-row">
+            <label for="tipo" class="form-label">Tipo</label>
+            <div class="form-input">
+              <Select 
+                id="tipo" 
+                v-model="manutencao.tipoManutencao" 
+                :options="tipoOptions" 
+                optionLabel="label" 
+                optionValue="value" 
+                placeholder="Selecione o tipo" 
+                class="full-width" />
+            </div>
+          </div>
 
-        <!-- Status -->
-        <div class="p-field p-col-12 horizontal-field">
-          <label for="status">Status</label>
-          <Dropdown id="status" v-model="manutencao.status" :options="statusOptions" optionLabel="label" optionValue="value" placeholder="Selecione" />
-        </div>
+          <!-- Descrição -->
+          <div class="form-row">
+            <label for="descricao" class="form-label">Descrição</label>
+            <div class="form-input">
+              <Textarea 
+                id="descricao" 
+                v-model="manutencao.descricao" 
+                rows="4" 
+                autoResize 
+                class="full-width textarea-custom" />
+            </div>
+          </div>
 
-        <!-- Botões -->
-        <div class="p-field p-col-12 botoes">
-          <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
-          <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
+          <!-- Status -->
+          <div class="form-row">
+            <label for="status" class="form-label">Status</label>
+            <div class="form-input short-dropdown">
+              <Select 
+                id="status" 
+                v-model="manutencao.statusManutencao" 
+                :options="statusOptions" 
+                optionLabel="label" 
+                optionValue="value" 
+                placeholder="Selecione" />
+            </div>
+          </div>
+
+          <!-- Botões -->
+          <div class="botoes-container">
+            <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
+            <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-import InputText from "primevue/inputtext";
+import { ref, onMounted, watch } from "vue";
+import axios from "axios";
 import Textarea from "primevue/textarea";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import AutoComplete from "primevue/autocomplete";
-import MultiSelect from "primevue/multiselect";
 import Button from "primevue/button";
+import DatePicker from "primevue/datepicker";
 
 export default {
   name: "CadastroManutencao",
-  components: { InputText, Textarea, Dropdown, AutoComplete, MultiSelect, Button },
+  components: { Textarea, Select, AutoComplete, Button, DatePicker },
   setup() {
+    const URL = import.meta.env.VITE_API_URL;
+
     const manutencao = ref({
-      cliente: null,
-      sistemas: [],
-      tecnicos: [],
-      data: "",
       descricao: "",
-      status: "",
+      tecnicoId: null,
+      dataAgendada: null,
+      tipoManutencao: "PREVENTIVA",
+      statusManutencao: "PENDENTE",
+      sistemaId: null,
     });
 
-    const clientes = ref([]);
-    const sistemas = ref([
-      { id: 1, nome: "Sistema X" },
-      { id: 2, nome: "Sistema Y" },
-      { id: 3, nome: "Sistema Z" },
-    ]);
-    const tecnicos = ref([
-      { id: 1, nome: "João" },
-      { id: 2, nome: "Maria" },
-      { id: 3, nome: "Carlos" },
-    ]);
+    const selectedCliente = ref(null);
+    const allClientes = ref([]);
+    const filteredClientes = ref([]);
+    const allSistemas = ref([]);
+    const filteredSistemas = ref([]);
+    const tecnicos = ref([]);
+
+    const tipoOptions = [
+      { label: "Preventiva", value: "PREVENTIVA" },
+      { label: "Emergencial", value: "EMERGENCIAL" },
+    ];
 
     const statusOptions = [
-      { label: "Pendente", value: "pendente" },
-      { label: "Em andamento", value: "em_andamento" },
-      { label: "Concluída", value: "concluida" },
+      { label: "Pendente", value: "PENDENTE" },
+      { label: "Executada", value: "EXECUTADA" },
     ];
+
+    const carregarDados = async () => {
+      try {
+        const [resClientes, resSistemas, resTecnicos] = await Promise.all([
+          axios.get(`${URL}/clientes/buscartodos`),
+          axios.get(`${URL}/sistema/buscartodos`),
+          axios.get(`${URL}/tecnico/buscartodos`)
+        ]);
+        allClientes.value = resClientes.data;
+        allSistemas.value = resSistemas.data;
+        tecnicos.value = resTecnicos.data;
+      } catch (error) {
+        console.error("Erro ao carregar dados do banco:", error);
+      }
+    };
+
+    onMounted(carregarDados);
 
     const buscarClientes = (event) => {
       const query = event.query.toLowerCase();
-      clientes.value = [{ id: 1, nome: "Cliente A" }, { id: 2, nome: "Cliente B" }]
-        .filter(c => c.nome.toLowerCase().includes(query));
+      filteredClientes.value = allClientes.value.filter(c => 
+        c.nome.toLowerCase().includes(query)
+      );
     };
 
-    const salvarManutencao = () => {
-      console.log("Manutenção cadastrada:", manutencao.value);
-      alert("Manutenção cadastrada com sucesso!");
-      limparFormulario();
+    // Filtra sistemas quando o cliente muda
+    watch(selectedCliente, (newVal) => {
+      manutencao.value.sistemaId = null;
+      if (newVal && newVal.id) {
+        filteredSistemas.value = allSistemas.value.filter(s => 
+          s.cliente && s.cliente.id === newVal.id
+        );
+      } else {
+        filteredSistemas.value = [];
+      }
+    });
+
+    const salvarManutencao = async () => {
+      try {
+        // Formatar data para YYYY-MM-DD
+        const dataFormatada = manutencao.value.dataAgendada 
+          ? manutencao.value.dataAgendada.toISOString().split('T')[0]
+          : null;
+
+        const payload = {
+          ...manutencao.value,
+          dataAgendada: dataFormatada
+        };
+
+        const response = await axios.post(`${URL}/manutencoes`, payload);
+        alert(response.data || "Manutenção cadastrada com sucesso!");
+        limparFormulario();
+      } catch (error) {
+        console.error("Erro ao salvar manutenção:", error);
+        alert("Erro ao cadastrar manutenção. Verifique os dados.");
+      }
     };
 
     const limparFormulario = () => {
       manutencao.value = {
-        cliente: null,
-        sistemas: [],
-        tecnicos: [],
-        data: "",
         descricao: "",
-        status: "",
+        tecnicoId: null,
+        dataAgendada: null,
+        tipoManutencao: "PREVENTIVA",
+        statusManutencao: "PENDENTE",
+        sistemaId: null,
       };
+      selectedCliente.value = null;
     };
 
-    return { manutencao, salvarManutencao, limparFormulario, statusOptions, clientes, sistemas, tecnicos, buscarClientes };
+    return { 
+      manutencao, 
+      selectedCliente,
+      salvarManutencao, 
+      limparFormulario, 
+      statusOptions, 
+      tipoOptions,
+      filteredClientes, 
+      filteredSistemas, 
+      tecnicos, 
+      buscarClientes 
+    };
   },
 };
 </script>
 
 <style scoped>
-.card {
-  max-width: 1000px;
-  margin: 2rem auto;
+.registration-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  background-color: var(--bg-app);
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  border-radius: 12px;
 }
-h2 {
+
+.registration-card {
+  width: 100%;
+  max-width: 900px;
+  background-color: var(--bg-card) !important;
+  border: none;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.form-title {
   text-align: center;
-  margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--primary-color);
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 3rem;
 }
-.horizontal-field {
+
+.form-row {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
-.horizontal-field label {
-  width: 120px;
-  font-weight: 600;
+
+.form-label {
+  width: 150px;
+  color: var(--text-muted);
+  font-size: 1rem;
+  text-align: left;
 }
-.horizontal-field input,
-.horizontal-field textarea,
-.horizontal-field .p-dropdown,
-.horizontal-field .p-autocomplete,
-.horizontal-field .p-multiselect {
+
+.form-input {
   flex: 1;
 }
+
+.short-dropdown {
+  max-width: 200px;
+}
+
 .full-width {
   width: 100%;
 }
-.botoes {
+
+:deep(.p-inputtext),
+:deep(.p-select),
+:deep(.p-autocomplete-input),
+:deep(.p-datepicker-input),
+:deep(.p-textarea) {
+  background-color: var(--bg-input) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  color: var(--text-input) !important;
+  padding: 0.75rem !important;
+}
+
+:deep(.p-select-label.p-placeholder) {
+  color: #999 !important;
+}
+
+:deep(.p-multiselect), :deep(.p-select) {
+  background: var(--bg-input) !important;
+}
+
+.textarea-custom {
+  min-height: 120px;
+}
+
+.botoes-container {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: 1.5rem;
+  margin-top: 3rem;
+}
+
+.p-button-success {
+  background-color: var(--status-success) !important;
+  border: none !important;
+  padding: 0.75rem 2.5rem !important;
+}
+
+.p-button-secondary {
+  background-color: #424242 !important;
+  border: none !important;
+  padding: 0.75rem 2.5rem !important;
+}
+
+/* Ajustes para o PrimeVue 4 */
+:deep(.p-autocomplete) {
+  display: flex;
+}
+
+:deep(.p-autocomplete-overlay),
+:deep(.p-autocomplete-panel) {
+  background-color: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+}
+
+:deep(.p-autocomplete-option) {
+  color: var(--text-main) !important;
+  padding: 0.75rem 1rem !important;
+}
+
+:deep(.p-autocomplete-option:hover),
+:deep(.p-autocomplete-option.p-focus) {
+  background-color: var(--border-color) !important;
+  color: var(--text-main) !important;
 }
 </style>

@@ -1,8 +1,42 @@
 :root {
-  /* A darker, more accessible blue for better contrast on light backgrounds. */
-  --primary-color: #005A9C; 
-  --primary-color-text: #FFFFFF; /* A contrasting text color for the new primary color. */
+  /* Cores de Marca */
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-text: #ffffff;
 
-  /* If you are using PrimeVue, you might need to override specific palette colors like this: */
-  /* --p-blue-500: #005A9C; */
+  /* Backgrounds */
+  --bg-app: #0a0e27;
+  --bg-card: #041628;
+  --bg-sidebar: #041628;
+  --bg-header: #081a2e;
+  --bg-input: #ffffff;
+
+  /* Textos */
+  --text-main: #ffffff;
+  --text-muted: #94a3b8;
+  --text-label: #888888;
+  --text-input: #333333;
+
+  /* Bordas e Linhas */
+  --border-color: #1c2b3a;
+  --border-input: #cccccc;
+
+  /* Status */
+  --status-success: #10b981;
+  --status-danger: #ef4444;
+  --status-warning: #f59e0b;
+  --status-info: #3b82f6;
+}
+
+/* Quando o programador criar o .light-theme, ele só precisa sobrescrever os valores acima */
+.light-theme {
+  --bg-app: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-sidebar: #f1f5f9;
+  --bg-header: #e2e8f0;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #cbd5e1;
+  --bg-input: #f1f5f9;
+  --text-input: #1e293b;
 }

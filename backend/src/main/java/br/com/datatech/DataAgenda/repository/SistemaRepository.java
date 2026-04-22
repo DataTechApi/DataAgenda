@@ -14,5 +14,8 @@ public interface SistemaRepository extends JpaRepository<Sistema,Long> {
     @Query("select count(s) from Sistema s")
     Long contarSistemas();
 
+    @Query("SELECT s.tipoSistema, COUNT(s) FROM Sistema s GROUP BY s.tipoSistema")
+    List<Object[]> countSystemsByTipo();
+
 
 }

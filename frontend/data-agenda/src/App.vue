@@ -7,9 +7,12 @@ import { RouterView } from 'vue-router';
 </template>
 
 <style>
+@import "./assets/custom-theme.css";
+
 body {
   margin: 0;
   padding: 0;
-  background-color: #0a0e27;
+  background-color: var(--bg-app);
+  color: var(--text-main);
 }
 </style>

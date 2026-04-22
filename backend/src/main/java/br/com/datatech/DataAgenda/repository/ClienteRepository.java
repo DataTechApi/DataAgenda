@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente,Long> {
 
-    @Query("select count(c) from Cliente c where c.isAtivo = true")
+    @Query("select count(c) from Cliente c")
     public Long contarClientes();
 
     @Modifying
