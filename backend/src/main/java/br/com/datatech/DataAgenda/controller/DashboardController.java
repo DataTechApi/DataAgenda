@@ -1,6 +1,6 @@
 package br.com.datatech.DataAgenda.controller;
 
-import br.com.datatech.DataAgenda.entity.dto.response.DashboardDTO;
+import br.com.datatech.DataAgenda.entity.dto.response.DashboardDTOResponse;
 import br.com.datatech.DataAgenda.service.DashboardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -20,7 +20,7 @@ public class DashboardController {
 
     @GetMapping
     @Operation(summary = "Obtém dados consolidados para o dashboard")
-    public ResponseEntity<DashboardDTO> getDashboard() {
+    public ResponseEntity<DashboardDTOResponse> getDashboard() {
         return ResponseEntity.ok(dashboardService.getDashboardData());
     }
 }

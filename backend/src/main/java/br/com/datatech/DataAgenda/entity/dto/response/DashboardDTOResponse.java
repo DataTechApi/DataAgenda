@@ -12,7 +12,7 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DashboardDTO {
+public class DashboardDTOResponse {
     private Long totalClientes;
     private Long totalSistemas;
     private Long manutencoesPendentes;

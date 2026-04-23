@@ -2,7 +2,7 @@ package br.com.datatech.DataAgenda.service;
 
 import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.StatusManutencao;
-import br.com.datatech.DataAgenda.entity.dto.response.DashboardDTO;
+import br.com.datatech.DataAgenda.entity.dto.response.DashboardDTOResponse;
 import br.com.datatech.DataAgenda.repository.ClienteRepository;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
@@ -22,7 +22,7 @@ public class DashboardService {
     private final SistemaRepository sistemaRepository;
     private final ManutencaoRepository manutencaoRepository;
 
-    public DashboardDTO getDashboardData() {
+    public DashboardDTOResponse getDashboardData() {
         Long totalClientes = clienteRepository.contarClientes();
         Long totalSistemas = sistemaRepository.contarSistemas();
         Long pendentes = manutencaoRepository.countByStatusManutencao(StatusManutencao.PENDENTE);
@@ -41,8 +41,8 @@ public class DashboardService {
         }
 
         List<Manutencao> proximas = manutencaoRepository.findTop5PendingOrderByDataAgendadaAsc();
-        List<DashboardDTO.ProximaManutencaoDTO> proximasDTO = proximas.stream()
-                .map(m -> DashboardDTO.ProximaManutencaoDTO.builder()
+        List<DashboardDTOResponse.ProximaManutencaoDTO> proximasDTO = proximas.stream()
+                .map(m -> DashboardDTOResponse.ProximaManutencaoDTO.builder()
                         .id(m.getId())
                         .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
                         .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
@@ -52,7 +52,7 @@ public class DashboardService {
                         .build())
                 .collect(Collectors.toList());
 
-        return DashboardDTO.builder()
+        return DashboardDTOResponse.builder()
                 .totalClientes(totalClientes)
                 .totalSistemas(totalSistemas)
                 .manutencoesPendentes(pendentes)

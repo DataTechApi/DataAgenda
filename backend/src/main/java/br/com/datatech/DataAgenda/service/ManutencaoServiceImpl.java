@@ -4,22 +4,30 @@ import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.Sistema;
 import br.com.datatech.DataAgenda.entity.Tecnico;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
 public class ManutencaoServiceImpl implements ManutencaoService {
 
     private final ManutencaoRepository manutencaoRepository;
     private final TecnicoRepository tecnicoRepository;
     private final SistemaRepository sistemaRepository;
+
+    public ManutencaoServiceImpl(ManutencaoRepository manutencaoRepository, TecnicoRepository tecnicoRepository, SistemaRepository sistemaRepository) {
+        this.manutencaoRepository = manutencaoRepository;
+        this.tecnicoRepository = tecnicoRepository;
+        this.sistemaRepository = sistemaRepository;
+    }
 
     @Override
     public void cadastrarManutencao(ManutencaoDTORequest request) {
@@ -31,13 +39,13 @@ public class ManutencaoServiceImpl implements ManutencaoService {
 
         if (request.getTecnicoId() != null) {
             Tecnico tecnico = tecnicoRepository.findById(request.getTecnicoId())
-                    .orElseThrow(() -> new RuntimeException("Técnico não encontrado"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Técnico não encontrado"));
             manutencao.setTecnico(tecnico);
         }
 
         if (request.getSistemaId() != null) {
             Sistema sistema = sistemaRepository.findById(request.getSistemaId())
-                    .orElseThrow(() -> new RuntimeException("Sistema não encontrado"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Sistema não encontrado"));
             manutencao.setSistema(sistema);
         }
 
@@ -45,9 +53,9 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
-    public List<br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse> listarTodas() {
+    public List<ManutencaoDTOResponse> listarTodas() {
         return manutencaoRepository.findAll().stream()
-                .map(m -> br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse.builder()
+                .map(m -> ManutencaoDTOResponse.builder()
                         .id(m.getId())
                         .descricao(m.getDescricao())
                         .dataAgendada(m.getDataAgendada())
