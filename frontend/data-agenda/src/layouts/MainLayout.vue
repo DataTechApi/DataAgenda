@@ -135,7 +135,7 @@
                 <i class="pi pi-plus"></i>
                 <span>Cadastrar</span>
               </RouterLink>
-            </li>t
+            </li>
             <li>
               <RouterLink to="/tecnico/visualizar" class="router-link">
                 <i class="pi pi-eye"></i>

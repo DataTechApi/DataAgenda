@@ -81,7 +81,7 @@ onMounted(carregarSistemas);
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: var(--bg-card);
+  background: #0f0f0f;
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-radius: 12px;
 }
@@ -89,7 +89,7 @@ onMounted(carregarSistemas);
 .page-title {
   text-align: center;
   margin-bottom: 2rem;
-  color: #4a6fa5;
+  color:#2c3e50;
   font-weight: bold;
 }
 
@@ -100,7 +100,7 @@ onMounted(carregarSistemas);
 }
 
 :deep(.p-datatable-custom .p-datatable-thead > tr > th) {
-  background: #2c3e50 !important;
+  background: #0f0f0f !important;
   color: #ffffff !important;
   font-weight: bold;
   text-align: center;
@@ -108,19 +108,19 @@ onMounted(carregarSistemas);
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr > td) {
-  background: #ffffff !important;
-  color: #333333 !important;
+  background: #0f0f0f !important;
+  color: #ffffff !important;
   text-align: center;
   padding: 1rem;
-  border-bottom: 1px solid #eeeeee;
+  
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr:hover > td) {
-  background: #f8f9fa !important;
+  background: #0f0f0f!important;
 }
 
 :deep(.p-paginator) {
-    background: #ffffff !important;
+    background: #0f0f0f!important;
     border: none !important;
     padding: 1rem;
 }

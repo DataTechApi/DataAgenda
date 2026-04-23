@@ -1,7 +1,13 @@
 <template>
   <div class="card">
     <h2 class="page-title">Visualização de Clientes</h2>
-    <DataTable :value="clientes" responsiveLayout="scroll" class="p-datatable-custom" paginator :rows="10">
+    <DataTable 
+      :value="clientes" 
+      responsiveLayout="scroll" 
+      class="p-datatable-custom" 
+      paginator 
+      :rows="10"
+    >
       <Column field="nome" header="Nome" sortable></Column>
       <Column field="cnpj" header="CNPJ" sortable></Column>
       <Column field="localidade" header="Localidade"></Column>
@@ -11,10 +17,16 @@
       <Column header="Ações">
         <template #body="slotProps">
           <div class="acoes">
-            <Button icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm"
-              @click="editarCliente(slotProps.data)" />
-            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
-              @click="excluirCliente(slotProps.data)" />
+            <Button 
+              icon="pi pi-pencil" 
+              class="p-button-rounded p-button-warning p-button-sm"
+              @click="editarCliente(slotProps.data)" 
+            />
+            <Button 
+              icon="pi pi-trash" 
+              class="p-button-rounded p-button-danger p-button-sm"
+              @click="excluirCliente(slotProps.data)" 
+            />
           </div>
         </template>
       </Column>
@@ -61,10 +73,10 @@ onMounted(carregarClientes);
 
 <style scoped>
 .card {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: var(--bg-card);
+  background: #0f0f0f; /* igual ao cadastro */
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   border-radius: 12px;
 }
@@ -72,18 +84,18 @@ onMounted(carregarClientes);
 .page-title {
   text-align: center;
   margin-bottom: 2rem;
-  color: #4a6fa5;
+  color: #2c3e50; /* igual ao cadastro */
   font-weight: bold;
 }
 
 :deep(.p-datatable-custom) {
-  background: var(--bg-table) !important;
+  background: #ffffff !important;
   border-radius: 12px;
   overflow: hidden;
 }
 
 :deep(.p-datatable-custom .p-datatable-thead > tr > th) {
-  background: #2c3e50 !important;
+  background: #0f0f0f !important;
   color: #ffffff !important;
   font-weight: bold;
   text-align: center;
@@ -91,21 +103,21 @@ onMounted(carregarClientes);
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr > td) {
-  background: #ffffff !important;
-  color: #333333 !important;
+  background: #0f0f0f !important;
+  color: #ffffff !important;
   text-align: center;
   padding: 1rem;
-  border-bottom: 1px solid #eeeeee;
+  
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr:hover > td) {
-  background: #f8f9fa !important;
+  background: #0f0f0f !important;
 }
 
 :deep(.p-paginator) {
-    background: #ffffff !important;
-    border: none !important;
-    padding: 1rem;
+  background: #0f0f0f !important;
+  border: none !important;
+  padding: 1rem;
 }
 
 .acoes {
