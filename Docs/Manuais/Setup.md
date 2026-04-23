@@ -30,11 +30,12 @@ Após clonar o repositório, siga os passos abaixo para iniciar a aplicação:
 Instale as dependências necessárias para cada submódulo:
 
 ``` bash
-# Entre no repositório
-cd ./auxia-frontend/auxia
 
 # Instale as dependências
 npm install
+npm install -g @vue/devtools
+npm install vue-router@4
+
 ```
 
 Logo após:
