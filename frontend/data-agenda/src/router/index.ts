@@ -95,7 +95,22 @@ const router = createRouter({
           name: 'tecnico-visualizar',
           component: VisualizarTecnicoView,
         },
-      ]
+        {
+          path: 'tecnico/tarefas',
+          name: 'tecnico-tarefas',
+          component: () => import('@/views/tecnico/VisualizarTarefasTecnicoView.vue'),
+        },
+        {
+          path: 'tecnico/finalizar/:id',
+          name: 'finalizar-tarefa',
+          component: () => import('@/views/tecnico/FinalizarTarefaView.vue'),
+        },
+        {
+          path: 'tecnico/tarefa/:id',
+          name: 'tecnico-tarefa-detalhe',
+          component: () => import('@/views/tecnico/DetalheTarefaView.vue'),
+        },
+      ],
     },
   ],
 })

@@ -30,8 +30,8 @@
                 <span>Clientes</span>
               </div>
             </RouterLink>
-            <i 
-              :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+            <i
+              :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               class="arrow"
               @click="toggleMenu('cliente')"
             ></i>
@@ -61,8 +61,8 @@
                 <span>Manutenção</span>
               </div>
             </RouterLink>
-            <i 
-              :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+            <i
+              :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               class="arrow"
               @click="toggleMenu('manutencao')"
             ></i>
@@ -92,8 +92,8 @@
                 <span>Sistemas</span>
               </div>
             </RouterLink>
-            <i 
-              :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+            <i
+              :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               class="arrow"
               @click="toggleMenu('sistema')"
             ></i>
@@ -123,8 +123,8 @@
                 <span>Técnico</span>
               </div>
             </RouterLink>
-            <i 
-              :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" 
+            <i
+              :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
               class="arrow"
               @click="toggleMenu('tecnico')"
             ></i>
@@ -142,6 +142,11 @@
                 <span>Visualizar</span>
               </RouterLink>
             </li>
+
+            <RouterLink to="/tecnico/tarefas" class="router-link">
+              <i class="pi pi-tasks"></i>
+              <span>Tarefas</span>
+            </RouterLink>
           </ul>
         </li>
       </ul>
@@ -172,8 +177,8 @@ function toggleMenu(menu) {
   grid-template-columns: 250px 1fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas:
-    "header header"
-    "sidebar content";
+    'header header'
+    'sidebar content';
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
