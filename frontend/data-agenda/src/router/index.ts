@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '../layouts/MainLayout.vue'
+import LoginView from '../views/LoginView.vue'
 
 // Dashboards
 import DashboardView from '../views/DashboardView.vue'
@@ -22,6 +23,11 @@ import VisualizarTecnicoView from '../views/tecnico/VisualizarTecnicoView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView,
+    },
     {
       path: '/',
       component: MainLayout,
@@ -113,6 +119,18 @@ const router = createRouter({
       ],
     },
   ],
+})
+
+router.beforeEach((to, _from, next) => {
+  const isAuthenticated = !!sessionStorage.getItem('token')
+
+  if (to.name !== 'login' && !isAuthenticated) {
+    next({ name: 'login' })
+  } else if (to.name === 'login' && isAuthenticated) {
+    next({ name: 'dashboard' })
+  } else {
+    next()
+  }
 })
 
 export default router
