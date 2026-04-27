@@ -11,7 +11,7 @@
       <ul>
         <!-- Dashboard Geral -->
         <li>
-          <RouterLink to="/" class="router-link">
+          <RouterLink to="/dashboard" class="router-link">
             <div class="menu-item">
               <div class="menu-label">
                 <i class="pi pi-home"></i>
@@ -24,7 +24,7 @@
         <!-- Menu Clientes -->
         <li>
           <div class="menu-item">
-            <RouterLink to="/cliente/dashboard" class="router-link">
+            <RouterLink to="/dashboard/cliente/dashboard" class="router-link">
               <div class="menu-label">
                 <i class="pi pi-users"></i>
                 <span>Clientes</span>
@@ -38,13 +38,13 @@
           </div>
           <ul class="submenu" v-show="openMenu === 'cliente'">
             <li>
-              <RouterLink to="/cliente/cadastrar" class="router-link">
+              <RouterLink to="/dashboard/cliente/cadastrar" class="router-link">
                 <i class="pi pi-plus"></i>
                 <span>Cadastrar</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/cliente/visualizar" class="router-link">
+              <RouterLink to="/dashboard/cliente/visualizar" class="router-link">
                 <i class="pi pi-eye"></i>
                 <span>Visualizar</span>
               </RouterLink>
@@ -55,7 +55,7 @@
         <!-- Menu Manutenção -->
         <li>
           <div class="menu-item">
-            <RouterLink to="/manutencao/dashboard" class="router-link">
+            <RouterLink to="/dashboard/manutencao/dashboard" class="router-link">
               <div class="menu-label">
                 <i class="pi pi-wrench"></i>
                 <span>Manutenção</span>
@@ -69,13 +69,13 @@
           </div>
           <ul class="submenu" v-show="openMenu === 'manutencao'">
             <li>
-              <RouterLink to="/manutencao/cadastrar" class="router-link">
+              <RouterLink to="/dashboard/manutencao/cadastrar" class="router-link">
                 <i class="pi pi-plus"></i>
                 <span>Agendar</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/manutencao/visualizar" class="router-link">
+              <RouterLink to="/dashboard/manutencao/visualizar" class="router-link">
                 <i class="pi pi-eye"></i>
                 <span>Visualizar</span>
               </RouterLink>
@@ -86,7 +86,7 @@
         <!-- Menu Sistemas -->
         <li>
           <div class="menu-item">
-            <RouterLink to="/sistema/dashboard" class="router-link">
+            <RouterLink to="/dashboard/sistema/dashboard" class="router-link">
               <div class="menu-label">
                 <i class="pi pi-desktop"></i>
                 <span>Sistemas</span>
@@ -100,13 +100,13 @@
           </div>
           <ul class="submenu" v-show="openMenu === 'sistema'">
             <li>
-              <RouterLink to="/sistema/cadastrar" class="router-link">
+              <RouterLink to="/dashboard/sistema/cadastrar" class="router-link">
                 <i class="pi pi-plus"></i>
                 <span>Cadastrar</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/sistema/visualizar" class="router-link">
+              <RouterLink to="/dashboard/sistema/visualizar" class="router-link">
                 <i class="pi pi-eye"></i>
                 <span>Visualizar</span>
               </RouterLink>
@@ -117,7 +117,7 @@
         <!-- Menu Técnico -->
         <li>
           <div class="menu-item">
-            <RouterLink to="/tecnico/dashboard" class="router-link">
+            <RouterLink to="/dashboard/tecnico/dashboard" class="router-link">
               <div class="menu-label">
                 <i class="pi pi-user-edit"></i>
                 <span>Técnico</span>
@@ -131,13 +131,13 @@
           </div>
           <ul class="submenu" v-show="openMenu === 'tecnico'">
             <li>
-              <RouterLink to="/tecnico/cadastrar" class="router-link">
+              <RouterLink to="/dashboard/tecnico/cadastrar" class="router-link">
                 <i class="pi pi-plus"></i>
                 <span>Cadastrar</span>
               </RouterLink>
             </li>
             <li>
-              <RouterLink to="/tecnico/visualizar" class="router-link">
+              <RouterLink to="/dashboard/tecnico/visualizar" class="router-link">
                 <i class="pi pi-eye"></i>
                 <span>Visualizar</span>
               </RouterLink>

@@ -30,6 +30,11 @@ const router = createRouter({
     },
     {
       path: '/',
+      redirect: 'login',
+      
+    },
+    {
+      path: '/dashboard',
       component: MainLayout,
       children: [
         {
@@ -122,7 +127,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-  const isAuthenticated = !!sessionStorage.getItem('token')
+  const isAuthenticated = !!sessionStorage.getItem('usuario') // ← era 'token'
 
   if (to.name !== 'login' && !isAuthenticated) {
     next({ name: 'login' })

@@ -1,4 +1,4 @@
-package br.com.datatech.DataAgenda.entity.dto.request;
+package br.com.datatech.DataAgenda.entity.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,12 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TecnicoDTORequest {
+public class LoginDTOResponse {
 
     private String nome;
     private String email;
-    private String telefone;
-    private String nivel;
-    private String senha;
 
 }

@@ -57,6 +57,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
@@ -66,26 +67,35 @@ const router = useRouter()
 const credentials = ref({ email: '', senha: '' })
 const loading = ref(false)
 const erro = ref('')
+const URL = import.meta.env.VITE_API_URL;
 
-const MOCK_EMAIL = 'admin@dataagenda.com'
-const MOCK_SENHA = '123456'
-
-const handleLogin = () => {
+const handleLogin = async () => {
   erro.value = ''
   loading.value = true
 
-  setTimeout(() => {
-    if (
-      credentials.value.email === MOCK_EMAIL &&
-      credentials.value.senha === MOCK_SENHA
-    ) {
-      sessionStorage.setItem('token', 'mock-token')
-      router.push({ name: 'dashboard' })
+  try {
+    const { data } = await axios.post(`${URL}/login`, {
+      email: credentials.value.email,
+      senha: credentials.value.senha,
+    })
+console.log('Resposta da API:', data) 
+    sessionStorage.setItem('usuario', JSON.stringify(data))
+    router.push({ name: 'dashboard' })
+
+  } catch (err) {
+    if (err.response) {
+      erro.value =
+        err.response.data?.message ||
+        err.response.data?.erro ||
+        'E-mail ou senha incorretos.'
+    } else if (err.request) {
+      erro.value = 'Não foi possível conectar ao servidor. Verifique sua conexão.'
     } else {
-      erro.value = 'E-mail ou senha incorretos.'
+      erro.value = 'Ocorreu um erro inesperado. Tente novamente.'
     }
+  } finally {
     loading.value = false
-  }, 800)
+  }
 }
 </script>
 
