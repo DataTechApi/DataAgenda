@@ -14,10 +14,10 @@ Implementar funcionalidades que proporcionem o máximo de funcionalidades e usab
 
 | Rank | Prioridade | User Story | Story Points | Sprint | Requisito | Status |
 |------|-----------|-----------|--------------|--------|-----------|--------|
-| 1 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo, para evitar falhas e manutenções corretivas | 5 | 2 | R02 | ⬜ |
-| 2 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema, para registrar e acompanhar a resolução | 5 | 2 | R02 | ⬜ |
-| 3 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado, para garantir que a manutenção seja executada | 3 | 2 | R02 | ⬜ |
-| 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ⬜ |
+| 1 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo, para evitar falhas e manutenções corretivas | 5 | 2 | R02 | ✅ |
+| 2 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema, para registrar e acompanhar a resolução | 5 | 2 | R02 | ✅ |
+| 3 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado, para garantir que a manutenção seja executada | 3 | 2 | R02 | ✅ |
+| 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ✅ |
 | 5 | Alta | Como **técnico**, quero alterar o status do chamado, para refletir o andamento da manutenção | 3 | 2 | R03 | ⬜ |
 
 ## 📋 Requisitos <a id="re"></a>
