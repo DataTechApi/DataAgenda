@@ -24,6 +24,8 @@ public class Tecnico {
     private String nome;
     private String email;
     private String telefone;
+    private String senha;
+
     public Boolean isAtivo = true;
 
     @Enumerated(EnumType.STRING)

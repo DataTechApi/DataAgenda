@@ -22,17 +22,36 @@
           />
         </div>
 
-        <!-- Email -->
-        <div class="p-field p-col-12 p-md-6 horizontal-field">
-          <label for="email">Email</label>
-          <InputText
-            id="email"
-            v-model="tecnico.email"
-            type="email"
-            placeholder="exemplo@email.com"
-            required
-            :disabled="carregando"
-          />
+        <!-- Email e Senha na mesma linha -->
+        <div class="p-field p-col-12 linha-dupla">
+
+          <!-- Email -->
+          <div class="horizontal-field">
+            <label for="email">Email</label>
+            <InputText
+              id="email"
+              v-model="tecnico.email"
+              type="email"
+              placeholder="exemplo@email.com"
+              required
+              :disabled="carregando"
+            />
+          </div>
+
+          <!-- Senha -->
+          <div class="horizontal-field">
+            <label for="senha">Senha</label>
+            <InputText
+              id="senha"
+              v-model="tecnico.senha"
+              type="password"
+              placeholder="Digite sua senha"
+              required
+              minlength="6"
+              :disabled="carregando"
+            />
+          </div>
+
         </div>
 
         <!-- Nível -->
@@ -108,6 +127,7 @@ export default {
       nome: "",
       telefone: "",
       email: "",
+      senha: "",
       nivel: null,
     });
 
@@ -125,8 +145,14 @@ export default {
       erro.value = null;
       carregando.value = true;
 
+      if (!tecnico.value.senha || tecnico.value.senha.length < 6) {
+        erro.value = "A senha deve ter pelo menos 6 caracteres.";
+        carregando.value = false;
+        return;
+      }
+
       try {
-        const response= await api.post(`${URL}/tecnico`, tecnico.value);
+        const response = await api.post(`${URL}/tecnico`, tecnico.value);
         console.log("Técnico cadastrado:", response.data);
         alert("Técnico cadastrado com sucesso!");
         limparFormulario();
@@ -141,7 +167,7 @@ export default {
     };
 
     const limparFormulario = () => {
-      tecnico.value = { nome: "", telefone: "", email: "", nivel: null };
+      tecnico.value = { nome: "", telefone: "", email: "", senha: "", nivel: null };
       erro.value = null;
     };
 
@@ -177,6 +203,13 @@ h2 {
 .horizontal-field input,
 .horizontal-field .p-inputmask,
 .horizontal-field .p-dropdown {
+  flex: 1;
+}
+.linha-dupla {
+  display: flex;
+  gap: 1.5rem;
+}
+.linha-dupla .horizontal-field {
   flex: 1;
 }
 .botoes {
