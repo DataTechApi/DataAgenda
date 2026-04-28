@@ -14,7 +14,6 @@
             optionLabel="label" 
             optionValue="value" 
             placeholder="Selecione o tipo" 
-            required 
           />
         </div>
 
@@ -28,25 +27,24 @@
             optionLabel="nome" 
             optionValue="id" 
             placeholder="Selecione o cliente" 
-            required 
           />
         </div>
 
         <!-- Mensagem de erro -->
         <div v-if="erro" class="mensagem-erro">
+          <i class="pi pi-exclamation-triangle"></i>
           {{ erro }}
         </div>
 
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
-          <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
+          <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" :loading="loading" />
           <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
         </div>
       </div>
     </form>
   </div>
 </template>
-
 
 <script>
 import { ref, onMounted } from "vue";
@@ -87,7 +85,7 @@ export default {
     const carregarClientes = async () => {
       try {
         const response = await api.get(`${URL}/clientes/buscartodos`);
-        clientes.value = response.data; 
+        clientes.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar clientes:", error);
         erro.value = "Não foi possível carregar a lista de clientes.";
@@ -96,11 +94,22 @@ export default {
 
     const limparFormulario = () => {
       sistema.value = { tipoSistema: "", clienteId: "" };
+      erro.value = "";
     };
 
     const salvarSistema = async () => {
-      loading.value = true;
       erro.value = "";
+
+      if (!sistema.value.tipoSistema) {
+        erro.value = "Selecione o tipo de sistema.";
+        return;
+      }
+      if (!sistema.value.clienteId) {
+        erro.value = "Selecione um cliente.";
+        return;
+      }
+
+      loading.value = true;
       try {
         const response = await api.post(`${URL}/sistema`, sistema.value);
         console.log("Resposta da API:", response.data);
@@ -129,7 +138,6 @@ export default {
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -167,12 +175,15 @@ h2 {
   margin-top: 2rem;
 }
 .mensagem-erro {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 6px;
   font-size: 0.9rem;
 }
