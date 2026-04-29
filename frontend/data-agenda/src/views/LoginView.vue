@@ -87,7 +87,7 @@ const handleLogin = async () => {
     if (data.role === 'ADMIN') {
       router.push({ name: 'dashboard' })
     } else if (data.role === 'TECNICO') {
-      router.push({ name: 'dashboardTecnico' })
+      router.push({ name: 'atendimento-visualizar' })
     } else {
       router.push({ name: 'login' }) // fallback
     }

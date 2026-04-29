@@ -19,7 +19,8 @@ import VisualizarManutencoesView from '../views/manutencao/VisualizarManutencoes
 import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
 import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
 import VisualizarTecnicoView from '../views/tecnico/VisualizarTecnicoView.vue'
-import VisualizarTarefasTecnicoView from '@/views/tecnico/VisualizarTarefasTecnicoView.vue'
+import VisualizarTarefasTecnicoView from '../views/atendimento/VisualizarTarefasTecnicoView.vue'
+import VisualizarManutencaoPorTecnicoView from '../views/atendimento/VisualizarManutencaoPorTecnicoView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,9 +31,15 @@ const router = createRouter({
       component: LoginView,
     },
     {
-      path: '/dashboard-tecnico',
-      name: 'dashboardTecnico',
+      path: '/atendimento',
       component: VisualizarTarefasTecnicoView,
+      children:[
+        {
+          path: 'atendimento/visualizar',
+          name: 'atendimento-visualizar',
+          component: VisualizarManutencaoPorTecnicoView,
+        },
+      ],
     },
     {
       path: '/',
@@ -112,20 +119,16 @@ const router = createRouter({
           name: 'tecnico-visualizar',
           component: VisualizarTecnicoView,
         },
-        {
-          path: 'tecnico/tarefas',
-          name: 'tecnico-tarefas',
-          component: () => import('@/views/tecnico/VisualizarTarefasTecnicoView.vue'),
-        },
+        
         {
           path: 'tecnico/finalizar/:id',
           name: 'finalizar-tarefa',
-          component: () => import('@/views/tecnico/FinalizarTarefaView.vue'),
+          component: () => import('../views/tecnico/FinalizarTarefaView.vue'),
         },
         {
           path: 'tecnico/tarefa/:id',
           name: 'tecnico-tarefa-detalhe',
-          component: () => import('@/views/tecnico/DetalheTarefaView.vue'),
+          component: () => import('../views/tecnico/DetalheTarefaView.vue'),
         },
       ],
     },

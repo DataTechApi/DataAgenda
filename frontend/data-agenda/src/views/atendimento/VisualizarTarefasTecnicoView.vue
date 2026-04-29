@@ -2,7 +2,7 @@
   <div class="layout">
     <!-- Header Superior -->
     <header class="header">
-      <img src="../assets/logoDataTech.jpeg" alt="Logo" class="logo" />
+      <img src="/src/assets/logoDataTech.jpeg" alt="Logo" class="logo" />
       <span>DATA AGENDA</span>
     </header>
 
@@ -11,11 +11,11 @@
       <ul>
         <!-- Menu Finalizar Atendimento -->
         <li>
-          <RouterLink to="/dashboard/finalizar" class="router-link">
+          <RouterLink to="/atendimento/finalizar" class="router-link">
             <div class="menu-item">
               <div class="menu-label">
                 <i class="pi pi-check-circle"></i>
-                <span>Finalizar Atendimento</span>
+                <span>Visualizar Manutenções</span>
               </div>
             </div>
           </RouterLink>
