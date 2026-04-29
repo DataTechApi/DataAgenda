@@ -19,6 +19,7 @@ import VisualizarManutencoesView from '../views/manutencao/VisualizarManutencoes
 import CadastroSistemasView from '../views/sistema/CadastroSistemasView.vue'
 import CadastroTecnicosView from '../views/tecnico/CadastroTecnicosView.vue'
 import VisualizarTecnicoView from '../views/tecnico/VisualizarTecnicoView.vue'
+import VisualizarTarefasTecnicoView from '@/views/tecnico/VisualizarTarefasTecnicoView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -30,8 +31,8 @@ const router = createRouter({
     },
     {
       path: '/dashboard-tecnico',
-      name: 'login',
-      component: LoginView,
+      name: 'dashboardTecnico',
+      component: VisualizarTarefasTecnicoView,
     },
     {
       path: '/',

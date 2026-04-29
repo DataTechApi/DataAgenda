@@ -9,147 +9,30 @@
     <!-- Sidebar Lateral -->
     <aside class="sidebar">
       <ul>
-        <!-- Dashboard Geral -->
+        <!-- Menu Finalizar Atendimento -->
         <li>
-          <RouterLink to="/dashboard" class="router-link">
+          <RouterLink to="/dashboard/finalizar" class="router-link">
             <div class="menu-item">
               <div class="menu-label">
-                <i class="pi pi-home"></i>
-                <span>Dashboard Geral</span>
+                <i class="pi pi-check-circle"></i>
+                <span>Finalizar Atendimento</span>
               </div>
             </div>
           </RouterLink>
         </li>
-
-        <!-- Menu Clientes -->
-        <li>
-          <div class="menu-item">
-            <RouterLink to="/dashboard/cliente/dashboard" class="router-link">
-              <div class="menu-label">
-                <i class="pi pi-users"></i>
-                <span>Clientes</span>
-              </div>
-            </RouterLink>
-            <i
-              :class="openMenu === 'cliente' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              class="arrow"
-              @click="toggleMenu('cliente')"
-            ></i>
-          </div>
-          <ul class="submenu" v-show="openMenu === 'cliente'">
-            <li>
-              <RouterLink to="/dashboard/cliente/cadastrar" class="router-link">
-                <i class="pi pi-plus"></i>
-                <span>Cadastrar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/dashboard/cliente/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Menu Manutenção -->
-        <li>
-          <div class="menu-item">
-            <RouterLink to="/dashboard/manutencao/dashboard" class="router-link">
-              <div class="menu-label">
-                <i class="pi pi-wrench"></i>
-                <span>Manutenção</span>
-              </div>
-            </RouterLink>
-            <i
-              :class="openMenu === 'manutencao' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              class="arrow"
-              @click="toggleMenu('manutencao')"
-            ></i>
-          </div>
-          <ul class="submenu" v-show="openMenu === 'manutencao'">
-            <li>
-              <RouterLink to="/dashboard/manutencao/cadastrar" class="router-link">
-                <i class="pi pi-plus"></i>
-                <span>Agendar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/dashboard/manutencao/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Menu Sistemas -->
-        <li>
-          <div class="menu-item">
-            <RouterLink to="/dashboard/sistema/dashboard" class="router-link">
-              <div class="menu-label">
-                <i class="pi pi-desktop"></i>
-                <span>Sistemas</span>
-              </div>
-            </RouterLink>
-            <i
-              :class="openMenu === 'sistema' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              class="arrow"
-              @click="toggleMenu('sistema')"
-            ></i>
-          </div>
-          <ul class="submenu" v-show="openMenu === 'sistema'">
-            <li>
-              <RouterLink to="/dashboard/sistema/cadastrar" class="router-link">
-                <i class="pi pi-plus"></i>
-                <span>Cadastrar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/dashboard/sistema/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-          </ul>
-        </li>
-
-        <!-- Menu Técnico -->
-        <li>
-          <div class="menu-item">
-            <RouterLink to="/dashboard/tecnico/dashboard" class="router-link">
-              <div class="menu-label">
-                <i class="pi pi-user-edit"></i>
-                <span>Técnico</span>
-              </div>
-            </RouterLink>
-            <i
-              :class="openMenu === 'tecnico' ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-              class="arrow"
-              @click="toggleMenu('tecnico')"
-            ></i>
-          </div>
-          <ul class="submenu" v-show="openMenu === 'tecnico'">
-            <li>
-              <RouterLink to="/dashboard/tecnico/cadastrar" class="router-link">
-                <i class="pi pi-plus"></i>
-                <span>Cadastrar</span>
-              </RouterLink>
-            </li>
-            <li>
-              <RouterLink to="/dashboard/tecnico/visualizar" class="router-link">
-                <i class="pi pi-eye"></i>
-                <span>Visualizar</span>
-              </RouterLink>
-            </li>
-
-            <RouterLink to="/tecnico/tarefas" class="router-link">
-              <i class="pi pi-tasks"></i>
-              <span>Tarefas</span>
-            </RouterLink>
-          </ul>
-        </li>
       </ul>
+
+      <!-- Rodapé com logout e usuário -->
+      <div class="sidebar-footer">
+        <button class="logout-btn" @click="logout">
+          <i class="pi pi-sign-out"></i>
+          <span>Efetuar Logout</span>
+        </button>
+        <div class="user-info">
+          <i class="pi pi-user"></i>
+          <span>{{ usuarioLogado }}</span>
+        </div>
+      </div>
     </aside>
 
     <!-- Conteúdo Dinâmico -->
@@ -161,13 +44,32 @@
 
 <script setup>
 import 'primeicons/primeicons.css'
-import { RouterLink, RouterView } from 'vue-router'
-import { ref } from 'vue'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { ref, onMounted } from 'vue'
 
-const openMenu = ref(null)
 
-function toggleMenu(menu) {
-  openMenu.value = openMenu.value === menu ? null : menu
+const router = useRouter()
+
+// Recupera somente o nome do usuário salvo no login
+let usuario = sessionStorage.getItem('usuario')
+let nomeUsuario = 'Usuário'
+
+if (usuario) {
+  try {
+    nomeUsuario = JSON.parse(usuario).nome || 'Usuário'
+  } catch (e) {
+    // Se não for JSON, usa direto
+    nomeUsuario = usuario
+  }
+}
+
+const usuarioLogado = ref(nomeUsuario)
+
+
+function logout() {
+  sessionStorage.clear()
+  localStorage.clear()
+  router.push('/login')
 }
 </script>
 
@@ -206,7 +108,8 @@ function toggleMenu(menu) {
   background: var(--bg-sidebar);
   color: var(--text-main);
   padding: 10px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar ul {
@@ -244,25 +147,6 @@ function toggleMenu(menu) {
   font-size: 1.2rem;
 }
 
-.arrow {
-  padding: 12px;
-  cursor: pointer;
-  margin-left: auto;
-}
-
-.submenu {
-  list-style: none;
-  padding-left: 25px;
-  margin-top: 5px;
-}
-
-.submenu li {
-  padding: 0;
-  margin-bottom: 4px;
-  border-radius: 6px;
-  transition: background 0.3s;
-}
-
 .content {
   grid-area: content;
   padding: 20px;
@@ -278,7 +162,34 @@ function toggleMenu(menu) {
   width: 100%;
 }
 
-.submenu .router-link {
-  padding: 8px 12px;
+.logout-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: inherit;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 12px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--text-main);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+}
+
+.user-info i {
+  margin-right: 8px;
 }
 </style>
