@@ -29,6 +29,11 @@ const router = createRouter({
       component: LoginView,
     },
     {
+      path: '/dashboard-tecnico',
+      name: 'login',
+      component: LoginView,
+    },
+    {
       path: '/',
       redirect: 'login',
       

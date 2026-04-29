@@ -78,9 +78,19 @@ const handleLogin = async () => {
       email: credentials.value.email,
       senha: credentials.value.senha,
     })
-console.log('Resposta da API:', data) 
+    console.log('Resposta da API:', data) 
+
+    // Salva os dados do usuário na sessão
     sessionStorage.setItem('usuario', JSON.stringify(data))
-    router.push({ name: 'dashboard' })
+
+    // Verifica o papel do usuário e redireciona
+    if (data.role === 'ADMIN') {
+      router.push({ name: 'dashboard' })
+    } else if (data.role === 'TECNICO') {
+      router.push({ name: 'dashboardTecnico' })
+    } else {
+      router.push({ name: 'login' }) // fallback
+    }
 
   } catch (err) {
     if (err.response) {
@@ -100,6 +110,7 @@ console.log('Resposta da API:', data)
 </script>
 
 <style scoped>
+/* Mantive seu CSS original */
 .login-page {
   min-height: 100vh;
   display: flex;

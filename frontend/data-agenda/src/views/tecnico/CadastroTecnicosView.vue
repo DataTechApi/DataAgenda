@@ -54,18 +54,37 @@
 
         </div>
 
-        <!-- Nível -->
-        <div class="p-field p-col-12 p-md-6 horizontal-field">
-          <label for="nivel">Nível</label>
-          <Dropdown
-            id="nivel"
-            v-model="tecnico.nivel"
-            :options="niveis"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecione o nível"
-            :disabled="carregando"
-          />
+        <!-- Nível e Tipo de Usuário na mesma linha -->
+        <div class="p-field p-col-12 linha-dupla">
+          
+          <!-- Nível -->
+          <div class="horizontal-field">
+            <label for="nivel">Nível</label>
+            <Dropdown
+              id="nivel"
+              v-model="tecnico.nivel"
+              :options="niveis"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecione o nível"
+              :disabled="carregando"
+            />
+          </div>
+
+          <!-- Tipo de Usuário -->
+          <div class="horizontal-field">
+            <label for="tipoUsuario">Tipo de Usuário</label>
+            <Dropdown
+              id="tipoUsuario"
+              v-model="tecnico.role"
+              :options="tiposUsuario"
+              optionLabel="label"
+              optionValue="value"
+              placeholder="Selecione o tipo"
+              :disabled="carregando"
+            />
+          </div>
+
         </div>
 
         <!-- Mensagem de erro -->
@@ -106,6 +125,7 @@ import InputMask from "primevue/inputmask";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL ,
   timeout: 10000,
@@ -129,12 +149,18 @@ export default {
       email: "",
       senha: "",
       nivel: null,
+      role: null, // novo campo
     });
 
     const niveis = [
       { label: "Júnior", value: "JUNIOR" },
       { label: "Pleno",  value: "PLENO"  },
       { label: "Sênior", value: "SENIOR" },
+    ];
+
+    const tiposUsuario = [
+      { label: "Administrador", value: "ADMIN" },
+      { label: "Técnico", value: "TECNICO" },
     ];
 
     const carregando = ref(false);
@@ -167,11 +193,11 @@ export default {
     };
 
     const limparFormulario = () => {
-      tecnico.value = { nome: "", telefone: "", email: "", senha: "", nivel: null };
+      tecnico.value = { nome: "", telefone: "", email: "", senha: "", nivel: null, tipoUsuario: null };
       erro.value = null;
     };
 
-    return { tecnico, niveis, carregando, erro, salvarTecnico, limparFormulario };
+    return { tecnico, niveis, tiposUsuario, carregando, erro, salvarTecnico, limparFormulario };
   },
 };
 </script>

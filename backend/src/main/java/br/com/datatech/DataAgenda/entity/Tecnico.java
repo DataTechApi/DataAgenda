@@ -30,6 +30,9 @@ public class Tecnico {
 
     @Enumerated(EnumType.STRING)
     private NivelTecnico nivel;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     
     @OneToMany(mappedBy = "tecnico")  
     private List<Manutencao> manutencoes;

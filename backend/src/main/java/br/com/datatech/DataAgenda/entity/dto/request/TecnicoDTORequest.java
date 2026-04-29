@@ -14,5 +14,6 @@ public class TecnicoDTORequest {
     private String telefone;
     private String nivel;
     private String senha;
+    private String role;
 
 }
