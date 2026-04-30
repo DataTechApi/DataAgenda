@@ -2,6 +2,7 @@ package br.com.datatech.DataAgenda.controller;
 
 import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.service.ManutencaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/manutencoes")
+@RequestMapping("/manutencao")
 @RequiredArgsConstructor
 @Tag(name = "Manutenção", description = "Endpoints para gerenciamento de manutenções")
 public class ManutencaoController {
@@ -28,9 +29,9 @@ public class ManutencaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Manutenção cadastrada com sucesso!");
     }
 
-    @GetMapping
+    @GetMapping("/listar-todas")
     @Operation(summary = "Listar todas as manutenções")
-    public ResponseEntity<List<br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse>> listarTodas() {
+    public ResponseEntity<List<ManutencaoDTOResponse>> listarTodas() {
         return ResponseEntity.ok(manutencaoService.listarTodas());
     }
 }

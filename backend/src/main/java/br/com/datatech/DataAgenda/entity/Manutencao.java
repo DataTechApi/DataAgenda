@@ -33,6 +33,8 @@ public class Manutencao {
 
     private LocalDate dataAgendada;
 
+    private String descricaoAtendimento;
+
     @Enumerated(EnumType.STRING)
     private TipoManutencao tipoManutencao;
 
