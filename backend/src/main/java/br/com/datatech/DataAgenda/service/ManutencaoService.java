@@ -11,4 +11,6 @@ public interface ManutencaoService {
     void cadastrarManutencao(ManutencaoDTORequest request);
     List<ManutencaoDTOResponse> listarTodas();
     Optional<Manutencao> buscarPorId(Long id);
+
+    List<ManutencaoDTOResponse> buscarManutencaoPorTecnico(Long id);
 }

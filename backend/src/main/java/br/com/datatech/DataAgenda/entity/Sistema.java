@@ -44,7 +44,7 @@ public class Sistema {
     public void gerarNome() {
         if (this.tipoSistema != null) {
             if (this.tipoSistema.equals(TipoSistema.BALAO)) {
-                int numeroBalao = new Random().nextInt(5000) + 1000; // Gera um número entre 100 e 999
+                int numeroBalao = new Random().nextInt(5000) + 1000;
                 this.nome = "BAL-" + numeroBalao;
             } else if (this.tipoSistema.equals(TipoSistema.CAMERAS)) {
                 int numeroCameras = new Random().nextInt(10000) + 5000;

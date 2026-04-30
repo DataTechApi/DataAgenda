@@ -188,7 +188,7 @@ export default {
           : null;
 
         const payload = { ...manutencao.value, dataAgendada: dataFormatada };
-        const response = await axios.post(`${URL}/manutencoes`, payload);
+        const response = await axios.post(`${URL}/manutencao`, payload);
         alert(response.data || "Manutenção cadastrada com sucesso!");
         limparFormulario();
       } catch (error) {

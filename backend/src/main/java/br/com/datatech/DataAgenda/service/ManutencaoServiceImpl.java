@@ -9,6 +9,8 @@ import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,11 +24,13 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     private final ManutencaoRepository manutencaoRepository;
     private final TecnicoRepository tecnicoRepository;
     private final SistemaRepository sistemaRepository;
+    private final ModelMapper model;
 
-    public ManutencaoServiceImpl(ManutencaoRepository manutencaoRepository, TecnicoRepository tecnicoRepository, SistemaRepository sistemaRepository) {
+    public ManutencaoServiceImpl(ManutencaoRepository manutencaoRepository, TecnicoRepository tecnicoRepository, SistemaRepository sistemaRepository, ModelMapper model) {
         this.manutencaoRepository = manutencaoRepository;
         this.tecnicoRepository = tecnicoRepository;
         this.sistemaRepository = sistemaRepository;
+        this.model = model;
     }
 
     @Override
@@ -72,5 +76,16 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     @Override
     public Optional<Manutencao> buscarPorId(Long id) {
         return manutencaoRepository.findById(id);
+    }
+
+    @Override
+    public List<ManutencaoDTOResponse> buscarManutencaoPorTecnico(Long id) {
+        Optional<Tecnico> tecnico = tecnicoRepository.findById(id);
+        if (tecnico.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Técnico não encontrado!!!");
+        List<Manutencao> manutencoesEntity = manutencaoRepository.buscarManutencaoPorTecnico(id);
+        List<ManutencaoDTOResponse> manutencoes = model.map(manutencoesEntity,
+                new TypeToken<List<ManutencaoDTOResponse>>(){}.getType());
+        return manutencoes;
     }
 }

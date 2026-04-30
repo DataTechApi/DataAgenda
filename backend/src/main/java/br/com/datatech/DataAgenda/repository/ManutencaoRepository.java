@@ -24,4 +24,7 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
 
     @Query("SELECT m FROM Manutencao m WHERE m.statusManutencao = 'PENDENTE' ORDER BY m.dataAgendada ASC LIMIT 5")
     List<Manutencao> findTop5PendingOrderByDataAgendadaAsc();
+
+    @Query("select m from Manutencao m join m.tecnico t where t.id = :id" )
+    List<Manutencao> buscarManutencaoPorTecnico(Long id);
 }

@@ -77,7 +77,7 @@ const filters = ref({
 
 const carregarManutencoes = async () => {
   try {
-    const response = await axios.get(`${URL}/manutencoes`);
+    const response = await axios.get(`${URL}/manutencao/listar-todas`);
     manutencoes.value = response.data;
   } catch (error) {
     console.error("Erro ao carregar manutenções:", error);
