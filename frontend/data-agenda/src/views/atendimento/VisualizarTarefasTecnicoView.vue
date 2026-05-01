@@ -11,7 +11,7 @@
       <ul>
         <!-- Menu Finalizar Atendimento -->
         <li>
-          <RouterLink to="/atendimento/finalizar" class="router-link">
+          <RouterLink to="/atendimento" class="router-link">
             <div class="menu-item">
               <div class="menu-label">
                 <i class="pi pi-check-circle"></i>

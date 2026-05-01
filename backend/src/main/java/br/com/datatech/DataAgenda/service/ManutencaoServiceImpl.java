@@ -8,9 +8,7 @@ import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -74,18 +72,38 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
-    public Optional<Manutencao> buscarPorId(Long id) {
-        return manutencaoRepository.findById(id);
+    public ManutencaoDTOResponse buscarPorId(Long id) {
+        Optional<Manutencao> manutencaoEntity = manutencaoRepository.findById(id);
+        if (manutencaoEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encomtrada");
+        ManutencaoDTOResponse manutencao = new ManutencaoDTOResponse();
+        manutencao.setClienteNome(manutencaoEntity.get().getSistema().getCliente().getNome());
+        manutencao.setId(manutencaoEntity.get().getId());
+        manutencao.setStatusManutencao(manutencaoEntity.get().getStatusManutencao());
+        manutencao.setTipoManutencao(manutencaoEntity.get().getTipoManutencao());
+        manutencao.setDataRealizada(manutencaoEntity.get().getDataRealizada());
+        manutencao.setSistemaNome(manutencaoEntity.get().getSistema().getNome());
+        manutencao.setDescricao(manutencaoEntity.get().getDescricao());
+        manutencao.setDataAgendada(manutencaoEntity.get().getDataAgendada());
+        manutencao.setTecnicoNome(manutencaoEntity.get().getTecnico().getNome());
+        return manutencao;
     }
 
     @Override
     public List<ManutencaoDTOResponse> buscarManutencaoPorTecnico(Long id) {
-        Optional<Tecnico> tecnico = tecnicoRepository.findById(id);
-        if (tecnico.isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Técnico não encontrado!!!");
-        List<Manutencao> manutencoesEntity = manutencaoRepository.buscarManutencaoPorTecnico(id);
-        List<ManutencaoDTOResponse> manutencoes = model.map(manutencoesEntity,
-                new TypeToken<List<ManutencaoDTOResponse>>(){}.getType());
-        return manutencoes;
+
+        return manutencaoRepository.findAll().stream()
+                .map(m -> ManutencaoDTOResponse.builder()
+                        .id(m.getId())
+                        .descricao(m.getDescricao())
+                        .dataAgendada(m.getDataAgendada())
+                        .dataRealizada(m.getDataRealizada())
+                        .tipoManutencao(m.getTipoManutencao())
+                        .statusManutencao(m.getStatusManutencao())
+                        .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
+                        .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
+                        .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
     }
 }

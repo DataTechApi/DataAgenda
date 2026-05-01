@@ -68,28 +68,40 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import axios from "axios";
 import Textarea from "primevue/textarea";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
-import axios from "axios";
 
 export default {
   name: "VisualizacaoManutencao",
   components: { Textarea, InputText, Button, DatePicker },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
+    const route = useRoute();
 
-    // Exemplo de dados carregados
     const manutencao = ref({
-      clienteNome: "Empresa XPTO",
-      sistemaNome: "Sistema de Controle",
-      tecnicoNome: "João Silva",
-      tipoManutencao: "PREVENTIVA",
-      statusManutencao: "PENDENTE",
+      id: null,
+      clienteNome: "",
+      sistemaNome: "",
+      tecnicoNome: "",
+      tipoManutencao: "",
+      statusManutencao: "",
       descricao: "",
       dataAtendimento: null,
+    });
+
+    // Carregar dados da manutenção pelo ID vindo da rota
+    onMounted(async () => {
+      try {
+        const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
+        manutencao.value = response.data;
+      } catch (error) {
+        console.error("Erro ao carregar manutenção:", error);
+      }
     });
 
     const salvarAtualizacao = async () => {
@@ -100,7 +112,7 @@ export default {
             ? manutencao.value.dataAtendimento.toISOString().split("T")[0]
             : null,
         };
-        const response = await axios.put(`${URL}/manutencoes/${manutencao.value.id}`, payload);
+        const response = await axios.put(`${URL}/manutencao/${manutencao.value.id}`, payload);
         alert(response.data || "Atualização salva com sucesso!");
       } catch (error) {
         console.error("Erro ao atualizar manutenção:", error);
@@ -112,3 +124,69 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.card {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #0f0f0f;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #2c3e50;
+}
+
+.row-pair {
+  display: flex;
+  gap: 1.5rem;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.row-pair .p-field {
+  flex: 1;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.horizontal-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.horizontal-field label {
+  width: 140px;
+  min-width: 140px;
+  font-weight: 600;
+}
+
+.horizontal-field input,
+.horizontal-field .p-inputmask,
+.horizontal-field .p-dropdown,
+.horizontal-field .p-autocomplete,
+.horizontal-field .p-calendar,
+.horizontal-field .p-textarea {
+  flex: 1;
+}
+
+.botoes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.textarea-custom {
+  resize: vertical;
+  min-height: 100px;
+}
+</style>

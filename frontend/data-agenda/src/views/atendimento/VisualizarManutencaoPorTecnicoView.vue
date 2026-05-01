@@ -44,7 +44,7 @@
             <Button 
               icon="pi pi-eye" 
               class="p-button-rounded p-button-info p-button-sm" 
-              @click="$router.push(`/manutencao/${slotProps.data.id}`)" 
+              @click="$router.push({name:'atendimento-finalizar', params: { id: slotProps.data.id }})" 
             />
           </template>
         </Column>
@@ -62,7 +62,6 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import { FilterMatchMode } from '@primevue/core/api';
 
@@ -72,29 +71,23 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
+// Defina o id do técnico (pode vir de rota, store, ou props)
+let usuario = sessionStorage.getItem('usuario');
+let tecnico = JSON.parse(usuario).id; // exemplo fixo, substitua conforme sua lógica
+const tecnicoId = ref(tecnico);
+
 const carregarManutencoes = async () => {
   try {
-    const response = await axios.get(`${URL}/manutencoes`);
+    const response = await axios.get(`${URL}/manutencao/listar-tecnico/${tecnicoId.value}`);
     manutencoes.value = response.data;
   } catch (error) {
     console.error("Erro ao carregar manutenções:", error);
   }
 };
 
-const formatDate = (value) => {
-    if (!value) return "N/A";
-    if (Array.isArray(value)) {
-        return `${String(value[2]).padStart(2, '0')}/${String(value[1]).padStart(2, '0')}/${value[0]}`;
-    }
-    if (typeof value === 'string' && value.includes('-')) {
-        const [year, month, day] = value.split('-');
-        return `${day}/${month}/${year}`;
-    }
-    return value;
-};
-
 onMounted(carregarManutencoes);
 </script>
+
 
 <style scoped>
 .card {
