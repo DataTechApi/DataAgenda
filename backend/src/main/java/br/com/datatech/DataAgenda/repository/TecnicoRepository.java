@@ -11,13 +11,10 @@ import java.util.Optional;
 @Repository
 public interface TecnicoRepository extends JpaRepository<Tecnico, Long> {
 
-   @Query("select count(t) from Tecnico t where t.isAtivo = true")
-   public Long contarTecnicosAtivos();
+    @Query("select count(t) from Tecnico t where t.isAtivo = true")
+    public Long contarTecnicosAtivos();
 
-  Tecnico findByEmail(String email);
-
-
-
+    Tecnico findByEmail(String email);
 
 
 }

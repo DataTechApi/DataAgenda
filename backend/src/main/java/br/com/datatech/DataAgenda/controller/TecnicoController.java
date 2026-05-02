@@ -3,6 +3,7 @@ package br.com.datatech.DataAgenda.controller;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.datatech.DataAgenda.entity.dto.response.TecnicoDTOResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -40,17 +41,15 @@ public class TecnicoController{
     }
     @GetMapping("/buscartodos")
     @Operation(summary = "Listar todos os técnicos", description = "Endpoint para listar todos os técnicos cadastrados no DataAgenda")
-    public ResponseEntity<List<Tecnico>> listarTodos() {
+    public ResponseEntity<List<TecnicoDTOResponse>> listarTodos() {
         return ResponseEntity.ok(tecnicoService.listarTodos());
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar técnico por ID", description = "Endpoint para buscar um técnico pelo seu ID no DataAgenda")
-    public ResponseEntity<Tecnico> buscarPorId(@PathVariable Long id) {
-        Optional<Tecnico> tecnicoOpt = tecnicoService.buscarPorId(id);
-        if (tecnicoOpt.isEmpty()) 
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Técnico não encontrado !!!");
-        return ResponseEntity.ok(tecnicoOpt.get());
+    public ResponseEntity<TecnicoDTOResponse> buscarPorId(@PathVariable Long id) {
+       TecnicoDTOResponse tecnico= tecnicoService.buscarPorId(id);
+        return ResponseEntity.ok(tecnico);
         
     }
     @GetMapping("/contartecnicosativos")

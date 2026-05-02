@@ -5,14 +5,15 @@ import java.util.Optional;
 
 import br.com.datatech.DataAgenda.entity.Tecnico;
 import br.com.datatech.DataAgenda.entity.dto.request.TecnicoDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.response.TecnicoDTOResponse;
 
 public interface TecnicoService {
 
     void cadastrarTecnico(TecnicoDTORequest tecnico);
 
-    List<Tecnico> listarTodos();
+    List<TecnicoDTOResponse> listarTodos();
 
-    Optional<Tecnico> buscarPorId(Long id);
+    TecnicoDTOResponse buscarPorId(Long id);
 
     Long contarTecnicosAtivos();
 }
