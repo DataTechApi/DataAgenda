@@ -2,7 +2,9 @@ package br.com.datatech.DataAgenda.service;
 
 import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.Sistema;
+import br.com.datatech.DataAgenda.entity.StatusManutencao;
 import br.com.datatech.DataAgenda.entity.Tecnico;
+import br.com.datatech.DataAgenda.entity.dto.request.FinalizarAtendimentoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
@@ -63,6 +65,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .dataAgendada(m.getDataAgendada())
                         .dataRealizada(m.getDataRealizada())
                         .tipoManutencao(m.getTipoManutencao())
+                        .descricaoAtendimento(m.getDescricaoAtendimento())
                         .statusManutencao(m.getStatusManutencao())
                         .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
                         .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
@@ -86,24 +89,38 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         manutencao.setDescricao(manutencaoEntity.get().getDescricao());
         manutencao.setDataAgendada(manutencaoEntity.get().getDataAgendada());
         manutencao.setTecnicoNome(manutencaoEntity.get().getTecnico().getNome());
+        manutencao.setDescricaoAtendimento(manutencaoEntity.get().getDescricaoAtendimento());
         return manutencao;
     }
 
     @Override
     public List<ManutencaoDTOResponse> buscarManutencaoPorTecnico(Long id) {
 
-        return manutencaoRepository.findAll().stream()
+        return manutencaoRepository.buscarManutencaoPorTecnico(id).stream()
                 .map(m -> ManutencaoDTOResponse.builder()
                         .id(m.getId())
                         .descricao(m.getDescricao())
                         .dataAgendada(m.getDataAgendada())
                         .dataRealizada(m.getDataRealizada())
                         .tipoManutencao(m.getTipoManutencao())
+                        .descricaoAtendimento(m.getDescricaoAtendimento())
                         .statusManutencao(m.getStatusManutencao())
                         .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
                         .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
                         .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
                         .build())
                 .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public void finalizarAtendimento(FinalizarAtendimentoDTORequest request) {
+        Optional<Manutencao> manutencao = manutencaoRepository.findById(request.getId());
+        if(manutencao.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
+        manutencao.get().setDescricaoAtendimento(request.getDescricaoAtendimento());
+        manutencao.get().setDataRealizada(request.getDataRealizada());
+        manutencao.get().setStatusManutencao(StatusManutencao.EXECUTADA);
+        manutencaoRepository.save(manutencao.get());
+
     }
 }

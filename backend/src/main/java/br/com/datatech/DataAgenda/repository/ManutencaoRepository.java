@@ -2,8 +2,10 @@ package br.com.datatech.DataAgenda.repository;
 
 import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.StatusManutencao;
+import org.hibernate.query.NativeQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -25,6 +27,8 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
     @Query("SELECT m FROM Manutencao m WHERE m.statusManutencao = 'PENDENTE' ORDER BY m.dataAgendada ASC LIMIT 5")
     List<Manutencao> findTop5PendingOrderByDataAgendadaAsc();
 
-    @Query("select m from Manutencao m join m.tecnico t where t.id = :id" )
-    List<Manutencao> buscarManutencaoPorTecnico(Long id);
+    @Query("SELECT m FROM Manutencao m WHERE m.tecnico.id = :id AND m.statusManutencao = 'PENDENTE'")
+    List<Manutencao> buscarManutencaoPorTecnico(@Param("id") Long id);
+
+
 }

@@ -35,8 +35,15 @@
                 </span>
             </template>
         </Column>
+        <Column field="statusManutencao" header="Data Agendada" sortable>
+            <template #body="slotProps">
+                <span :class="'status-badge ' + (slotProps.data.dataAgendada || '').toLowerCase()">
+                    {{ slotProps.data.dataAgendada }}
+                </span>
+            </template>
+        </Column>
 
-        <Column field="descricao" header="Descrição"></Column>
+        
 
         <!-- Nova coluna de ações -->
         <Column header="Ações">

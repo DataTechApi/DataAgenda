@@ -23,4 +23,5 @@ public class ManutencaoDTOResponse {
     private StatusManutencao statusManutencao;
     private String sistemaNome;
     private String clienteNome;
+    private String descricaoAtendimento;
 }

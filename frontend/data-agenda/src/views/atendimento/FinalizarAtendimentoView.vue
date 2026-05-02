@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <h2>Visualização de Manutenção</h2>
-    <form @submit.prevent="salvarAtualizacao">
+    <form @submit.prevent="finalizarAtendimento">
       <div class="p-fluid p-formgrid p-grid">
 
         <!-- Cliente (somente leitura) -->
@@ -39,7 +39,7 @@
           <label for="dataAtendimento">Data Atendimento</label>
           <DatePicker 
             id="dataAtendimento" 
-            v-model="manutencao.dataAtendimento" 
+            v-model="manutencao.dataRealizada" 
             dateFormat="dd/mm/yy"
             placeholder="dd/mm/aaaa"
             showIcon
@@ -51,7 +51,7 @@
           <label for="descricao">Descrição do Serviço</label>
           <Textarea 
             id="descricao" 
-            v-model="manutencao.descricao" 
+            v-model="manutencao.descricaoAtendimento"
             rows="4" 
             autoResize 
             class="full-width textarea-custom" />
@@ -69,7 +69,7 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Textarea from "primevue/textarea";
 import InputText from "primevue/inputtext";
@@ -82,6 +82,7 @@ export default {
   setup() {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
+    const router = useRouter();
 
     const manutencao = ref({
       id: null,
@@ -92,6 +93,8 @@ export default {
       statusManutencao: "",
       descricao: "",
       dataAtendimento: null,
+      descricaoAtendimento: "",
+      dataRealizada: null,
     });
 
     // Carregar dados da manutenção pelo ID vindo da rota
@@ -104,23 +107,31 @@ export default {
       }
     });
 
-    const salvarAtualizacao = async () => {
+    const finalizarAtendimento = async () => {
       try {
         const payload = {
-          descricao: manutencao.value.descricao,
-          dataAtendimento: manutencao.value.dataAtendimento
-            ? manutencao.value.dataAtendimento.toISOString().split("T")[0]
+          descricaoAtendimento: manutencao.value.descricaoAtendimento,
+          dataRealizada: manutencao.value.dataRealizada
+            ? new Date(manutencao.value.dataRealizada).toISOString().split("T")[0]
             : null,
         };
-        const response = await axios.put(`${URL}/manutencao/${manutencao.value.id}`, payload);
-        alert(response.data || "Atualização salva com sucesso!");
+
+        const response = await axios.patch(
+          `${URL}/manutencao/finalizar-atendimento/${manutencao.value.id}`,
+          payload
+        );
+
+        alert(response.data || "Atendimento finalizado com sucesso!");
+
+        // Redireciona para a página Visualizar Tarefa
+        router.push("/atendimento");
       } catch (error) {
-        console.error("Erro ao atualizar manutenção:", error);
+        console.error("Erro ao finalizar atendimento:", error);
         alert("Erro ao salvar alterações.");
       }
     };
 
-    return { manutencao, salvarAtualizacao };
+    return { manutencao, finalizarAtendimento };
   },
 };
 </script>

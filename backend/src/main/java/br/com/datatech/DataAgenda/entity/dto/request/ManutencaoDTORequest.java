@@ -18,4 +18,5 @@ public class ManutencaoDTORequest {
     private TipoManutencao tipoManutencao;
     private StatusManutencao statusManutencao;
     private Long sistemaId;
+
 }

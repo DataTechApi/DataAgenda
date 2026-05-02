@@ -2,6 +2,7 @@ package br.com.datatech.DataAgenda.controller;
 
 import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.Tecnico;
+import br.com.datatech.DataAgenda.entity.dto.request.FinalizarAtendimentoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.service.ManutencaoService;
@@ -54,6 +55,12 @@ public class ManutencaoController {
     public ResponseEntity<ManutencaoDTOResponse> buscarPorId(@PathVariable Long id) {
         ManutencaoDTOResponse manutencao = manutencaoService.buscarPorId(id);
         return ResponseEntity.ok(manutencao);
+    }
+    @PatchMapping("/finalizar-atendimento/{id}")
+    public ResponseEntity<String> finalizarAtendimento(@PathVariable Long id, @RequestBody FinalizarAtendimentoDTORequest request){
+        request.setId(id);
+        manutencaoService.finalizarAtendimento(request);
+        return ResponseEntity.ok("Manutenção atualizado com sucesso!!!");
     }
 
 
