@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
+import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponseSemSistema;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,16 @@ public class ClienteServiceImpl implements ClienteService {
         }
         throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
 
+    }
+
+    @Override
+    public ClienteDTOResponseSemSistema buscarClientPorId(Long id) {
+        Optional<Cliente> clienteEntity = clienteRepository.findById(id);
+        if (clienteEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não encontrado!!!");
+
+        ClienteDTOResponseSemSistema cliente = model.map(clienteEntity, ClienteDTOResponseSemSistema.class);
+        return cliente;
     }
 
     @Override

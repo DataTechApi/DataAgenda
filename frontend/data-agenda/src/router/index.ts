@@ -23,6 +23,8 @@ import VisualizarTarefasTecnicoView from '../views/atendimento/VisualizarTarefas
 import VisualizarManutencaoPorTecnicoView from '../views/atendimento/VisualizarManutencaoPorTecnicoView.vue'
 import FinalizarAtendimentoView from '../views/atendimento/FinalizarAtendimentoView.vue'
 import EditarManutencaoView from '../views/manutencao/EditarManutencaoView.vue'
+import EditarClienteView from '../views/cliente/EditarClienteView.vue'
+import EditarSistemaView from '../views/sistema/EditarSistemaView.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -75,6 +77,12 @@ const router = createRouter({
           component: CadastroClientesView,
         },
         {
+          path: 'cliente/editar:id',
+          name: 'cliente-editar',
+          component: EditarClienteView,
+          props:true
+        },
+        {
           path: 'cliente/visualizar',
           name: 'cliente-visualizar',
           component: VisualizarClienteView,
@@ -111,6 +119,12 @@ const router = createRouter({
           path: 'sistema/cadastrar',
           name: 'sistema-cadastrar',
           component: CadastroSistemasView,
+        },
+        {
+          path: 'sistema/editar',
+          name: 'sistema-editar',
+          component: EditarSistemaView,
+          props:true
         },
         {
           path: 'sistema/visualizar',

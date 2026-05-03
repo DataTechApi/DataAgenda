@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
+import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponseSemSistema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -35,8 +36,8 @@ public class ClienteController {
     }
     @GetMapping("/{id}")
     @Operation(summary = "Buscar cliente por ID", description = "Endpoint para buscar um cliente pelo seu ID no DataAgenda")
-    public ResponseEntity<Optional<Cliente>> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(clienteService.buscarPorId(id));
+    public ResponseEntity<ClienteDTOResponseSemSistema> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(clienteService.buscarClientPorId(id));
     }
     @GetMapping("/buscartodos")
     @Operation(summary = "Listar todos os clientes", description = "Endpoint para listar todos os clientes cadastrados no DataAgenda")

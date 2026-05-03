@@ -20,7 +20,7 @@
             <Button 
               icon="pi pi-pencil" 
               class="p-button-rounded p-button-warning p-button-sm"
-              @click="editarCliente(slotProps.data)" 
+              @click="$router.push({name:'cliente-editar', params: { id: slotProps.data.id }})" 
             />
             <Button 
               icon="pi pi-trash" 

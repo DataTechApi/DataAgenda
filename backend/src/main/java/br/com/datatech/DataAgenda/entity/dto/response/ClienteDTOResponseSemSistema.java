@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
+
 
 @Data
 @AllArgsConstructor
@@ -21,5 +23,6 @@ public class ClienteDTOResponseSemSistema {
     private String localidade;
     private LocalDate dataInicioContrato;
     private LocalDate dataFimContrato;
+
 
 }
