@@ -71,7 +71,7 @@
       <div class="table-card">
         <div class="flex justify-content-between align-items-center mb-3">
           <h3>Próximas Manutenções Agendadas</h3>
-          <Button label="Ver Todas" icon="pi pi-external-link" text @click="$router.push('/manutencao/visualizar')" />
+          <Button label="Ver Todas" icon="pi pi-external-link" text @click="$router.push('/dashboard/manutencao/visualizar')" />
         </div>
         <DataTable :value="metrics.proximasManutencoes" responsiveLayout="stack" breakpoint="960px" class="p-datatable-sm">
           <Column field="dataAgendada" header="Data">
