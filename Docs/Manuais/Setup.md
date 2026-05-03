@@ -10,7 +10,7 @@ Git instalado na máquina
 
 Versão 17 do Java e npm instalado na máquina
 
-Docker 
+Docker Desktop (Para windows)
 
 ## Clonando o Repositório
 
@@ -31,10 +31,9 @@ Instale as dependências necessárias para cada submódulo:
 
 ``` bash
 
-# Instale as dependências
+# Instale as dependências(FrontEnd) dentro da pasta data-agenda
 npm install
-npm install -g @vue/devtools
-npm install vue-router@4
+npm i
 
 ```
 
