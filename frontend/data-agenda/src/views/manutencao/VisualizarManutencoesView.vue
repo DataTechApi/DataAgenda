@@ -51,6 +51,16 @@
         </Column>
 
         <Column field="descricao" header="Descrição"></Column>
+        <Column header="Ações">
+  <template #body="slotProps">
+    <Button 
+      label="" 
+      icon="pi pi-eye" 
+      class="p-button-rounded p-button-info p-button-sm" 
+      @click="$router.push({name:'manutencao-editar', params: { id: slotProps.data.id }})"
+    />
+  </template>
+</Column>
 
         <template #empty>
             <p class="placeholder-text">Nenhuma manutenção encontrada.</p>
