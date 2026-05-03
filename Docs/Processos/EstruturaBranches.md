@@ -7,7 +7,7 @@ sprint/<nome-da-sprint>: Para novas funcionalidades.
 
 ## Prazo para Último Commit e PR
 
-- **Domingo às 18h** da semana estabelecida para a speintm, o código final deve estar pronto para ser submetido à branch `main` (Produção).
+- **Domingo às 18h** da semana estabelecida para a sprint, o código final deve estar pronto para ser submetido à branch `main` (Produção).
 
 ## Processo de Code Review
 
