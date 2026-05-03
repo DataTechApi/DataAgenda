@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Random;
@@ -14,6 +16,8 @@ import java.util.Random;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sistema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,19 +42,7 @@ public class Sistema {
     @OneToMany(mappedBy = "sistema")
     private List<Manutencao> manutencoes;
 
-    public Sistema(){}
 
-    @PrePersist
-    public void gerarNome() {
-        if (this.tipoSistema != null) {
-            if (this.tipoSistema.equals(TipoSistema.BALAO)) {
-                int numeroBalao = new Random().nextInt(5000) + 1000;
-                this.nome = "BAL-" + numeroBalao;
-            } else if (this.tipoSistema.equals(TipoSistema.CAMERAS)) {
-                int numeroCameras = new Random().nextInt(10000) + 5000;
-                this.nome = "CAM-" + numeroCameras;
-            }
-        }
-    }
+
 
 }
