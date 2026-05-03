@@ -3,8 +3,8 @@
 --------------------------------------------------
 -- TECNICO
 --------------------------------------------------
-INSERT INTO tecnico (nome, email, telefone, senha, is_ativo, nivel)
-VALUES ('João Silva', 'joao.silva@datatech.com', '11999999999', 'senha123', 1, 'PLENO');
+INSERT INTO tecnico (nome, email, telefone, senha, is_ativo, nivel, role)
+VALUES ('João Silva', 'joao.silva@datatech.com', '11999999999', 'senha123', 1, 'PLENO', 'TECNICO');
 
 INSERT INTO tecnico (nome, email, telefone, senha, is_ativo, nivel, role)
 VALUES ('admin', 'admin@admin', '11988888888', 'senha123', 1, 'SENIOR', 'ADMIN');
@@ -22,12 +22,12 @@ VALUES ('Vale', '98765432000188', 'Marina Costa', '11966666666', 'marina.costa@v
 -- SISTEMA
 --------------------------------------------------
 -- cliente_id = 1 (Petrobras)
-INSERT INTO sistema (nome, tipo_sistema, data_proxima_manutencao, is_disponivel, cliente_id)
-VALUES ('Petrobras - SP', 'CAMERAS', DATE '2024-12-01', 1, 1);
+INSERT INTO sistema (nome, tipo_sistema, data_proxima_manutencao, DATA_CADASTRO, is_disponivel, cliente_id)
+VALUES ('Petrobras - SP', 'CAMERAS', DATE '2024-12-01', DATE '2024-01-01', 1, 1);
 
 -- cliente_id = 2 (Vale)
-INSERT INTO sistema (nome, tipo_sistema, data_proxima_manutencao, is_disponivel, cliente_id)
-VALUES ('Vale - RJ', 'BALAO', DATE '2024-11-15', 1, 2);
+INSERT INTO sistema (nome, tipo_sistema, data_proxima_manutencao, DATA_CADASTRO, is_disponivel, cliente_id)
+VALUES ('Vale - RJ', 'BALAO', DATE '2024-11-15', DATE '2024-01-01', 1, 2);
 
 --------------------------------------------------
 -- MANUTENCAO
