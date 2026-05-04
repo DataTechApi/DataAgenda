@@ -1,41 +1,50 @@
 package br.com.datatech.DataAgenda.service;
 
+import br.com.datatech.DataAgenda.entity.Cliente;
 import br.com.datatech.DataAgenda.entity.Sistema;
+import br.com.datatech.DataAgenda.entity.TipoSistema;
 import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
-import br.com.datatech.DataAgenda.repository.SistemaReepository;
+import br.com.datatech.DataAgenda.entity.dto.response.SistemaDTOResponse;
+import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SistemaServiceImpl implements SistemaService {
 
-    private final SistemaReepository sistemaReepository;
+    private final SistemaRepository sistemaRepository;
     private final ModelMapper model;
+    private final ClienteService clienteService;
 
-    public SistemaServiceImpl(SistemaReepository sistemaReepository, ModelMapper model) {
-        this.sistemaReepository = sistemaReepository;
+    public SistemaServiceImpl(SistemaRepository sistemaRepository, ModelMapper model, ClienteService clienteService) {
+        this.sistemaRepository = sistemaRepository;
         this.model = model;
+        this.clienteService = clienteService;
     }
 
     @Override
     public void cadastrarSistema(SistemaDTORequest request) {
-        if(request.getNumeroSerie().isBlank()||
-            request.getNumeroSerie().isEmpty()){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "Dados inválidos!!!");
-        }
-        Sistema sistema= model.map(request,Sistema.class);
-        sistemaReepository.save(sistema);
+        if(request.getTipoSistema().isEmpty()||request.getTipoSistema().isBlank())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados inválidos!!!");;
+        Optional<Cliente> cliente = clienteService.buscarPorId(request.getClienteId());
+        Sistema sistema= new Sistema();
+        String nome =cliente.get().getNome()+"-" + cliente.get().getLocalidade();
+        sistema.setNome(nome);
+        sistema.setTipoSistema(TipoSistema.valueOf(request.getTipoSistema()));
+        sistema.setDataCadastro(LocalDate.now());
+        sistema.setCliente(cliente.get());
+        sistemaRepository.save(sistema);
     }
 
     @Override
     public Optional<Sistema> buscarPorId(Long id) {
-        Optional<Sistema> sistema = sistemaReepository.findById(id);
+        Optional<Sistema> sistema = sistemaRepository.findById(id);
         if(sistema.isPresent()){
             return sistema;
         }
@@ -43,7 +52,15 @@ public class SistemaServiceImpl implements SistemaService {
     }
 
     @Override
-    public List<Sistema> listarTodos() {
-        return sistemaReepository.findAll();
+    public List<SistemaDTOResponse> listarTodos() {
+        List<Sistema> sistemas = sistemaRepository.findAll();
+        List<SistemaDTOResponse> sistemaDTOResponses = sistemas.stream()
+                .map(sistema -> model.map(sistema, SistemaDTOResponse.class))
+                .toList();
+        return sistemaDTOResponses;
+    }
+    @Override
+    public Long contarSistemas() {
+        return sistemaRepository.contarSistemas();
     }
 }

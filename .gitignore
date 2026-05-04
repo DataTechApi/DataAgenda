@@ -1,0 +1,71 @@
+# --- DEPENDENCIES ---
+node_modules/
+jspm_packages/
+typings/
+
+# --- BUILD OUTPUTS ---
+dist/
+build/
+target/
+out/
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# --- ENVIRONMENT & SECRETS ---
+.env
+.env.*
+!.env.example
+*.local
+*.secret
+*.pem
+*.key
+*.cert
+*.p12
+*.jks
+*.pfx
+
+# --- IDE & EDITORS ---
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+.idea/
+*.iws
+*.iml
+*.ipr
+*.swp
+*.swo
+.project
+.classpath
+.factorypath
+.settings/
+.nbproject/
+
+# --- OS METADATA ---
+.DS_Store
+.DS_Store?
+._*
+Thumbe.db
+ehthumbs.db
+desktop.ini
+
+# --- LOGS & TEMPORARY ---
+*.log
+logs/
+tmp/
+temp/
+*.pid
+*.seed
+*.pid.lock
+
+# --- OTHER ---
+.npm
+.eslintcache
+.stylelintcache
+.parcel-cache
+.cache/
+/frontend/data-agenda/node_modules
+/frontend/data-agenda/node_modules

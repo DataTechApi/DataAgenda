@@ -1,20 +1,39 @@
-# Ignorar pasta target (build do Maven)
+# --- BUILD & ARTIFACTS ---
 target/
-
-# Ignorar arquivos de log
-*.log
-
-# Ignorar arquivos compilados e pacotes
-*.class
 *.jar
 *.war
 *.ear
+*.zip
+*.tar.gz
+*.rar
 
-# Ignorar relatórios de teste
-surefire-reports/
+# --- LOGS ---
+*.log
+logs/
 
-# Ignorar configurações locais do VS Code
+# --- JAVA & COMPILER ---
+*.class
+*.factorypath
+
+# --- SECRETS & LOCAL CONFIG ---
+.env
+.env.*
+application-local.properties
+application-dev.properties
+*.jks
+*.p12
+*.pem
+
+# --- IDE (IntelliJ, Eclipse, VS Code) ---
+.idea/
+*.iml
+*.iws
+*.ipr
+.settings/
+.classpath
+.project
 .vscode/
 
-# Ignorar configurações de devcontainer
-.devcontainer/
+# --- SYSTEM ---
+.DS_Store
+Thumbs.db

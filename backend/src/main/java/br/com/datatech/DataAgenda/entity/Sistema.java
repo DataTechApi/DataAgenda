@@ -1,30 +1,48 @@
 package br.com.datatech.DataAgenda.entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import lombok.Data;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Random;
+
+
 
 @Entity
-@Data
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Sistema {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String numeroSerie;
+    private String nome;
+
+    @Enumerated(EnumType.STRING)
+    private TipoSistema tipoSistema ;
+
+    private LocalDate dataProximaManutencao;
+
+    private Boolean isDisponivel = true;
+
+    private LocalDate dataCadastro = LocalDate.now();
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
+    @com.fasterxml.jackson.annotation.JsonIgnore
     @OneToMany(mappedBy = "sistema")
     private List<Manutencao> manutencoes;
+
+
+
 
 }

@@ -10,10 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Manutencao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +32,8 @@ public class Manutencao {
     private LocalDate dataRealizada;
 
     private LocalDate dataAgendada;
+
+    private String descricaoAtendimento;
 
     @Enumerated(EnumType.STRING)
     private TipoManutencao tipoManutencao;

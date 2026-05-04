@@ -1,9 +1,10 @@
+
 # API 4º Semestre BD  
 # DATAGENDA
 
 ## Grupo DataTech
 
-| [Desafio](#-desafio) | [Solução](#-solução) | [Backlog do Produto](#-backlog-do-produto) | [DoR](#-dor---definition-of-ready) | [DoD](#-dod---definition-of-done) | [Cronograma de Sprints](#-cronograma-de-sprints) | [Tecnologias](#-tecnologias) | [Manual de Instalação](#-manual-de-instalação) | [Equipe](#-equipe) |
+| [Desafio](#-desafio) | [Solução](#-solução) | [Backlog do Produto](#-Backlog-do-Produto) | [DoR](#-dor---definition-of-ready) | [DoD](#-dod---definition-of-done) | [Cronograma de Sprints](#-cronograma-de-sprints) | [Tecnologias](#-tecnologias) | [Manual de Instalação](#-manual-de-instalação) | [Equipe](#-equipe) |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|
 
 **Status do Projeto:** Em Desenvolvimento 🚧  
@@ -15,6 +16,8 @@
 ---
 
 # 🏅 Desafio
+
+O problema apresentado foi a falta de um programa que gerencia a alocação, visualização e extração de dados sobre as diversas manutenções correntivas e preventivas dos sistemas dos clientes que compôem o ecosistema da Altave
 
 O desafio consiste em desenvolver uma **aplicação web para gerenciamento de manutenções preventivas em sistemas corporativos**.
 
@@ -46,24 +49,81 @@ O objetivo é **facilitar a visualização e gerenciamento das manutenções pre
 
 ---
 
-# 📋 Backlog do Produto
+## 📋 Backlog do Produto
 
-| Rank | Prioridade | User Story | Sprint Sugerida | Status |
-|-----|-----------|------------|----------------|--------|
-| 1 | Alta | Como **administrador**, quero visualizar todas as telas que irão compor o sistema | Sprint 1 | Finalizado |
-| 2 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados | Sprint 1 | Finalizado |
-| 3 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados | Sprint 2 | Pendente |
-| 4 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo | Sprint 2 | Pendente |
-| 5 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema | Sprint 2 | Pendente |
-| 6 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado | Sprint 2 | Pendente |
-| 7 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim | Sprint 2 | Pendente |
-| 8 | Alta | Como **técnico**, quero alterar o status do chamado (pendente, em andamento, concluído) | Sprint 2 | Pendente |
-| 9 | Média | Como **técnico**, quero registrar observações ou descrição da manutenção realizada | Sprint 2 | Pendente |
-| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status | Sprint 3 | Pendente |
-| 11 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo | Sprint 3 | Pendente |
-| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas | Sprint 3 | Pendente |
-| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções (concluídas, pendentes e atrasadas) | Sprint 3 | Pendente |
-| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários do sistema | Sprint 3 | Pendente |
+| Rank | Prioridade | User Story | Story Points | Sprint | Requisito | Status |
+|------|-----------|-----------|--------------|--------|-----------|--------|
+| 1 | Alta | Como **gestor**, quero agendar uma manutenção preventiva para um ativo, para evitar falhas e manutenções corretivas | 5 | 2 | R02 | ✅ |
+| 2 | Alta | Como **gestor**, quero abrir chamados de manutenção corretiva quando ocorrer um problema, para registrar e acompanhar a resolução | 5 | 2 | R02 | ✅ |
+| 3 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado, para garantir que a manutenção seja executada | 3 | 2 | R02 | ✅ |
+| 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ✅ |
+| 5 | Alta | Como **técnico**, quero alterar o status do chamado, para refletir o andamento da manutenção | 3 | 2 | R03 | ✅ |
+| 6 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | ⬜ |
+| 7 | Alta | Como **administrador**, quero acessar um menu com todas as telas do sistema, para navegar entre as funcionalidades | 3 | 1 | R01 | ⬜ |
+| 8 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados, para acompanhar status e acessar detalhes de cada ativo | 3 | 1 | R01 | ⬜ |
+| 9 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados, para corrigir dados incorretos ou excluir ativos inativos | 5 | 2 | R01 | ⬜ |
+| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos| 5 | 3 | R04 | ⬜ |
+| 11 | Média | Como **técnico**, quero registrar observações da manutenção realizada, para registrar o atedimento e ter um histórico | 2 | 2 | R03 | ⬜ |
+| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | ⬜ |
+| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | ⬜ |
+| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | ⬜ |
+
+---
+
+# 📋 Requisitos do Sistema
+
+## 🔵 R01 – Gestão de Ativos
+
+| Item | Descrição |
+|------|----------|
+| **Código** | R01 |
+| **Nome** | Gestão de Ativos |
+| **Descrição** | Permitir o cadastro e gerenciamento dos ativos que passarão por manutenção |
+| **Funcionalidades** | - Cadastrar ativos <br> - Listar ativos <br> - Editar ativos <br> - Associar ativos a manutenções |
+
+---
+
+## 🟠 R02 – Gestão de Manutenção (Chamados)
+
+| Item | Descrição |
+|------|----------|
+| **Código** | R02 |
+| **Nome** | Gestão de Manutenção |
+| **Descrição** | Permitir o controle completo de chamados de manutenção preventiva e corretiva |
+| **Funcionalidades** | - Agendar manutenção preventiva <br> - Abrir chamado corretivo <br> - Atribuir técnico ao chamado <br> - Visualizar detalhes do chamado |
+
+---
+
+## 🟢 R03 – Operações do Técnico
+
+| Item | Descrição |
+|------|----------|
+| **Código** | R03 |
+| **Nome** | Operações do Técnico |
+| **Descrição** | Permitir que o técnico visualize e atualize suas atividades de manutenção |
+| **Funcionalidades** | - Visualizar chamados atribuídos <br> - Atualizar status do chamado <br> - Acompanhar histórico de atividades |
+
+---
+
+## 🟣 R04 – Relatórios e Monitoramento
+
+| Item | Descrição |
+|------|----------|
+| **Código** | R04 |
+| **Nome** | Relatórios e Monitoramento |
+| **Descrição** | Permitir a visualização de dados, histórico e métricas de manutenção para apoio à tomada de decisão |
+| **Funcionalidades** | - Visualizar histórico de manutenções por ativo <br> - Visualizar painel de chamados e status <br> - Gerar relatórios de manutenções <br> - Visualizar estatísticas e indicadores |
+
+---
+
+## 🔴 R05 – Gestão de Usuários e Permissões
+
+| Item | Descrição |
+|------|----------|
+| **Código** | R05 |
+| **Nome** | Gestão de Usuários e Permissões |
+| **Descrição** | Permitir o controle de acesso ao sistema por meio de perfis e permissões de usuários |
+| **Funcionalidades** | - Gerenciar usuários <br> - Definir perfis de acesso (administrador, gestor, técnico) <br> - Controlar permissões de funcionalidades |
 
 ---
 
@@ -104,7 +164,7 @@ Uma **User Story é considerada concluída** quando:
 | Sprint | Link |
 |------|------|
 | Sprint1 | https://github.com/orgs/DataTechApi/projects/11 |
-| Sprint2 | https://github.com/orgs/DataTechApi/projects/12 |
+| Sprint2 | https://github.com/orgs/DataTechApi/projects/13 |
 | Sprint3 | https://github.com/orgs/DataTechApi/projects/13 |
 
 ---
@@ -205,3 +265,4 @@ A estrutura básica de um commit segue o padrão:
 | Cauê Gandini | Product Owner |
 | Davi Gramacho | Desenvolvedor |
 | Abimael Santos | Desenvolvedor |
+| Cleber Kirch | Desenvolvedor |
