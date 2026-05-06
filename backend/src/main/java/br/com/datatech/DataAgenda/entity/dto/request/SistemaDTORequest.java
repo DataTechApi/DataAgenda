@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class SistemaDTORequest {
 
     private Long clienteId;
+    private Long tecnicoId;
     private String tipoSistema;
+    private Integer intervaloManutencao;
 }

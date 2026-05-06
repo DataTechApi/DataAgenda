@@ -11,9 +11,9 @@
         <template #body="slotProps">
           <div class="acoes">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm"
-              @click="editarTecnico(slotProps.data)" />
+              @click="$router.push({name:'tecnico-editar', params: { id: slotProps.data.id }})" />
             <Button icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
-              @click="excluirTecnico(slotProps.data)" />
+              @click="$router.push({name:'tecnico-editar', params: { id: slotProps.data.id }})" />
           </div>
         </template>
       </Column>

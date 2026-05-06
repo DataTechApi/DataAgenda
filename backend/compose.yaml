@@ -4,12 +4,12 @@ services:
     image: gvenzl/oracle-xe:latest
     container_name: agenda-db
     ports:
-      - "1522:1521"   # Porta padrão do Oracle Listener
-      - "5500:5500"   # Porta para Oracle EM Express
+      - "1522:1521"
+      - "5500:5500"
     environment:
-      ORACLE_PASSWORD: "admin123"   # Defina a senha do usuário SYS, SYSTEM e PDBADMIN
+      ORACLE_PASSWORD: "admin123"
     volumes:
-      - oracle-data:/opt/oracle/oradata  # Persistência dos dados
+      - oracle-data:/opt/oracle/oradata
 
 volumes:
   oracle-data:

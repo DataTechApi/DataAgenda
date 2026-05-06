@@ -1,9 +1,6 @@
 package br.com.datatech.DataAgenda.service;
 
-import br.com.datatech.DataAgenda.entity.Manutencao;
-import br.com.datatech.DataAgenda.entity.Sistema;
-import br.com.datatech.DataAgenda.entity.StatusManutencao;
-import br.com.datatech.DataAgenda.entity.Tecnico;
+import br.com.datatech.DataAgenda.entity.*;
 import br.com.datatech.DataAgenda.entity.dto.request.FinalizarAtendimentoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
@@ -13,6 +10,7 @@ import br.com.datatech.DataAgenda.repository.TecnicoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -63,7 +61,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .id(m.getId())
                         .descricao(m.getDescricao())
                         .dataAgendada(m.getDataAgendada())
-                        .dataRealizada(m.getDataRealizada())
+                        .dataAtendimento(m.getDataAtendimento())
                         .tipoManutencao(m.getTipoManutencao())
                         .descricaoAtendimento(m.getDescricaoAtendimento())
                         .statusManutencao(m.getStatusManutencao())
@@ -84,10 +82,10 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         manutencao.setId(manutencaoEntity.get().getId());
         manutencao.setStatusManutencao(manutencaoEntity.get().getStatusManutencao());
         manutencao.setTipoManutencao(manutencaoEntity.get().getTipoManutencao());
-        manutencao.setDataRealizada(manutencaoEntity.get().getDataRealizada());
+        manutencao.setDataAgendada(manutencaoEntity.get().getDataAgendada());
         manutencao.setSistemaNome(manutencaoEntity.get().getSistema().getNome());
         manutencao.setDescricao(manutencaoEntity.get().getDescricao());
-        manutencao.setDataAgendada(manutencaoEntity.get().getDataAgendada());
+        manutencao.setDataAtendimento(manutencaoEntity.get().getDataAtendimento());
         manutencao.setTecnicoNome(manutencaoEntity.get().getTecnico().getNome());
         manutencao.setDescricaoAtendimento(manutencaoEntity.get().getDescricaoAtendimento());
         return manutencao;
@@ -101,7 +99,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .id(m.getId())
                         .descricao(m.getDescricao())
                         .dataAgendada(m.getDataAgendada())
-                        .dataRealizada(m.getDataRealizada())
+                        .dataAtendimento(m.getDataAtendimento())
                         .tipoManutencao(m.getTipoManutencao())
                         .descricaoAtendimento(m.getDescricaoAtendimento())
                         .statusManutencao(m.getStatusManutencao())
@@ -113,12 +111,33 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
+    @Transactional
     public void finalizarAtendimento(FinalizarAtendimentoDTORequest request) {
         Optional<Manutencao> manutencao = manutencaoRepository.findById(request.getId());
         if(manutencao.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
+        if(manutencao.get().getTipoManutencao() == TipoManutencao.EMERGENCIAL){
+           finalizarAtendimento(manutencao, request);
+        }else {
+            finalizarAtendimento(manutencao, request);
+            criarManutencaPreventiva(manutencao);
+        }
+    }
+
+    private void criarManutencaPreventiva(Optional<Manutencao> manutencao){
+        Manutencao manutencaoNova = new Manutencao();
+        manutencaoNova.setStatusManutencao(StatusManutencao.PENDENTE);
+        manutencaoNova.setDataAgendada(manutencao.get().getDataAtendimento()
+                .plusDays(manutencao.get().getSistema().getIntervaloManutencao()));
+        manutencaoNova.setTecnico(manutencao.get().getTecnico());
+        manutencaoNova.setSistema(manutencao.get().getSistema());
+        manutencaoNova.setTipoManutencao(TipoManutencao.PREVENTIVA);
+        manutencaoNova.setDescricao("Manuteção Preventiva ");
+        manutencaoRepository.save(manutencaoNova);
+    }
+    private void finalizarAtendimento(Optional<Manutencao> manutencao, FinalizarAtendimentoDTORequest request){
         manutencao.get().setDescricaoAtendimento(request.getDescricaoAtendimento());
-        manutencao.get().setDataRealizada(request.getDataRealizada());
+        manutencao.get().setDataAtendimento(request.getDataAtendimento());
         manutencao.get().setStatusManutencao(StatusManutencao.EXECUTADA);
         manutencaoRepository.save(manutencao.get());
 

@@ -30,6 +30,31 @@
           />
         </div>
 
+        <!-- Técnico -->
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="tecnico">Técnico</label>
+          <Dropdown 
+            id="tecnico" 
+            v-model="sistema.tecnicoId" 
+            :options="tecnicos" 
+            optionLabel="nome" 
+            optionValue="id" 
+            placeholder="Selecione o técnico" 
+          />
+        </div>
+
+        <!-- Intervalo de Manutenção -->
+        <div class="p-field p-col-12 p-md-6 horizontal-field">
+          <label for="intervaloManutencao">Intervalo de Manutenção (em dias)</label>
+          <input 
+            id="intervaloManutencao" 
+            type="number" 
+            v-model="sistema.intervaloManutencao" 
+            placeholder="Ex: 30" 
+            class="p-inputtext" 
+          />
+        </div>
+
         <!-- Mensagem de erro -->
         <div v-if="erro" class="mensagem-erro">
           <i class="pi pi-exclamation-triangle"></i>
@@ -73,6 +98,8 @@ export default {
     const sistema = ref({
       tipoSistema: "",
       clienteId: "",
+      tecnicoId: "",          // novo campo
+      intervaloManutencao: null
     });
 
     const tipoSistema = [
@@ -81,6 +108,7 @@ export default {
     ];
 
     const clientes = ref([]);
+    const tecnicos = ref([]);
 
     const carregarClientes = async () => {
       try {
@@ -92,8 +120,18 @@ export default {
       }
     };
 
+    const carregarTecnicos = async () => {
+      try {
+        const response = await api.get(`${URL}/tecnico/buscartodos`);
+        tecnicos.value = response.data;
+      } catch (error) {
+        console.error("Erro ao carregar técnicos:", error);
+        erro.value = "Não foi possível carregar a lista de técnicos.";
+      }
+    };
+
     const limparFormulario = () => {
-      sistema.value = { tipoSistema: "", clienteId: "" };
+      sistema.value = { tipoSistema: "", clienteId: "", tecnicoId: "", intervaloManutencao: "" };
       erro.value = "";
     };
 
@@ -106,6 +144,14 @@ export default {
       }
       if (!sistema.value.clienteId) {
         erro.value = "Selecione um cliente.";
+        return;
+      }
+      if (!sistema.value.tecnicoId) {
+        erro.value = "Selecione um técnico.";
+        return;
+      }
+      if (!sistema.value.intervaloManutencao || sistema.value.intervaloManutencao <= 0) {
+        erro.value = "Informe um intervalo de manutenção válido.";
         return;
       }
 
@@ -132,9 +178,10 @@ export default {
 
     onMounted(() => {
       carregarClientes();
+      carregarTecnicos();
     });
 
-    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, loading, erro };
+    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, tecnicos, loading, erro };
   },
 };
 </script>
@@ -161,7 +208,7 @@ h2 {
   margin-bottom: 1.5rem;
 }
 .horizontal-field label {
-  width: 140px;
+  width: 180px;
   font-weight: 600;
   color: #f5f5f5;
 }

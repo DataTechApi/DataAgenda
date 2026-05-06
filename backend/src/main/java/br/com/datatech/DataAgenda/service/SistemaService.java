@@ -11,7 +11,7 @@ public interface SistemaService {
 
     void cadastrarSistema(SistemaDTORequest sistema);
 
-    Optional<Sistema> buscarPorId(Long id);
+    SistemaDTOResponse buscarPorId(Long id);
 
     List<SistemaDTOResponse> listarTodos();
 
