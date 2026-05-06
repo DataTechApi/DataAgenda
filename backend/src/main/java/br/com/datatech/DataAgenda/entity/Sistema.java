@@ -30,6 +30,8 @@ public class Sistema {
 
     private LocalDate dataProximaManutencao;
 
+    private Integer intervaloManutencao;
+
     private Boolean isDisponivel = true;
 
     private LocalDate dataCadastro = LocalDate.now();

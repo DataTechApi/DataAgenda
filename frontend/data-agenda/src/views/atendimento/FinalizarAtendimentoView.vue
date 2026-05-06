@@ -33,13 +33,34 @@
             <InputText id="status" v-model="manutencao.statusManutencao" disabled class="full-width" />
           </div>
         </div>
+        <div class="p-field horizontal-field">
+          <label for="dataAtendimento">Data Atendimento</label>
+          <DatePicker 
+            id="dataAtendimento" 
+            v-model="manutencao.dataAgendada" 
+            dateFormat="dd/mm/yy"
+            placeholder="dd/mm/aaaa"
+            showIcon
+            disabled
+            class="full-width" />
+        </div>
+        <div class="p-field p-col-12 horizontal-field full-width">
+          <label for="descricao">Descrição do Serviço</label>
+          <Textarea 
+            id="descricao" 
+            v-model="manutencao.descricao"
+            rows="4" 
+            autoResize 
+            disabled
+            class="full-width textarea-custom" />
+        </div>
 
         <!-- Data do atendimento (editável) -->
         <div class="p-field horizontal-field">
           <label for="dataAtendimento">Data Atendimento</label>
           <DatePicker 
             id="dataAtendimento" 
-            v-model="manutencao.dataRealizada" 
+            v-model="manutencao.dataAtendimento" 
             dateFormat="dd/mm/yy"
             placeholder="dd/mm/aaaa"
             showIcon
@@ -94,7 +115,7 @@ export default {
       descricao: "",
       dataAtendimento: null,
       descricaoAtendimento: "",
-      dataRealizada: null,
+      dataAgendada: null,
     });
 
     // Carregar dados da manutenção pelo ID vindo da rota
@@ -111,8 +132,8 @@ export default {
       try {
         const payload = {
           descricaoAtendimento: manutencao.value.descricaoAtendimento,
-          dataRealizada: manutencao.value.dataRealizada
-            ? new Date(manutencao.value.dataRealizada).toISOString().split("T")[0]
+          dataAtendimento: manutencao.value.dataAtendimento
+            ? new Date(manutencao.value.dataAtendimento).toISOString().split("T")[0]
             : null,
         };
 

@@ -5,8 +5,17 @@
       <Column field="nome" header="Nome" sortable />
       <Column field="tipoSistema" header="Tipo de Sistema" sortable />
       <Column field="cliente.nome" header="Cliente" sortable />
-      <Column field="dataCadastro" header="Data de Cadastro" :body="formatarData" sortable />
-
+    <Column field="dataCadastro" header="Data" sortable>
+            <template #body="slotProps">
+                {{ formatarData(slotProps.data.dataCadastro) }}
+            </template>
+        </Column>
+<Column 
+  field="dataAgendada" 
+  header="Data Agendamento" 
+  :body="(rowData) => formatarData(rowData.dataAgendada)" 
+  sortable 
+/>
       <Column header="Ações">
         <template #body="slotProps">
           <div class="acoes">
@@ -57,21 +66,14 @@ const excluirSistema = (sistema) => {
   }
 };
 
-const formatarData = (rowData) => {
-    const value = rowData.dataCadastro;
-    if (!value) return "N/A";
-    
-    if (Array.isArray(value)) {
-        return `${String(value[2]).padStart(2, '0')}/${String(value[1]).padStart(2, '0')}/${value[0]}`;
-    }
-    
-    if (typeof value === 'string' && value.includes('-')) {
-        const [year, month, day] = value.split('-');
-        return `${day}/${month}/${year}`;
-    }
-    
-    return value;
-};
+function formatarData(valor) {
+  if (!valor) return "";
+  const data = new Date(valor);
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
 
 onMounted(carregarSistemas);
 </script>

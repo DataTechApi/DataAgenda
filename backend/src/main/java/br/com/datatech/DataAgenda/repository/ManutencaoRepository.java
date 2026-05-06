@@ -21,7 +21,7 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
     @Query("SELECT COUNT(m) FROM Manutencao m WHERE m.dataAgendada < CURRENT_DATE AND m.statusManutencao = 'PENDENTE'")
     Long countOverdue();
 
-    @Query("SELECT COUNT(m) FROM Manutencao m WHERE m.statusManutencao = 'EXECUTADA' AND m.dataRealizada >= :dataLimite")
+    @Query("SELECT COUNT(m) FROM Manutencao m WHERE m.statusManutencao = 'EXECUTADA' AND m.dataAtendimento >= :dataLimite")
     Long countExecutedSince(@org.springframework.data.repository.query.Param("dataLimite") java.time.LocalDate dataLimite);
 
     @Query("SELECT m FROM Manutencao m WHERE m.statusManutencao = 'PENDENTE' ORDER BY m.dataAgendada ASC LIMIT 5")

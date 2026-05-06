@@ -35,14 +35,11 @@
                 </span>
             </template>
         </Column>
-        <Column field="statusManutencao" header="Data Agendada" sortable>
+        <Column field="dataAgendada" header="Data" sortable>
             <template #body="slotProps">
-                <span :class="'status-badge ' + (slotProps.data.dataAgendada || '').toLowerCase()">
-                    {{ slotProps.data.dataAgendada }}
-                </span>
+                {{ formatarData(slotProps.data.dataAgendada) }}
             </template>
         </Column>
-
         
 
         <!-- Nova coluna de ações -->
@@ -91,6 +88,15 @@ const carregarManutencoes = async () => {
     console.error("Erro ao carregar manutenções:", error);
   }
 };
+function formatarData(valor) {
+  if (!valor) return "";
+  const data = new Date(valor);
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
 
 onMounted(carregarManutencoes);
 </script>

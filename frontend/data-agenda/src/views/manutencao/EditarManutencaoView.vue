@@ -38,13 +38,24 @@
         <label for="dataAgendada">Data Agendada</label>
         <InputText id="dataAgendada" v-model="manutencao.dataAgendada" :disabled="!editMode" class="full-width" />
       </div>
+      <div class="p-field p-col-12 horizontal-field full-width">
+        <label for="descricao">Descrição Atendimento</label>
+        <Textarea 
+          id="descricaoAtendimento" 
+          v-model="manutencao.descricao"
+          rows="4" 
+          autoResize 
+          class="full-width textarea-custom"
+          disabled />
+      </div>
+
 
       <!-- Data Atendimento (sempre desabilitado) -->
       <div class="p-field horizontal-field">
         <label for="dataAtendimento">Data Atendimento</label>
         <DatePicker 
           id="dataAtendimento" 
-          v-model="manutencao.dataRealizada" 
+          v-model="manutencao.dataAtendimento"
           dateFormat="dd/mm/yy"
           placeholder="dd/mm/aaaa"
           showIcon
@@ -112,7 +123,7 @@ export default {
       statusManutencao: "",
       descricao: "",
       dataAgendada: "",
-      dataRealizada: null,
+      dataAtendimento: null,
       descricaoAtendimento: "",
     });
 

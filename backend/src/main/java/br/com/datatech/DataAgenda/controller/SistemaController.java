@@ -35,8 +35,9 @@ public class SistemaController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Buscar sistema por ID", description = "Endpoint para buscar um sistema pelo seu ID no DataAgenda")
-    public ResponseEntity<Optional<Sistema>> buscarPorId(@PathVariable Long id) {
-        return ResponseEntity.ok(sistemaService.buscarPorId(id));
+    public ResponseEntity<SistemaDTOResponse> buscarPorId(@PathVariable Long id) {
+        SistemaDTOResponse sistema = sistemaService.buscarPorId(id);
+        return ResponseEntity.ok(sistema);
     }
 
     @GetMapping("/buscartodos")

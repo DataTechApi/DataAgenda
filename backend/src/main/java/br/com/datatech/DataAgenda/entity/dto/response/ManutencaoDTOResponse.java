@@ -17,8 +17,8 @@ public class ManutencaoDTOResponse {
     private Long id;
     private String descricao;
     private String tecnicoNome;
+    private LocalDate dataAtendimento;
     private LocalDate dataAgendada;
-    private LocalDate dataRealizada;
     private TipoManutencao tipoManutencao;
     private StatusManutencao statusManutencao;
     private String sistemaNome;

@@ -23,6 +23,7 @@ public class SistemaDTOResponse {
     private LocalDate dataProximaManutencao;
     private Boolean isDisponivel;
     private LocalDate dataCadastro;
+    private Integer intervaloManutencao;
     private ClienteDTOResponseSemSistema cliente;
 
 }

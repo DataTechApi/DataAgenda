@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FinalizarAtendimentoDTORequest {
     private Long id;
-    private LocalDate dataRealizada;
+    private LocalDate dataAtendimento;
     private String descricaoAtendimento;
 
 }

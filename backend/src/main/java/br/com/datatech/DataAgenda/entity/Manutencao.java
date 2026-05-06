@@ -29,7 +29,7 @@ public class Manutencao {
     @JoinColumn(name = "tecnico_id")
     private Tecnico tecnico;
 
-    private LocalDate dataRealizada;
+    private LocalDate dataAtendimento;
 
     private LocalDate dataAgendada;
 
