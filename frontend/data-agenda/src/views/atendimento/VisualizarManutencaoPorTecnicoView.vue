@@ -47,8 +47,14 @@
           <template #body="slotProps">
             <Button 
               icon="pi pi-eye" 
-              class="p-button-rounded p-button-info p-button-sm" 
+              class="p-button-rounded p-button-info p-button-sm mr-2" 
               @click="$router.push({name:'atendimento-finalizar', params: { id: slotProps.data.id }})" 
+            />
+            <Button 
+              icon="pi pi-map" 
+              class="p-button-rounded p-button-success p-button-sm" 
+              @click="showMap(slotProps.data)"
+              :disabled="!slotProps.data.clienteLatitude || !slotProps.data.clienteLongitude"
             />
           </template>
         </Column>
@@ -59,6 +65,13 @@
       </DataTable>
     </div>
   </div>
+
+  <Dialog v-model:visible="mapDialogVisible" modal header="Localização do Cliente" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+    <MapView 
+      v-if="selectedMaintenance"
+      :destination="{ lat: selectedMaintenance.clienteLatitude, lng: selectedMaintenance.clienteLongitude }"
+    />
+  </Dialog>
 </template>
 
 <script setup>
@@ -67,7 +80,10 @@ import axios from 'axios';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 import { FilterMatchMode } from '@primevue/core/api';
+
+import MapView from '@/components/MapView.vue';
 
 const URL = import.meta.env.VITE_API_URL;
 const manutencoes = ref([]);
@@ -75,9 +91,11 @@ const filters = ref({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-// Defina o id do técnico (pode vir de rota, store, ou props)
+const selectedMaintenance = ref(null);
+const mapDialogVisible = ref(false);
+
 let usuario = sessionStorage.getItem('usuario');
-let tecnico = JSON.parse(usuario).id; // exemplo fixo, substitua conforme sua lógica
+let tecnico = JSON.parse(usuario).id;
 const tecnicoId = ref(tecnico);
 
 const carregarManutencoes = async () => {
@@ -88,6 +106,16 @@ const carregarManutencoes = async () => {
     console.error("Erro ao carregar manutenções:", error);
   }
 };
+
+const showMap = (maintenance) => {
+  if (maintenance.clienteLatitude !== null && maintenance.clienteLongitude !== null) {
+    selectedMaintenance.value = maintenance;
+    mapDialogVisible.value = true;
+  } else {
+    console.warn("Sir, client coordinates are not available for this maintenance.");
+  }
+};
+
 function formatarData(valor) {
   if (!valor) return "";
   const data = new Date(valor);
@@ -96,7 +124,6 @@ function formatarData(valor) {
   const ano = data.getFullYear();
   return `${dia}/${mes}/${ano}`;
 }
-
 
 onMounted(carregarManutencoes);
 </script>

@@ -20,18 +20,32 @@ public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ModelMapper model;
+    private final NominatimService nominatimService;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, ModelMapper model) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, ModelMapper model, NominatimService nominatimService) {
         this.clienteRepository = clienteRepository;
         this.model = model;
+        this.nominatimService = nominatimService;
     }
 
     @Override
     public void cadastrarCliente(ClienteDTORequest request) {
 
         Cliente clienteEntity = model.map(request, Cliente.class);
-        clienteRepository.save(clienteEntity);
 
+        // Geocode the address if localidade is provided
+        if (clienteEntity.getLocalidade() != null && !clienteEntity.getLocalidade().trim().isEmpty()) {
+            NominatimService.Coordinates coordinates = nominatimService.getCoordinates(clienteEntity.getLocalidade());
+            if (coordinates != null) {
+                clienteEntity.setLatitude(coordinates.getLatitude());
+                clienteEntity.setLongitude(coordinates.getLongitude());
+            } else {
+                // If coordinates are not found, latitude and longitude will remain null.
+                // This is the desired graceful failure behavior.
+            }
+        }
+
+        clienteRepository.save(clienteEntity);
     }
 
     @Override

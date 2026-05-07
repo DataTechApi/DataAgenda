@@ -10,16 +10,22 @@
           <InputText id="nome" v-model="cliente.nome" :disabled="!editando" />
         </div>
 
-        <!-- CNPJ + Localidade -->
+        <!-- CNPJ + Cidade -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="cnpj">CNPJ</label>
             <InputMask id="cnpj" v-model="cliente.cnpj" mask="99.999.999/9999-99" :disabled="!editando" />
           </div>
           <div class="p-field horizontal-field">
-            <label for="localidade">Localidade</label>
-            <InputText id="localidade" v-model="cliente.localidade" :disabled="!editando" />
+            <label for="cidade">Cidade</label>
+            <InputText id="cidade" v-model="cliente.cidade" :disabled="!editando" />
           </div>
+        </div>
+
+        <!-- Endereço Completo -->
+        <div class="p-field p-col-12 horizontal-field full-width">
+          <label for="localidade">Endereço Completo</label>
+          <InputText id="localidade" v-model="cliente.localidade" :disabled="!editando" />
         </div>
 
         <!-- Responsável + E-mail -->
@@ -119,12 +125,12 @@ export default {
     const cliente = ref({
       nome: "",
       cnpj: "",
+      cidade: "",
       localidade: "",
       nomeResponsavel: "",
       emailResponsavel: "",
       telefoneResponsavel: "",
       dataInicioContrato: null,
-      duracaoContrato: "",
       duracaoContrato: "",
     });
 
