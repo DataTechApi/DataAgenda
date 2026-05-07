@@ -31,6 +31,9 @@ public class Cliente {
     private Integer duracaoContrato;
     private Boolean isAtivo = true;
     private String localidade;
+    private String cidade;
+    private Double latitude;
+    private Double longitude;
     private LocalDate dataInicioContrato ;
     private LocalDate dataFimContrato;
 

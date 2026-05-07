@@ -42,8 +42,16 @@ public class SistemaServiceImpl implements SistemaService {
         Optional<Cliente> cliente = clienteService.buscarPorId(request.getClienteId());
         TecnicoDTOResponse tecnico = tecnicoService.buscarPorId(request.getTecnicoId());
         Sistema sistema= new Sistema();
-        String nome =cliente.get().getNome()+"-"
-                + cliente.get().getLocalidade()+"-"+request.getTipoSistema();
+
+        // Build the name gracefully, handling null or blank city
+        StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(cliente.get().getNome());
+        if (cliente.get().getCidade() != null && !cliente.get().getCidade().isBlank()) {
+            nameBuilder.append("-").append(cliente.get().getCidade());
+        }
+        nameBuilder.append("-").append(request.getTipoSistema());
+        String nome = nameBuilder.toString();
+
         sistema.setNome(nome);
         sistema.setTipoSistema(TipoSistema.valueOf(request.getTipoSistema()));
         sistema.setDataCadastro(LocalDate.now());

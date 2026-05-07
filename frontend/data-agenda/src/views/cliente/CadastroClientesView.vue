@@ -10,16 +10,22 @@
           <InputText id="nome" v-model="cliente.nome" required placeholder="Nome do Cliente" />
         </div>
 
-        <!-- CNPJ + Localidade -->
+        <!-- CNPJ + Cidade -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="cnpj">CNPJ</label>
             <InputMask id="cnpj" v-model="cliente.cnpj" mask="99.999.999/9999-99" placeholder="00.000.000/0000-00" required />
           </div>
           <div class="p-field horizontal-field">
-            <label for="localidade">Localidade</label>
-            <InputText id="localidade" v-model="cliente.localidade" placeholder="Cidade/Estado" />
+            <label for="cidade">Cidade</label>
+            <InputText id="cidade" v-model="cliente.cidade" placeholder="Ex: São Leopoldo - RS" />
           </div>
+        </div>
+
+        <!-- Endereço Completo -->
+        <div class="p-field p-col-12 horizontal-field full-width">
+          <label for="localidade">Endereço Completo</label>
+          <InputText id="localidade" v-model="cliente.localidade" placeholder="Rua, Número, Bairro, Cidade, Estado" />
         </div>
 
         <!-- Responsável + E-mail -->
@@ -114,12 +120,12 @@ export default {
     const cliente = ref({
       nome: "",
       cnpj: "",
+      cidade: "",
       localidade: "",
       nomeResponsavel: "",
       emailResponsavel: "",
       telefoneResponsavel: "",
       dataInicioContrato: "",
-      duracaoContrato: "",
       duracaoContrato: "",
     });
 
@@ -152,14 +158,14 @@ export default {
     const limparFormulario = () => {
       cliente.value = {
         nome: "",
-      cnpj: "",
-      localidade: "",
-      nomeResponsavel: "",
-      emailResponsavel: "",
-      telefoneResponsavel: "",
-      dataInicioContrato: "",
-      duracaoContrato: "",
-      duracaoContrato: "",
+        cnpj: "",
+        cidade: "",
+        localidade: "",
+        nomeResponsavel: "",
+        emailResponsavel: "",
+        telefoneResponsavel: "",
+        dataInicioContrato: "",
+        duracaoContrato: "",
       };
     };
 

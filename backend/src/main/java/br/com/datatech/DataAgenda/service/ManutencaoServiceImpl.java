@@ -68,6 +68,8 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
                         .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
                         .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
+                        .clienteLatitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLatitude() : null)
+                        .clienteLongitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLongitude() : null)
                         .build())
                 .collect(java.util.stream.Collectors.toList());
     }
@@ -79,6 +81,8 @@ public class ManutencaoServiceImpl implements ManutencaoService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encomtrada");
         ManutencaoDTOResponse manutencao = new ManutencaoDTOResponse();
         manutencao.setClienteNome(manutencaoEntity.get().getSistema().getCliente().getNome());
+        manutencao.setClienteLatitude(manutencaoEntity.get().getSistema().getCliente().getLatitude());
+        manutencao.setClienteLongitude(manutencaoEntity.get().getSistema().getCliente().getLongitude());
         manutencao.setId(manutencaoEntity.get().getId());
         manutencao.setStatusManutencao(manutencaoEntity.get().getStatusManutencao());
         manutencao.setTipoManutencao(manutencaoEntity.get().getTipoManutencao());
@@ -106,6 +110,8 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
                         .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
                         .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
+                        .clienteLatitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLatitude() : null)
+                        .clienteLongitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLongitude() : null)
                         .build())
                 .collect(java.util.stream.Collectors.toList());
     }

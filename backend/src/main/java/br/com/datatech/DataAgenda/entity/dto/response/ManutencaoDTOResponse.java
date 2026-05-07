@@ -23,5 +23,7 @@ public class ManutencaoDTOResponse {
     private StatusManutencao statusManutencao;
     private String sistemaNome;
     private String clienteNome;
+    private Double clienteLatitude;
+    private Double clienteLongitude;
     private String descricaoAtendimento;
 }
