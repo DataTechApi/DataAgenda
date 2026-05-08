@@ -1,4 +1,3 @@
-
 # API 4º Semestre BD  
 # DATAGENDA
 
@@ -249,15 +248,6 @@ A estrutura básica de um commit segue o padrão:
 | `test` | Adição ou ajuste de testes |
 
 ---
-
-# Videos 
-
-## Video Sprint1 
-
-[Assistir vídeo](VideoSprint1.mp4)
-
----
-
 
 ## 👥 Equipe
 
