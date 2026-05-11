@@ -34,6 +34,28 @@ Implementar correções de bugs e ajustes de lógica de negócio, desenvolver fu
 
 ---
 
+# 📋 Relação entre Product Backlog e Sprint Backlog
+
+## 🔗 Rastreabilidade das User Stories e Tarefas Técnicas
+
+| User Story | ID da Task | Tarefa Técnica | Responsável | Status |
+|---|---|---|---|---|
+| US01 - Histórico de manutenções | #58 | Correção da funcionalidade Editar | - | ⬜ Todo |
+| US01 - Histórico de manutenções | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
+| US02 - Painel de chamados | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
+| US03 - Relatórios de manutenção | #63 | Implementação versionamento SQL | Cauê | ⬜ Todo |
+| US03 - Relatórios de manutenção | #64 | Melhorias na documentação | Cauê | 🟩 Done |
+| US04 - Estatísticas de manutenção | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
+| US05 - Gerenciamento de permissões | #55 | Validações para data de conclusão de chamado | - | ⬜ Todo |
+| US05 - Gerenciamento de permissões | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
+| US06 - Visualização de mapas | #61 | Implementação de localidade do chamado via mapa | Cleber Kirch | 🟨 In Progress |
+| US06 - Visualização de mapas | #62 | Validações e correções referentes ao mapa | Cleber Kirch | 🟨 In Progress |
+| US07 - Painel de agenda | #59 | Criação do FrontEnd de visualização da agenda de chamados | - | ⬜ Todo |
+| US07 - Painel de agenda | #60 | Implementação da lógica para agenda de chamados | - | ⬜ Todo |
+
+---
+
+
 # 📚 Épicos
 
 | Épico | Descrição |
