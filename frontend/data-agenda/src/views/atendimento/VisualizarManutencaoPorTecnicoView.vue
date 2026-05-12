@@ -13,36 +13,31 @@
         filterDisplay="menu"
         :globalFilterFields="['descricao', 'tecnico.nome', 'sistema.nome', 'sistema.cliente.nome']"
       >
-        
-
-        
         <Column field="clienteNome" header="Cliente" sortable></Column>
         <Column field="sistemaNome" header="Sistema" sortable></Column>
-       
         
         <Column field="tipoManutencao" header="Tipo" sortable>
-            <template #body="slotProps">
-                <span :class="'status-badge ' + (slotProps.data.tipoManutencao || '').toLowerCase()">
-                    {{ slotProps.data.tipoManutencao }}
-                </span>
-            </template>
+          <template #body="slotProps">
+            <span :class="'status-badge ' + (slotProps.data.tipoManutencao || '').toLowerCase()">
+              {{ slotProps.data.tipoManutencao }}
+            </span>
+          </template>
         </Column>
 
         <Column field="statusManutencao" header="Status" sortable>
-            <template #body="slotProps">
-                <span :class="'status-badge ' + (slotProps.data.statusManutencao || '').toLowerCase()">
-                    {{ slotProps.data.statusManutencao }}
-                </span>
-            </template>
+          <template #body="slotProps">
+            <span :class="'status-badge ' + (slotProps.data.statusManutencao || '').toLowerCase()">
+              {{ slotProps.data.statusManutencao }}
+            </span>
+          </template>
         </Column>
-        <Column field="dataAgendada" header="Data" sortable>
-            <template #body="slotProps">
-                {{ formatarData(slotProps.data.dataAgendada) }}
-            </template>
-        </Column>
-        
 
-        <!-- Nova coluna de ações -->
+        <Column field="dataAgendada" header="Data" sortable>
+          <template #body="slotProps">
+            {{ formatarData(slotProps.data.dataAgendada) }}
+          </template>
+        </Column>
+
         <Column header="Ações">
           <template #body="slotProps">
             <Button 
@@ -52,21 +47,27 @@
             />
             <Button 
               icon="pi pi-map" 
-              class="p-button-rounded p-button-success p-button-sm" 
+              class="p-button-rounded p-button-success p-button-sm"
+              :loading="slotProps.data.loadingMap"
               @click="showMap(slotProps.data)"
-              :disabled="!slotProps.data.clienteLatitude || !slotProps.data.clienteLongitude"
             />
           </template>
         </Column>
 
         <template #empty>
-            <p class="placeholder-text">Nenhuma manutenção encontrada.</p>
+          <p class="placeholder-text">Nenhuma manutenção encontrada.</p>
         </template>
       </DataTable>
     </div>
   </div>
 
-  <Dialog v-model:visible="mapDialogVisible" modal header="Localização do Cliente" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog 
+    v-model:visible="mapDialogVisible" 
+    modal 
+    header="Localização do Cliente" 
+    :style="{ width: '75vw' }" 
+    :breakpoints="{ '1199px': '75vw', '575px': '90vw' }"
+  >
     <MapView 
       v-if="selectedMaintenance"
       :destination="{ lat: selectedMaintenance.clienteLatitude, lng: selectedMaintenance.clienteLongitude }"
@@ -82,13 +83,12 @@ import Column from 'primevue/column';
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import { FilterMatchMode } from '@primevue/core/api';
-
 import MapView from '@/components/MapView.vue';
 
 const URL = import.meta.env.VITE_API_URL;
 const manutencoes = ref([]);
 const filters = ref({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
 const selectedMaintenance = ref(null);
@@ -97,6 +97,28 @@ const mapDialogVisible = ref(false);
 let usuario = sessionStorage.getItem('usuario');
 let tecnico = JSON.parse(usuario).id;
 const tecnicoId = ref(tecnico);
+
+const geocodificarCidade = async (manutencao) => {
+  const local = `${manutencao.clienteLocalidade}, Brasil`;
+
+  try {
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(local)}&limit=1`
+    );
+    const data = await response.json();
+
+    if (data.length > 0) {
+      return {
+        latitude: parseFloat(data[0].lat),
+        longitude: parseFloat(data[0].lon)
+      };
+    }
+  } catch (error) {
+    console.error('Erro ao geocodificar:', error);
+  }
+
+  return null;
+};
 
 const carregarManutencoes = async () => {
   try {
@@ -107,13 +129,27 @@ const carregarManutencoes = async () => {
   }
 };
 
-const showMap = (maintenance) => {
-  if (maintenance.clienteLatitude !== null && maintenance.clienteLongitude !== null) {
-    selectedMaintenance.value = maintenance;
+const showMap = async (manutencao) => {
+  if (manutencao.clienteLatitude && manutencao.clienteLongitude) {
+    selectedMaintenance.value = manutencao;
+    mapDialogVisible.value = true;
+    return;
+  }
+
+  manutencao.loadingMap = true;
+
+  const coords = await geocodificarCidade(manutencao);
+
+  if (coords) {
+    manutencao.clienteLatitude = coords.latitude;
+    manutencao.clienteLongitude = coords.longitude;
+    selectedMaintenance.value = manutencao;
     mapDialogVisible.value = true;
   } else {
-    console.warn("Sir, client coordinates are not available for this maintenance.");
+    alert('Não foi possível encontrar a localização do cliente.');
   }
+
+  manutencao.loadingMap = false;
 };
 
 function formatarData(valor) {
@@ -128,7 +164,6 @@ function formatarData(valor) {
 onMounted(carregarManutencoes);
 </script>
 
-
 <style scoped>
 .card {
   max-width: 1200px;
@@ -142,7 +177,7 @@ onMounted(carregarManutencoes);
 .page-title {
   text-align: center;
   margin-bottom: 0.5rem;
-  color:#2c3e50;
+  color: #2c3e50;
   font-weight: bold;
 }
 

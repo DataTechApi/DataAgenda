@@ -18,15 +18,11 @@
           </div>
           <div class="p-field horizontal-field">
             <label for="cidade">Cidade</label>
-            <InputText id="cidade" v-model="cliente.cidade" placeholder="Ex: São Leopoldo - RS" />
+            <InputText id="cidade" v-model="cliente.localidade" placeholder="Ex: São Leopoldo - RS" />
           </div>
         </div>
 
-        <!-- Endereço Completo -->
-        <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="localidade">Endereço Completo</label>
-          <InputText id="localidade" v-model="cliente.localidade" placeholder="Rua, Número, Bairro, Cidade, Estado" />
-        </div>
+       
 
         <!-- Responsável + E-mail -->
         <div class="row-pair">

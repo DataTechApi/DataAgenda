@@ -92,6 +92,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         manutencao.setDataAtendimento(manutencaoEntity.get().getDataAtendimento());
         manutencao.setTecnicoNome(manutencaoEntity.get().getTecnico().getNome());
         manutencao.setDescricaoAtendimento(manutencaoEntity.get().getDescricaoAtendimento());
+        manutencao.setClienteLocalidade(manutencaoEntity.get().getSistema().getCliente().getLocalidade());
         return manutencao;
     }
 
@@ -105,6 +106,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                         .dataAgendada(m.getDataAgendada())
                         .dataAtendimento(m.getDataAtendimento())
                         .tipoManutencao(m.getTipoManutencao())
+                        .clienteLocalidade(m.getSistema().getCliente().getLocalidade())
                         .descricaoAtendimento(m.getDescricaoAtendimento())
                         .statusManutencao(m.getStatusManutencao())
                         .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
