@@ -43,12 +43,12 @@ public class SistemaServiceImpl implements SistemaService {
         TecnicoDTOResponse tecnico = tecnicoService.buscarPorId(request.getTecnicoId());
         Sistema sistema= new Sistema();
 
-        // Build the name gracefully, handling null or blank city
         StringBuilder nameBuilder = new StringBuilder();
         nameBuilder.append(cliente.get().getNome());
-        if (cliente.get().getCidade() != null && !cliente.get().getCidade().isBlank()) {
-            nameBuilder.append("-").append(cliente.get().getCidade());
+        if (cliente.get().getLocalidade() != null && !cliente.get().getLocalidade().isBlank()) {
+            nameBuilder.append("-").append(cliente.get().getLocalidade());
         }
+
         nameBuilder.append("-").append(request.getTipoSistema());
         String nome = nameBuilder.toString();
 
