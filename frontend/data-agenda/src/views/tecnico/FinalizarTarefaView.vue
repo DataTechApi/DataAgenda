@@ -25,7 +25,7 @@ function salvar() {
 
 <style scoped>
 .page {
-  color: white;
+  color: var(--text-main);
   padding: 30px;
 }
 
@@ -34,14 +34,14 @@ textarea {
   height: 150px;
   margin: 20px 0;
   padding: 10px;
-  background: #020617;
-  color: white;
-  border: 1px solid #1e293b;
+  background: var(--bg-input);
+  color: var(--text-main);
+  border: 1px solid var(--border-input);
   border-radius: 8px;
 }
 
 .btn {
-  background: #22c55e;
+  background: var(--status-success);
   padding: 10px;
   border: none;
   border-radius: 6px;

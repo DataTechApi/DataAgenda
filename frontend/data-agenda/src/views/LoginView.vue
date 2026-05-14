@@ -1,5 +1,13 @@
 <template>
   <div class="login-page">
+    <button
+      class="theme-toggle"
+      @click="themeStore.toggle()"
+      :title="themeStore.isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'"
+    >
+      <i :class="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+    </button>
+
     <div class="login-card">
       <div class="login-header">
         <div class="logo-icon">
@@ -58,6 +66,9 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
 import InputText from 'primevue/inputtext'
 import Password from 'primevue/password'
 import Button from 'primevue/button'
@@ -110,16 +121,39 @@ const handleLogin = async () => {
 </script>
 
 <style scoped>
-/* Mantive seu CSS original */
 .login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--bg-app);
+  position: relative;
   background-image:
     radial-gradient(ellipse at 20% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 50%);
+}
+
+.theme-toggle {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary-color);
 }
 
 .login-card {
@@ -181,9 +215,9 @@ const handleLogin = async () => {
 }
 
 :deep(.p-inputtext) {
-  background: #0d1e30 !important;
-  border: 1px solid var(--border-color) !important;
-  color: var(--text-main) !important;
+  background: var(--bg-input) !important;
+  border: 1px solid var(--border-input) !important;
+  color: var(--text-input) !important;
   border-radius: 8px !important;
   padding: 0.75rem 1rem !important;
   width: 100%;
@@ -197,7 +231,7 @@ const handleLogin = async () => {
 }
 
 :deep(.p-inputtext::placeholder) {
-  color: #4a5568 !important;
+  color: var(--text-muted) !important;
 }
 
 :deep(.p-password) {
@@ -217,10 +251,10 @@ const handleLogin = async () => {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1rem;
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background: var(--error-bg);
+  border: 1px solid var(--error-border);
   border-radius: 8px;
-  color: #fca5a5;
+  color: var(--error-text);
   font-size: 0.875rem;
 }
 

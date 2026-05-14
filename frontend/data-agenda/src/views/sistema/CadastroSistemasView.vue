@@ -191,15 +191,15 @@ export default {
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
-  color: #f5f5f5;
+  color: var(--text-main);
 }
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 .horizontal-field {
   display: flex;
@@ -210,7 +210,7 @@ h2 {
 .horizontal-field label {
   width: 180px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-main);
 }
 .horizontal-field input, .horizontal-field .p-dropdown {
   flex: 1;
@@ -229,7 +229,7 @@ h2 {
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
   background-color: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
+  color: var(--error-border);
   border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 6px;
   font-size: 0.9rem;

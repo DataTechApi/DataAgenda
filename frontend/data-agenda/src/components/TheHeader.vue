@@ -143,7 +143,6 @@
 
 <script setup>
 import 'primeicons/primeicons.css'
-import { RouterLink, RouterView } from 'vue-router'
 import { ref } from 'vue'
 
 const openMenu = ref(null)
@@ -167,15 +166,15 @@ function toggleMenu(menu) {
 
 .header {
   grid-area: header;
-  background: #081a2e;
-  color: #ffffff;
+  background: var(--bg-header);
+  color: var(--text-main);
   display: flex;
   align-items: center;
   padding: 0 30px;
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 2px;
-  border-bottom: 1px solid #1c2b3a;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .logo {
@@ -185,8 +184,8 @@ function toggleMenu(menu) {
 
 .sidebar {
   grid-area: sidebar;
-  background: #041628;
-  color: #ffffff;
+  background: var(--bg-sidebar);
+  color: var(--text-main);
   padding: 10px;
 }
 
@@ -199,11 +198,11 @@ function toggleMenu(menu) {
 .sidebar li {
   margin-bottom: 5px;
   border-radius: 8px;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
 .sidebar li:hover {
-  background: #2d3748;
+  background: var(--bg-hover);
 }
 
 .menu-item {
@@ -233,18 +232,19 @@ function toggleMenu(menu) {
   padding: 6px;
   margin-bottom: 4px;
   border-radius: 6px;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
 .submenu li:hover {
-  background: #2d3748;
+  background: var(--bg-hover);
 }
 
 .content {
   grid-area: content;
   padding: 20px;
-  background: #0a0e27;
+  background: var(--bg-app);
 }
+
 .router-link {
   color: inherit;
   text-decoration: none;

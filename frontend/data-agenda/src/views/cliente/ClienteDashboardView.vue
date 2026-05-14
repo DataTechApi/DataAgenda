@@ -65,13 +65,13 @@ export default {
 
 <style scoped>
 .dashboard-container {
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .page-title {
   font-size: 2rem;
   margin-bottom: 25px;
-  color: #ffffff;
+  color: var(--text-main);
   font-weight: 300;
 }
 
@@ -83,12 +83,12 @@ export default {
 }
 
 .stat-card {
-  background: #041628;
+  background: var(--bg-card);
   padding: 25px;
   border-radius: 12px;
   display: flex;
   align-items: center;
-  border: 1px solid #1c2b3a;
+  border: 1px solid var(--border-color);
   transition: transform 0.3s ease;
 }
 
@@ -99,7 +99,7 @@ export default {
 .stat-card i {
   font-size: 2.5rem;
   margin-right: 20px;
-  color: #3b82f6;
+  color: var(--primary-color);
 }
 
 .stat-info {
@@ -109,7 +109,7 @@ export default {
 
 .stat-label {
   font-size: 0.9rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -119,19 +119,19 @@ export default {
   font-weight: bold;
 }
 
-.stat-card.accent i { color: #10b981; }
-.stat-card.warning i { color: #f59e0b; }
+.stat-card.accent i { color: var(--status-success); }
+.stat-card.warning i { color: var(--status-warning); }
 
 .content-section {
-  background: #041628;
+  background: var(--bg-card);
   padding: 30px;
   border-radius: 12px;
-  border: 1px solid #1c2b3a;
+  border: 1px solid var(--border-color);
   min-height: 300px;
 }
 
 .placeholder-text {
-  color: #64748b;
+  color: var(--text-muted);
   font-style: italic;
 }
 </style>

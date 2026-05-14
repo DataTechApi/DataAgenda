@@ -83,15 +83,16 @@ onMounted(carregarSistemas);
   max-width: 1200px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 
 .page-title {
   text-align: center;
   margin-bottom: 2rem;
-  color:#2c3e50;
+  color: var(--text-main);
   font-weight: bold;
 }
 
@@ -102,27 +103,27 @@ onMounted(carregarSistemas);
 }
 
 :deep(.p-datatable-custom .p-datatable-thead > tr > th) {
-  background: #0f0f0f !important;
-  color: #ffffff !important;
+  background: var(--bg-table) !important;
+  color: var(--text-table) !important;
   font-weight: bold;
   text-align: center;
   padding: 1rem;
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr > td) {
-  background: #0f0f0f !important;
-  color: #ffffff !important;
+  background: var(--bg-table) !important;
+  color: var(--text-table) !important;
   text-align: center;
   padding: 1rem;
-  
+
 }
 
 :deep(.p-datatable-custom .p-datatable-tbody > tr:hover > td) {
-  background: #0f0f0f!important;
+  background: var(--bg-hover) !important;
 }
 
 :deep(.p-paginator) {
-    background: #0f0f0f!important;
+    background: var(--bg-table) !important;
     border: none !important;
     padding: 1rem;
 }

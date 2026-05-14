@@ -4,12 +4,19 @@
     <header class="header">
       <img src="/src/assets/logoDataTech.jpeg" alt="Logo" class="logo" />
       <span>DATA AGENDA</span>
+
+      <button
+        class="theme-toggle"
+        @click="themeStore.toggle()"
+        :title="themeStore.isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'"
+      >
+        <i :class="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+      </button>
     </header>
 
     <!-- Sidebar Lateral -->
     <aside class="sidebar">
       <ul>
-        <!-- Menu Finalizar Atendimento -->
         <li>
           <RouterLink to="/atendimento" class="router-link">
             <div class="menu-item">
@@ -45,12 +52,12 @@
 <script setup>
 import 'primeicons/primeicons.css'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
+import { useThemeStore } from '../../stores/theme'
 
-
+const themeStore = useThemeStore()
 const router = useRouter()
 
-// Recupera somente o nome do usuário salvo no login
 let usuario = sessionStorage.getItem('usuario')
 let nomeUsuario = 'Usuário'
 
@@ -58,17 +65,14 @@ if (usuario) {
   try {
     nomeUsuario = JSON.parse(usuario).nome || 'Usuário'
   } catch (e) {
-    // Se não for JSON, usa direto
     nomeUsuario = usuario
   }
 }
 
 const usuarioLogado = ref(nomeUsuario)
 
-
 function logout() {
   sessionStorage.clear()
-  localStorage.clear()
   router.push('/login')
 }
 </script>
@@ -85,6 +89,7 @@ function logout() {
   font-family: 'Segoe UI', sans-serif;
 }
 
+/* ---- Header ---- */
 .header {
   grid-area: header;
   background: var(--bg-header);
@@ -103,6 +108,29 @@ function logout() {
   margin-right: 15px;
 }
 
+.theme-toggle {
+  margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---- Sidebar ---- */
 .sidebar {
   grid-area: sidebar;
   background: var(--bg-sidebar);
@@ -121,11 +149,11 @@ function logout() {
 .sidebar li {
   margin-bottom: 5px;
   border-radius: 8px;
-  transition: background 0.3s;
+  transition: background 0.2s;
 }
 
 .sidebar li:hover {
-  background: var(--border-color);
+  background: var(--bg-hover);
 }
 
 .menu-item {
@@ -147,6 +175,7 @@ function logout() {
   font-size: 1.2rem;
 }
 
+/* ---- Content ---- */
 .content {
   grid-area: content;
   padding: 20px;
@@ -191,5 +220,28 @@ function logout() {
 
 .user-info i {
   margin-right: 8px;
+}
+
+/* ---- Light theme: sidebar/header têm fundo escuro, texto sempre branco ---- */
+.light-theme .header,
+.light-theme .sidebar {
+  color: #ffffff;
+}
+
+.light-theme .sidebar-footer {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.light-theme .sidebar li:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.light-theme .router-link {
+  color: #ffffff;
+}
+
+.light-theme .logout-btn {
+  color: #ffffff;
 }
 </style>

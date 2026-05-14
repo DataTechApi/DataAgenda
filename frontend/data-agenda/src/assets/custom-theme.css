@@ -1,3 +1,6 @@
+/* ========================================
+   DARK THEME (default — :root)
+   ======================================== */
 :root {
   /* Cores de Marca */
   --primary-color: #3b82f6;
@@ -9,38 +12,294 @@
   --bg-card: #041628;
   --bg-sidebar: #041628;
   --bg-header: #081a2e;
-  --bg-input: #ffffff;
-  --bg-table: #ffffff;
+  --bg-input: #0d1e30;
+  --bg-table: #0f0f0f;
+  --bg-hover: #1c2b3a;
 
   /* Textos */
   --text-main: #ffffff;
-  --text-table: #333333;
+  --text-table: #ffffff;
   --text-muted: #94a3b8;
-  --text-label: #888888;
-  --text-input: #333333;
+  --text-label: #94a3b8;
+  --text-input: #ffffff;
+  --text-heading: #ffffff;
 
   /* Bordas e Linhas */
   --border-color: #1c2b3a;
-  --border-input: #cccccc;
+  --border-input: #2d3748;
 
   /* Status */
   --status-success: #10b981;
   --status-danger: #ef4444;
   --status-warning: #f59e0b;
   --status-info: #3b82f6;
+
+  /* Sombra */
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+
+  /* Erro */
+  --error-bg: rgba(239, 68, 68, 0.1);
+  --error-border: rgba(239, 68, 68, 0.3);
+  --error-text: #fca5a5;
 }
 
-/* Quando o programador criar o .light-theme, ele só precisa sobrescrever os valores acima */
+/* ========================================
+   LIGHT THEME (.light-theme on <html>)
+   ======================================== */
 .light-theme {
-  --bg-app: #f8fafc;
+  --bg-app: #f0f4f8;
   --bg-card: #ffffff;
-  --bg-sidebar: #f1f5f9;
-  --bg-header: #e2e8f0;
+  --bg-sidebar: #1e3a5f;
+  --bg-header: #1e3a5f;
+  --bg-input: #ffffff;
   --bg-table: #ffffff;
+  --bg-hover: #e2e8f0;
+
   --text-main: #1e293b;
   --text-table: #1e293b;
   --text-muted: #64748b;
-  --border-color: #cbd5e1;
-  --bg-input: #f1f5f9;
+  --text-label: #475569;
   --text-input: #1e293b;
+  --text-heading: #1e293b;
+
+  --border-color: #cbd5e1;
+  --border-input: #94a3b8;
+
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  --error-bg: #fee2e2;
+  --error-border: #fca5a5;
+  --error-text: #991b1b;
+}
+
+/* ========================================
+   PRIMEVUE GLOBAL OVERRIDES — DARK (default)
+   ======================================== */
+
+/* Inputs */
+.p-inputtext,
+.p-textarea,
+.p-inputnumber-input {
+  background: var(--bg-input) !important;
+  border-color: var(--border-input) !important;
+  color: var(--text-input) !important;
+}
+
+.p-inputtext:focus,
+.p-textarea:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
+}
+
+.p-inputtext::placeholder,
+.p-textarea::placeholder {
+  color: var(--text-muted) !important;
+}
+
+/* Select / Dropdown */
+.p-select,
+.p-dropdown {
+  background: var(--bg-input) !important;
+  border-color: var(--border-input) !important;
+  color: var(--text-input) !important;
+}
+
+.p-select-label,
+.p-dropdown-label {
+  color: var(--text-input) !important;
+}
+
+.p-select-overlay,
+.p-dropdown-panel {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-select-option,
+.p-dropdown-item {
+  color: var(--text-main) !important;
+}
+
+.p-select-option:hover,
+.p-dropdown-item:hover,
+.p-select-option.p-select-option-selected {
+  background: var(--bg-hover) !important;
+}
+
+/* AutoComplete */
+.p-autocomplete-input {
+  background: var(--bg-input) !important;
+  border-color: var(--border-input) !important;
+  color: var(--text-input) !important;
+}
+
+.p-autocomplete-overlay {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-autocomplete-option {
+  color: var(--text-main) !important;
+}
+
+.p-autocomplete-option:hover {
+  background: var(--bg-hover) !important;
+}
+
+/* DatePicker / Calendar */
+.p-datepicker,
+.p-datepicker-panel {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+.p-datepicker-header,
+.p-datepicker-title {
+  background: var(--bg-header) !important;
+  color: var(--text-main) !important;
+}
+
+.p-datepicker-day-cell span,
+.p-datepicker-day {
+  color: var(--text-main) !important;
+}
+
+.p-datepicker-day-cell:not(.p-datepicker-other-month) span:hover {
+  background: var(--bg-hover) !important;
+}
+
+.p-datepicker-day-selected span,
+.p-datepicker-day.p-highlight {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+/* DataTable */
+.p-datatable {
+  background: transparent !important;
+}
+
+.p-datatable .p-datatable-header {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  background: var(--bg-table) !important;
+  color: var(--text-table) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr {
+  background: var(--bg-table) !important;
+  color: var(--text-table) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-color: var(--border-color) !important;
+}
+
+.p-datatable .p-datatable-tbody > tr:hover {
+  background: var(--bg-hover) !important;
+}
+
+/* Paginator */
+.p-paginator {
+  background: var(--bg-table) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-main) !important;
+}
+
+.p-paginator .p-paginator-element,
+.p-paginator .p-paginator-page {
+  color: var(--text-main) !important;
+}
+
+.p-paginator .p-paginator-page.p-highlight {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+}
+
+/* Password toggle */
+.p-password .p-password-toggle-mask-icon {
+  color: var(--text-muted) !important;
+}
+
+/* Panel / Card */
+.p-panel .p-panel-header {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-panel .p-panel-content {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Dialog / Modal */
+.p-dialog {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-dialog .p-dialog-header {
+  background: var(--bg-header) !important;
+  color: var(--primary-text) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-header-icon,
+.p-dialog .p-dialog-header .p-button {
+  color: var(--primary-text) !important;
+}
+
+.p-dialog .p-dialog-content {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+}
+
+.p-dialog .p-dialog-footer {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* Overlay / Menu */
+.p-menu,
+.p-tieredmenu {
+  background: var(--bg-card) !important;
+  border-color: var(--border-color) !important;
+}
+
+.p-menu .p-menuitem-link,
+.p-tieredmenu .p-menuitem-link {
+  color: var(--text-main) !important;
+}
+
+.p-menu .p-menuitem-link:hover {
+  background: var(--bg-hover) !important;
+}
+
+/* Tooltip */
+.p-tooltip .p-tooltip-text {
+  background: var(--bg-card) !important;
+  color: var(--text-main) !important;
+  border-color: var(--border-color) !important;
+}
+
+/* ========================================
+   LIGHT THEME — PrimeVue overrides
+   (sobrescreve os globais acima quando
+   .light-theme está no <html>)
+   ======================================== */
+.light-theme .p-datatable .p-datatable-tbody > tr:hover {
+  background: #f1f5f9 !important;
+}
+
+.light-theme .p-select-option:hover,
+.light-theme .p-dropdown-item:hover {
+  background: #f1f5f9 !important;
 }

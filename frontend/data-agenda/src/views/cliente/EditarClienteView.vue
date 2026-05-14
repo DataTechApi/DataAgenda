@@ -182,15 +182,16 @@ export default {
   max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 
 .row-pair {
@@ -237,9 +238,9 @@ h2 {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }

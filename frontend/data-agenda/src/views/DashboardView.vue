@@ -8,10 +8,10 @@
         <div class="kpi-card">
           <div class="kpi-content">
             <span class="kpi-label">Total Clientes</span>
-            <span class="kpi-value text-blue-400">{{ metrics.totalClientes }}</span>
+            <span class="kpi-value kpi-blue">{{ metrics.totalClientes }}</span>
           </div>
-          <div class="kpi-icon bg-blue-900">
-            <i class="pi pi-users text-blue-400"></i>
+          <div class="kpi-icon kpi-icon-blue">
+            <i class="pi pi-users kpi-blue"></i>
           </div>
         </div>
       </div>
@@ -19,10 +19,10 @@
         <div class="kpi-card">
           <div class="kpi-content">
             <span class="kpi-label">Sistemas Ativos</span>
-            <span class="kpi-value text-green-400">{{ metrics.totalSistemas }}</span>
+            <span class="kpi-value kpi-green">{{ metrics.totalSistemas }}</span>
           </div>
-          <div class="kpi-icon bg-green-900">
-            <i class="pi pi-desktop text-green-400"></i>
+          <div class="kpi-icon kpi-icon-green">
+            <i class="pi pi-desktop kpi-green"></i>
           </div>
         </div>
       </div>
@@ -30,10 +30,10 @@
         <div class="kpi-card">
           <div class="kpi-content">
             <span class="kpi-label">Pendentes</span>
-            <span class="kpi-value text-orange-400">{{ metrics.manutencoesPendentes }}</span>
+            <span class="kpi-value kpi-orange">{{ metrics.manutencoesPendentes }}</span>
           </div>
-          <div class="kpi-icon bg-orange-900">
-            <i class="pi pi-clock text-orange-400"></i>
+          <div class="kpi-icon kpi-icon-orange">
+            <i class="pi pi-clock kpi-orange"></i>
           </div>
         </div>
       </div>
@@ -41,10 +41,10 @@
         <div class="kpi-card">
           <div class="kpi-content">
             <span class="kpi-label">Executadas</span>
-            <span class="kpi-value text-purple-400">{{ metrics.manutencoesExecutadas }}</span>
+            <span class="kpi-value kpi-purple">{{ metrics.manutencoesExecutadas }}</span>
           </div>
-          <div class="kpi-icon bg-purple-900">
-            <i class="pi pi-check-circle text-purple-400"></i>
+          <div class="kpi-icon kpi-icon-purple">
+            <i class="pi pi-check-circle kpi-purple"></i>
           </div>
         </div>
       </div>
@@ -55,13 +55,13 @@
       <div class="col-12 lg:col-6">
         <div class="chart-card">
           <h3>Sistemas por Tipo</h3>
-          <Chart type="doughnut" :data="sistemasChartData" :options="chartOptions" class="chart-container" />
+          <Chart type="doughnut" :data="sistemasChartData" :options="chartOptions" :key="themeStore.isDark ? 'dark' : 'light'" class="chart-container" />
         </div>
       </div>
       <div class="col-12 lg:col-6">
         <div class="chart-card">
           <h3>Status das Manutenções</h3>
-          <Chart type="pie" :data="statusChartData" :options="chartOptions" class="chart-container" />
+          <Chart type="pie" :data="statusChartData" :options="chartOptions" :key="(themeStore.isDark ? 'dark' : 'light') + '-pie'" class="chart-container" />
         </div>
       </div>
     </div>
@@ -101,6 +101,9 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Badge from 'primevue/badge'
 import Button from 'primevue/button'
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
 
 const metrics = ref({
   totalClientes: 0,
@@ -158,15 +161,15 @@ const statusChartData = computed(() => {
   }
 })
 
-const chartOptions = {
+const chartOptions = computed(() => ({
   plugins: {
     legend: {
       labels: {
-        color: '#ebedef'
+        color: themeStore.isDark ? '#ebedef' : '#334155'
       }
     }
   }
-}
+}))
 
 const formatDate = (dateStr) => {
   if (!dateStr || dateStr === 'N/A') return 'N/A'
@@ -268,7 +271,18 @@ const getTipoSeverity = (tipo) => {
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  flex-shrink: 0;
 }
+
+.kpi-blue   { color: var(--status-info); }
+.kpi-green  { color: var(--status-success); }
+.kpi-orange { color: var(--status-warning); }
+.kpi-purple { color: #a855f7; }
+
+.kpi-icon-blue   { background: rgba(59, 130, 246, 0.15); }
+.kpi-icon-green  { background: rgba(16, 185, 129, 0.15); }
+.kpi-icon-orange { background: rgba(245, 158, 11, 0.15); }
+.kpi-icon-purple { background: rgba(168, 85, 247, 0.15); }
 
 /* Charts */
 .chart-card {
@@ -308,7 +322,7 @@ const getTipoSeverity = (tipo) => {
 
 :deep(.p-datatable .p-datatable-thead > tr > th) {
   background: var(--bg-header);
-  color: var(--text-muted);
+  color: var(--primary-text);
   border-color: var(--border-color);
 }
 
@@ -319,7 +333,7 @@ const getTipoSeverity = (tipo) => {
 }
 
 :deep(.p-datatable .p-datatable-tbody > tr:hover) {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-hover);
 }
 
 :deep(.p-button.p-button-text) {
