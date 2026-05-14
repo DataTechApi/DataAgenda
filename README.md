@@ -156,9 +156,9 @@ Uma **User Story é considerada concluída** quando:
 
 | Sprint | Período | Principais Entregas |
 |------|------|------|
-| Sprint 1 | 08/09 – 28/09 | Estrutura do banco, backend inicial(Entidades e Endpoints), FrontEnd definido|
-| Sprint 2 | 06/10 – 26/10 | Sistema de alertas, gestão de chamados, segurança, implementação BackEnd->FrontEnd |
-| Sprint 3 | 03/11 – 23/11 | Relatórios, documentação, correções e deploy |
+| Sprint 1 | 16/03 – 05/04 | Estrutura do banco, backend inicial(Entidades e Endpoints), FrontEnd definido|
+| Sprint 2 | 13/04 – 03/05 | Sistema de alertas, gestão de chamados, segurança, implementação BackEnd->FrontEnd |
+| Sprint 3 | 11/05 – 31/05 | Relatórios, documentação, correções e deploy |
 
 ## Backlog das Sprints
 
