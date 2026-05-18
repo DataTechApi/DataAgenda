@@ -18,15 +18,10 @@
           </div>
           <div class="p-field horizontal-field">
             <label for="cidade">Cidade</label>
-            <InputText id="cidade" v-model="cliente.cidade" :disabled="!editando" />
+            <InputText id="cidade" v-model="cliente.localidade" :disabled="!editando" />
           </div>
         </div>
 
-        <!-- Endereço Completo -->
-        <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="localidade">Endereço Completo</label>
-          <InputText id="localidade" v-model="cliente.localidade" :disabled="!editando" />
-        </div>
 
         <!-- Responsável + E-mail -->
         <div class="row-pair">
@@ -107,10 +102,6 @@ import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: { "Content-Type": "application/json" },
-});
 
 export default {
   name: "EdicaoCliente",
@@ -125,7 +116,6 @@ export default {
     const cliente = ref({
       nome: "",
       cnpj: "",
-      cidade: "",
       localidade: "",
       nomeResponsavel: "",
       emailResponsavel: "",
@@ -138,7 +128,7 @@ export default {
     // Recupera dados do cliente ao montar o componente
     onMounted(async () => {
       try {
-        const response = await api.get(`/clientes/${route.params.id}`);
+        const response = await axios.get(`${URL}/clientes/${route.params.id}`);
         cliente.value = response.data;
        
       } catch (error) {
@@ -160,7 +150,7 @@ export default {
       loading.value = true;
       erro.value = "";
       try {
-        await api.put(`/clientes/${cliente.value.id}`, cliente.value);
+        await axios.put(`/clientes/${cliente.value.id}`, cliente.value);
         alert("Alterações salvas com sucesso!");
         editando.value = false;
         clienteOriginal.value = { ...cliente.value };

@@ -77,12 +77,6 @@ import axios from "axios";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 export default {
   name: "CadastroSistema",
@@ -112,7 +106,7 @@ export default {
 
     const carregarClientes = async () => {
       try {
-        const response = await api.get(`${URL}/clientes/buscartodos`);
+        const response = await axios.get(`${URL}/clientes/buscartodos`);
         clientes.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar clientes:", error);
@@ -122,7 +116,7 @@ export default {
 
     const carregarTecnicos = async () => {
       try {
-        const response = await api.get(`${URL}/tecnico/buscartodos`);
+        const response = await axios.get(`${URL}/tecnico/buscartodos`);
         tecnicos.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar técnicos:", error);

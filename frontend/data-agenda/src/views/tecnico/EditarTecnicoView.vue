@@ -88,10 +88,7 @@ import InputMask from "primevue/inputmask";
 import Password from "primevue/password";
 import Button from "primevue/button";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: { "Content-Type": "application/json" },
-});
+
 
 export default {
   name: "EdicaoUsuario",
@@ -101,6 +98,7 @@ export default {
     const erro = ref("");
     const editando = ref(false);
     const route = useRoute();
+    const URL = import.meta.env.VITE_API_URL;
 
     const usuarioOriginal = ref({
       id: null,
@@ -117,7 +115,7 @@ export default {
     // Recupera dados do usuário ao montar
     onMounted(async () => {
       try {
-        const response = await api.get(`/tecnico/${route.params.id}`);
+        const response = await axios.get(`${URL}/tecnico/${route.params.id}`);
         usuario.value = response.data;
         usuarioOriginal.value = { ...response.data };
       } catch (error) {
@@ -130,7 +128,7 @@ export default {
       editando.value = true;
     };
 
-    const cancelarEdicao = () => {
+    const cancelarEdicao = () => {  
       editando.value = false;
       usuario.value = { ...usuarioOriginal.value };
     };
@@ -139,7 +137,7 @@ export default {
       loading.value = true;
       erro.value = "";
       try {
-        await api.put(`/tecnico/${usuario.value.id}`, usuario.value);
+        await axios.put(`${URL}/tecnico/${usuario.value.id}`, usuario.value);
         alert("Alterações salvas com sucesso!");
         editando.value = false;
         usuarioOriginal.value = { ...usuario.value };

@@ -126,13 +126,6 @@ import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ,
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 export default {
   name: "CadastroTecnico",
@@ -178,7 +171,7 @@ export default {
       }
 
       try {
-        const response = await api.post(`${URL}/tecnico`, tecnico.value);
+        const response = await axios.post(`${URL}/tecnico`, tecnico.value);
         console.log("Técnico cadastrado:", response.data);
         alert("Técnico cadastrado com sucesso!");
         limparFormulario();

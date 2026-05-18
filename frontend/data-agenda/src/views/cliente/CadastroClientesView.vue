@@ -93,13 +93,7 @@ import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
 
-// Instância do axios com baseURL configurada
-const api = axios.create({
-  URL: import.meta.env.VITE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+
 
 export default {
   name: "CadastroCliente",
@@ -130,7 +124,7 @@ export default {
       erro.value = "";
 
       try {
-        const response = await api.post(`${URL}/clientes`, cliente.value);
+        const response = await axios.post(`${URL}/clientes`, cliente.value);
         console.log("Resposta da API:", response.data);
         alert("Cliente cadastrado com sucesso!");
         limparFormulario();
