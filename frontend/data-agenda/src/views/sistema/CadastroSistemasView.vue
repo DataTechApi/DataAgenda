@@ -151,7 +151,7 @@ export default {
 
       loading.value = true;
       try {
-        const response = await api.post(`${URL}/sistema`, sistema.value);
+        const response = await axios.post(`${URL}/sistema`, sistema.value);
         console.log("Resposta da API:", response.data);
         limparFormulario();
         alert("Sistema cadastrado com sucesso!");
