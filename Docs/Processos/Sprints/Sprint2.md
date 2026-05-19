@@ -20,6 +20,97 @@ Implementar funcionalidades que proporcionem o máximo de funcionalidades e usab
 | 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ✅ |
 | 5 | Alta | Como **técnico**, quero alterar o status do chamado, para refletir o andamento da manutenção | 3 | 2 | R03 | ✅ |
 
+# 🔗 Relação entre Product Backlog e Sprint Backlog
+
+## 📋 Rastreabilidade entre User Stories e Tarefas Técnicas
+
+| US | User Story | Task | Descrição Técnica | Responsável | Status |
+|----|------------|------|-------------------|-------------|--------|
+| US01 | Agendar manutenção preventiva | #46 | Implementação inicial Script SQL | Cauê | ✅ Done |
+| US01 | Agendar manutenção preventiva | #47 | Endpoint buscar manutenção por ID | Jackson | ✅ Done |
+| US01 | Agendar manutenção preventiva | #50 | Página de visualização de manutenção administrador | Jackson | ✅ Done |
+| US02 | Abrir chamados corretivos | #46 | Implementação inicial Script SQL | Cauê | ✅ Done |
+| US02 | Abrir chamados corretivos | #47 | Endpoint buscar manutenção por ID | Jackson | ✅ Done |
+| US02 | Abrir chamados corretivos | #49 | Endpoint finalizar atendimento | Jackson | ✅ Done |
+| US02 | Abrir chamados corretivos | #50 | Página de visualização manutenção administrador | Jackson | ✅ Done |
+| US03 | Atribuir técnico ao chamado | #42 | Página de acesso a técnicos para finalizar manutenção | Jackson | ✅ Done |
+| US03 | Atribuir técnico ao chamado | #48 | Retorno do técnico via DTOResponse | Jackson | ✅ Done |
+| US03 | Atribuir técnico ao chamado | #50 | Tela administrador manutenção | Jackson | ✅ Done |
+| US04 | Técnico visualizar chamados atribuídos | #31 | Tela de visualização do técnico | Abimael | ✅ Done |
+| US04 | Técnico visualizar chamados atribuídos | #37 | Estilização da tela dos chamados | Abimael/Cleber | ✅ Done |
+| US04 | Técnico visualizar chamados atribuídos | #44 | Tela de visualização de manutenção por técnico | Jackson | ✅ Done |
+| US04 | Técnico visualizar chamados atribuídos | #45 | Endpoint visualizar manutenções por técnico | Jackson | ✅ Done |
+| US05 | Técnico alterar status do chamado | #42 | Página acesso técnico para finalizar manutenção | Jackson | ✅ Done |
+| US05 | Técnico alterar status do chamado | #49 | Endpoint finalizar atendimento | Jackson | ✅ Done |
+| US05 | Técnico alterar status do chamado | #44 | Tela manutenção por técnico | Jackson | ✅ Done |
+
+---
+
+# ⚙️ Funcionalidades de Integração (impactam várias US)
+
+| Task | Descrição | Categoria | Status |
+|------|------------|------------|--------|
+| #24 | Atualização frontend | Frontend | ✅ |
+| #27 | Atualização documentação | Documentação | ✅ |
+| #28 | Comunicação FrontEnd ↔ BackEnd | Integração/API | ✅ |
+| #51 | Refatoração do caminho dashboard manutenção | Backend | ✅ |
+
+---
+
+
+# 📚 Classificação Técnica das Tasks da Sprint
+
+| Categoria | Tasks |
+|-----------|-------|
+| Frontend | #24 #30 #31 #37 |
+| Backend | #33 #34 #39 #40 #41 #45 #47 #48 #49 #51 |
+| Banco de Dados | #46 |
+| Integração/API | #28 #35 |
+| Documentação | #27 |
+| Autenticação | #30 #32 #33 #34 #35 |
+| Visualização | #31 #37 #44 #50 |
+
+---
+
+# 📌 Critérios de Priorização da Sprint
+
+As prioridades foram definidas considerando:
+
+- Implementação do fluxo principal de manutenção
+- Integração entre FrontEnd e BackEnd
+- Operação do técnico no sistema
+- Controle de autenticação
+- Persistência correta dos dados
+- Disponibilização do fluxo completo gestor → técnico → manutenção
+
+---
+
+# 📊 Progresso Final da Sprint
+
+| Tipo | Quantidade |
+|------|------------|
+| Tasks Totais | 23 |
+| Concluídas | 23 |
+| Em progresso | 0 |
+| Pendentes | 0 |
+| Percentual concluído | 100% |
+
+---
+
+# 🏁 Resultado da Sprint
+
+Sprint concluída com entrega das funcionalidades previstas:
+
+✅ Abertura de chamados  
+✅ Visualização por técnico  
+✅ Alteração de status  
+✅ Login  
+✅ Comunicação Front ↔ Back  
+✅ Fluxo operacional completo  
+✅ Persistência em banco  
+✅ Interface administrativa  
+✅ Integração completa do sistema
+
 ## 📋 Requisitos <a id="re"></a>
 
 ## 🔵 R01 – Gestão de Ativos
