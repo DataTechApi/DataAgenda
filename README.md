@@ -165,8 +165,8 @@ Uma **User Story é considerada concluída** quando:
 | Sprint | Link |
 |------|------|
 | Sprint1 | https://github.com/orgs/DataTechApi/projects/11 |
-| Sprint2 | https://github.com/orgs/DataTechApi/projects/13 |
-| Sprint3 | https://github.com/orgs/DataTechApi/projects/13 |
+| Sprint2 |[Docs/Processos/Sprints/Sprint2.md](https://github.com/DataTechApi/DataAgenda/blob/sprint3/Docs/Processos/Sprints/Sprint2.md)|
+| Sprint3 | [Docs/Processos/Sprints/Sprint3.md](https://github.com/DataTechApi/DataAgenda/blob/sprint3/Docs/Processos/Sprints/Sprint3.md) |
 
 ---
 
