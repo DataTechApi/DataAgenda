@@ -11,9 +11,9 @@
             </template>
         </Column>
 <Column 
-  field="dataAgendada" 
-  header="Data Agendamento" 
-  :body="(rowData) => formatarData(rowData.dataAgendada)" 
+  field="intervaloManutencao" 
+  header="Intervalo de Manutenção" 
+  :body="(rowData) => rowData.intervaloManutencao" 
   sortable 
 />
       <Column header="Ações">

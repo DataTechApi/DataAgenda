@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponseSemSistema;
+import br.com.datatech.DataAgenda.utils.ValidacaoCliente;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void cadastrarCliente(ClienteDTORequest request) {
-
+        if(!ValidacaoCliente.validarCliente(request)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do cliente inválidos, preencha todos os campos!");
+        }
         Cliente clienteEntity = model.map(request, Cliente.class);
 
         // Geocode the address if localidade is provided
@@ -56,8 +59,6 @@ public class ClienteServiceImpl implements ClienteService {
                 .toList();
         return clienteDTOResponses;
     }
-
-
 
     @Override
     public Optional<Cliente> buscarPorId(Long id) {
@@ -92,5 +93,18 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deletarCliente(id);
         
 
+    }
+
+    @Override
+    public void editarCliente(Long id, ClienteDTORequest request) {
+        Optional<Cliente> clienteEntity= clienteRepository.findById(id);
+        if(clienteEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
+        if(!ValidacaoCliente.validarCliente(request)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do cliente inválidos, preencha todos os campos!");
+        }
+        Cliente clienteAtualizado = model.map(request, Cliente.class);
+        clienteAtualizado.setId(id);
+        clienteRepository.save(clienteAtualizado);
     }
 }

@@ -31,12 +31,28 @@
         <!-- Role + Nível -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
-            <label for="role">Role</label>
-            <InputText id="role" v-model="usuario.role" :disabled="!editando" />
+            <label for="role">Tipo de Usuário</label>
+            <Dropdown 
+              id="role" 
+              v-model="usuario.role" 
+              :options="tiposUsuario" 
+              optionLabel="label" 
+              optionValue="value" 
+              :disabled="!editando" 
+              placeholder="Selecione o tipo"
+            />
           </div>
           <div class="p-field horizontal-field">
             <label for="nivel">Nível</label>
-            <InputText id="nivel" v-model="usuario.nivel" :disabled="!editando" />
+            <Dropdown 
+              id="nivel" 
+              v-model="usuario.nivel" 
+              :options="niveis" 
+              optionLabel="label" 
+              optionValue="value" 
+              :disabled="!editando" 
+              placeholder="Selecione o nível"
+            />
           </div>
         </div>
 
@@ -87,12 +103,11 @@ import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Password from "primevue/password";
 import Button from "primevue/button";
-
-
+import Dropdown from "primevue/dropdown";
 
 export default {
   name: "EdicaoUsuario",
-  components: { InputText, InputMask, Password, Button },
+  components: { InputText, InputMask, Password, Button, Dropdown },
   setup() {
     const loading = ref(false);
     const erro = ref("");
@@ -109,6 +124,17 @@ export default {
       role: "",
       nivel: "",
     });
+
+    const niveis = [
+      { label: "Júnior", value: "JUNIOR" },
+      { label: "Pleno",  value: "PLENO"  },
+      { label: "Sênior", value: "SENIOR" },
+    ];
+
+    const tiposUsuario = [
+      { label: "Administrador", value: "ADMIN" },
+      { label: "Técnico", value: "TECNICO" },
+    ];
 
     const usuario = ref({ ...usuarioOriginal.value });
 
@@ -137,18 +163,22 @@ export default {
       loading.value = true;
       erro.value = "";
       try {
-        await axios.put(`${URL}/tecnico/${usuario.value.id}`, usuario.value);
+        await axios.put(`${URL}/tecnico/editar/${usuario.value.id}`, usuario.value);
         alert("Alterações salvas com sucesso!");
         editando.value = false;
         usuarioOriginal.value = { ...usuario.value };
       } catch (error) {
-        erro.value = "Erro ao salvar alterações.";
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       } finally {
         loading.value = false;
       }
     };
 
-    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes };
+    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario };
   },
 };
 </script>
@@ -199,7 +229,8 @@ h2 {
 
 .horizontal-field input,
 .horizontal-field .p-inputmask,
-.horizontal-field .p-password {
+.horizontal-field .p-password,
+.horizontal-field .p-dropdown {
   flex: 1;
 }
 

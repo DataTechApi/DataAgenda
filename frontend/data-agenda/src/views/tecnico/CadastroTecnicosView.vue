@@ -175,11 +175,12 @@ export default {
         console.log("Técnico cadastrado:", response.data);
         alert("Técnico cadastrado com sucesso!");
         limparFormulario();
-      } catch (err) {
-        console.error("Erro ao cadastrar técnico:", err);
-        erro.value =
-          err.response?.data?.mensagem ||
-          "Erro ao cadastrar técnico. Tente novamente.";
+      } catch (error) {
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       } finally {
         carregando.value = false;
       }

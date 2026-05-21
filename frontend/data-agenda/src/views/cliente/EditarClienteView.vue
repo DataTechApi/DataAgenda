@@ -112,6 +112,8 @@ export default {
     const editando = ref(false);
     const route = useRoute();
     const URL = import.meta.env.VITE_API_URL;
+    const clienteOriginal = ref({});
+
 
     const cliente = ref({
       nome: "",
@@ -150,12 +152,17 @@ export default {
       loading.value = true;
       erro.value = "";
       try {
-        await axios.put(`/clientes/${cliente.value.id}`, cliente.value);
+        await axios.put(`${URL}/clientes/editar/${cliente.value.id}`, cliente.value);
         alert("Alterações salvas com sucesso!");
         editando.value = false;
         clienteOriginal.value = { ...cliente.value };
-      } catch (error) {
-        erro.value = "Erro ao salvar alterações.";
+      }catch (error) {
+    if (error.response && error.response.data) {
+      // tenta pegar mensagem do backend
+      erro.value = error.response.data.message || JSON.stringify(error.response.data);
+    } else {
+      erro.value = "Erro ao salvar alterações.";
+    }
       } finally {
         loading.value = false;
       }

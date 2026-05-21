@@ -2,6 +2,7 @@ package br.com.datatech.DataAgenda.service;
 
 import br.com.datatech.DataAgenda.entity.Sistema;
 import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequestEditar;
 import br.com.datatech.DataAgenda.entity.dto.response.SistemaDTOResponse;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface SistemaService {
     List<SistemaDTOResponse> listarTodos();
 
     Long contarSistemas();
+
+    void editarSistema(Long id, SistemaDTORequestEditar request);
 
 }

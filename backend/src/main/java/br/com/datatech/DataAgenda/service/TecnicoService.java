@@ -16,4 +16,6 @@ public interface TecnicoService {
     TecnicoDTOResponse buscarPorId(Long id);
 
     Long contarTecnicosAtivos();
+
+    void editartecnico(Long id, TecnicoDTORequest request);
 }

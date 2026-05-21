@@ -3,6 +3,7 @@ package br.com.datatech.DataAgenda.controller;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequestEditar;
 import br.com.datatech.DataAgenda.entity.dto.response.SistemaDTOResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,10 +46,18 @@ public class SistemaController {
     public ResponseEntity<List<SistemaDTOResponse>> listarTodos() {
         return ResponseEntity.ok(sistemaService.listarTodos());
     }
+
     @GetMapping("/contarsistemas")
     @Operation(summary = "Contar sistemas", description = "Endpoint para contar o número total de sistemas cadastrados no DataAgenda")
     public ResponseEntity<Long> contarSistemas() {
         Long quantidade = sistemaService.contarSistemas();
         return ResponseEntity.ok(quantidade);
+    }
+
+    @PatchMapping("/editar/{id}")
+    @Operation(summary = "Editar sistema", description = "Endpoint para editar um sistema existente no DataAgenda")
+    public ResponseEntity<String> editarSistema(@PathVariable Long id, @RequestBody SistemaDTORequestEditar request) {
+        sistemaService.editarSistema(id, request);
+        return ResponseEntity.ok("Sistema editado com sucesso!");
     }
 }

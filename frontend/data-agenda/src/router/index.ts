@@ -154,11 +154,7 @@ const router = createRouter({
           component: VisualizarTecnicoView,
         },
         
-        {
-          path: 'tecnico/finalizar/:id',
-          name: 'finalizar-tarefa',
-          component: () => import('../views/tecnico/FinalizarTarefaView.vue'),
-        },
+        
         {
           path: 'tecnico/tarefa/:id',
           name: 'tecnico-tarefa-detalhe',

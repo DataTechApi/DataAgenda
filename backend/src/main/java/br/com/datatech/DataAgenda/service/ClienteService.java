@@ -23,5 +23,7 @@ public interface ClienteService {
 
     void deletarCliente(Long id);
 
+    void editarCliente(Long id, ClienteDTORequest request);
+
 
 }
