@@ -104,6 +104,11 @@
           disabled />
       </div>
 
+      <!-- Mensagem de erro -->
+      <div v-if="erro" class="mensagem-erro">
+        {{ erro }}
+      </div>
+
       <!-- Botões -->
       <div class="p-field p-col-12 botoes">
         <Button 
@@ -150,6 +155,7 @@ export default {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
     const router = useRouter();
+    const erro = ref("");
 
     const manutencao = ref({
       id: null,
@@ -164,61 +170,79 @@ export default {
       descricaoAtendimento: "",
     });
 
+    const manutencaoOriginal = ref(null); // guarda cópia original
     const tecnicos = ref([]);
     const editMode = ref(false);
 
     onMounted(async () => {
-      try {
-        const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
-        manutencao.value = response.data;
+  try {
+    const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
+    
+    // Ajusta a data agendada para o fuso local
+    if (response.data.dataAgendada) {
+      const data = new Date(response.data.dataAgendada);
+      // Corrige para meia-noite local
+      response.data.dataAgendada = new Date(data.getTime() + data.getTimezoneOffset() * 60000);
+    }
 
-        // Buscar técnicos disponíveis
-        const respTecnicos = await axios.get(`${URL}/tecnico/buscartodos`);
-        tecnicos.value = respTecnicos.data; 
-      } catch (error) {
-        console.error("Erro ao carregar manutenção ou técnicos:", error);
-      }
-    });
+    manutencao.value = response.data;
+    manutencaoOriginal.value = { ...response.data };
 
-    const habilitarEdicao = () => {
-      if (manutencao.value.statusManutencao.toLowerCase() === "pendente") {
-        editMode.value = true;
-      } else {
-        alert("Somente manutenções pendentes podem ser editadas.");
-      }
+    const respTecnicos = await axios.get(`${URL}/tecnico/buscartodos`);
+    tecnicos.value = respTecnicos.data; 
+  } catch (error) {
+    console.error("Erro ao carregar manutenção ou técnicos:", error);
+  }
+});
+
+
+  const habilitarEdicao = () => {
+  erro.value = ""; // limpa qualquer erro anterior
+  if (manutencao.value.statusManutencao.toLowerCase() === "pendente") {
+    editMode.value = true;
+  } else {
+    alert("Somente manutenções pendentes podem ser editadas.");
+  }
+};
+
+const salvarAlteracoes = async () => {
+  try {
+    const payload = {
+      tecnicoNome: manutencao.value.tecnicoNome,
+      descricao: manutencao.value.descricao,
+      dataAgendada: manutencao.value.dataAgendada,
     };
 
-    const salvarAlteracoes = async () => {
-      try {
-        const payload = {
-          tecnicoNome: manutencao.value.tecnicoNome,
-          descricao: manutencao.value.descricao,
-          dataAgendada: manutencao.value.dataAgendada,
-        };
+    const response = await axios.patch(
+      `${URL}/manutencao/editar/${manutencao.value.id}`,
+      payload
+    );
 
-        const response = await axios.patch(
-          `${URL}/manutencao/editar/${manutencao.value.id}`,
-          payload
-        );
+    alert(response.data || "Alterações salvas com sucesso!");
+    editMode.value = false;
+    manutencaoOriginal.value = { ...manutencao.value };
+    erro.value = ""; // limpa erro após sucesso
+    router.push(`/dashboard/manutencao/editar/${manutencao.value.id}`);
+  } catch (error) {
+    if (error.response && error.response.data) {
+      erro.value = error.response.data.message || JSON.stringify(error.response.data);
+    } else {
+      erro.value = "Erro ao salvar alterações.";
+    }
+  }
+};
 
-        alert(response.data || "Alterações salvas com sucesso!");
-        editMode.value = false;
-        router.push(`/dashboard/manutencao/editar/${manutencao.value.id}`);
-      } catch (error) {
-        console.error("Erro ao salvar alterações:", error);
-        alert("Erro ao salvar alterações.");
-      }
-    };
+const cancelarEdicao = () => {
+  manutencao.value = { ...manutencaoOriginal.value };
+  editMode.value = false;
+  erro.value = ""; // limpa erro ao cancelar
+};
 
-    const cancelarEdicao = () => {
-      editMode.value = false;
-    };
 
-    return { manutencao, tecnicos, editMode, habilitarEdicao, salvarAlteracoes, cancelarEdicao };
+    return { manutencao, tecnicos, editMode, erro, habilitarEdicao, salvarAlteracoes, cancelarEdicao };
   },
 };
 </script>
-
 <style scoped>
 .card {
   max-width: 1000px;

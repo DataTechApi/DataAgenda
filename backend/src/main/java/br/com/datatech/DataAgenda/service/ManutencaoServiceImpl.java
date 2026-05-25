@@ -8,6 +8,7 @@ import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
+import br.com.datatech.DataAgenda.utils.ValidacaoDataManutencao;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -138,8 +139,11 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         Optional<Manutencao> manutencao = manutencaoRepository.findById(id);
         if(manutencao.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
-        manutencao.get().setDescricao(request.getDescricao());
+
+        if(!ValidacaoDataManutencao.validarDataAgendadada(request.getDataAgendada()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
         manutencao.get().setDataAgendada(request.getDataAgendada());
+        manutencao.get().setDescricao(request.getDescricao());
         if (request.getTecnicoId() != null) {
             Tecnico tecnico = tecnicoRepository.findById(request.getTecnicoId())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Técnico não encontrado"));
