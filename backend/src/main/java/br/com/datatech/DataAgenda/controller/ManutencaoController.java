@@ -4,6 +4,7 @@ import br.com.datatech.DataAgenda.entity.Manutencao;
 import br.com.datatech.DataAgenda.entity.Tecnico;
 import br.com.datatech.DataAgenda.entity.dto.request.FinalizarAtendimentoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequestEditar;
 import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.service.ManutencaoService;
 import br.com.datatech.DataAgenda.service.TecnicoService;
@@ -62,6 +63,9 @@ public class ManutencaoController {
         manutencaoService.finalizarAtendimento(request);
         return ResponseEntity.ok("Manutenção atualizado com sucesso!!!");
     }
-
-
+    @PatchMapping("/editar/{id}")
+    public ResponseEntity<String> editarManutencao(@PathVariable Long id, @RequestBody ManutencaoDTORequestEditar request){
+        manutencaoService.editarManutencao(id, request);
+        return ResponseEntity.ok("Manutenção atualizada com sucesso!!!");
+    }
 }

@@ -6,18 +6,36 @@
       <!-- Cliente -->
       <div class="p-field p-col-12 horizontal-field full-width">
         <label for="cliente">Cliente</label>
-        <InputText id="cliente" v-model="manutencao.clienteNome" :disabled="!editMode" class="full-width" />
+        <InputText id="cliente" v-model="manutencao.clienteNome" disabled class="full-width" />
       </div>
 
       <!-- Sistema + Técnico -->
       <div class="row-pair">
         <div class="p-field horizontal-field">
           <label for="sistema">Sistema</label>
-          <InputText id="sistema" v-model="manutencao.sistemaNome" :disabled="!editMode" class="full-width" />
+          <InputText id="sistema" v-model="manutencao.sistemaNome" disabled class="full-width" />
         </div>
         <div class="p-field horizontal-field">
           <label for="tecnico">Técnico</label>
-          <InputText id="tecnico" v-model="manutencao.tecnicoNome" :disabled="!editMode" class="full-width" />
+          <template v-if="editMode">
+            <Dropdown 
+              id="tecnico"
+              v-model="manutencao.tecnicoNome"
+              :options="tecnicos"
+              optionLabel="nome"
+              optionValue="nome"
+              placeholder="Selecione um técnico"
+              class="full-width editable-field"
+            />
+          </template>
+          <template v-else>
+            <InputText 
+              id="tecnico" 
+              v-model="manutencao.tecnicoNome" 
+              disabled 
+              class="full-width" 
+            />
+          </template>
         </div>
       </div>
 
@@ -25,7 +43,7 @@
       <div class="row-pair">
         <div class="p-field horizontal-field">
           <label for="tipo">Tipo</label>
-          <InputText id="tipo" v-model="manutencao.tipoManutencao" :disabled="!editMode" class="full-width" />
+          <InputText id="tipo" v-model="manutencao.tipoManutencao" disabled class="full-width" />
         </div>
         <div class="p-field horizontal-field">
           <label for="status">Status</label>
@@ -36,19 +54,30 @@
       <!-- Data Agendada -->
       <div class="p-field horizontal-field">
         <label for="dataAgendada">Data Agendada</label>
-        <InputText id="dataAgendada" v-model="manutencao.dataAgendada" :disabled="!editMode" class="full-width" />
+        <DatePicker 
+          id="dataAgendada" 
+          v-model="manutencao.dataAgendada"
+          dateFormat="dd/mm/yy"
+          placeholder="dd/mm/aaaa"
+          :showIcon="editMode"
+          :disabled="!editMode"
+          :class="['full-width', editMode ? 'editable-field' : '']"
+        />
       </div>
+
+      <!-- Descrição Problema -->
       <div class="p-field p-col-12 horizontal-field full-width">
-        <label for="descricao">Descrição Atendimento</label>
+        <label for="descricao">Descrição Problema</label>
         <Textarea 
-          id="descricaoAtendimento" 
+          id="descricao" 
           v-model="manutencao.descricao"
           rows="4" 
           autoResize 
           class="full-width textarea-custom"
-          disabled />
+          :disabled="!editMode" 
+          :class="editMode ? 'editable-field' : ''"
+        />
       </div>
-
 
       <!-- Data Atendimento (sempre desabilitado) -->
       <div class="p-field horizontal-field">
@@ -78,19 +107,26 @@
       <!-- Botões -->
       <div class="p-field p-col-12 botoes">
         <Button 
+          v-if="!editMode"
           label="Editar" 
           icon="pi pi-pencil" 
           class="p-button-warning" 
-          :disabled="manutencao.statusManutencao.toLowerCase() !== 'pendente'"
           @click="habilitarEdicao" 
         />
-        <Button 
-          label="Salvar Alterações" 
-          icon="pi pi-check" 
-          class="p-button-success" 
-          :disabled="!editMode"
-          @click="salvarAlteracoes" 
-        />
+        <div v-if="editMode" class="botoes-edit">
+          <Button 
+            label="Salvar Alterações" 
+            icon="pi pi-check" 
+            class="p-button-success" 
+            @click="salvarAlteracoes" 
+          />
+          <Button 
+            label="Cancelar" 
+            icon="pi pi-times" 
+            class="p-button-secondary" 
+            @click="cancelarEdicao" 
+          />
+        </div>
       </div>
 
     </div>
@@ -105,10 +141,11 @@ import Textarea from "primevue/textarea";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
+import Dropdown from "primevue/dropdown";
 
 export default {
   name: "DetalhesManutencao",
-  components: { Textarea, InputText, Button, DatePicker },
+  components: { Textarea, InputText, Button, DatePicker, Dropdown },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
@@ -127,14 +164,19 @@ export default {
       descricaoAtendimento: "",
     });
 
+    const tecnicos = ref([]);
     const editMode = ref(false);
 
     onMounted(async () => {
       try {
         const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
         manutencao.value = response.data;
+
+        // Buscar técnicos disponíveis
+        const respTecnicos = await axios.get(`${URL}/tecnico/buscartodos`);
+        tecnicos.value = respTecnicos.data; 
       } catch (error) {
-        console.error("Erro ao carregar manutenção:", error);
+        console.error("Erro ao carregar manutenção ou técnicos:", error);
       }
     });
 
@@ -149,10 +191,8 @@ export default {
     const salvarAlteracoes = async () => {
       try {
         const payload = {
-          clienteNome: manutencao.value.clienteNome,
-          sistemaNome: manutencao.value.sistemaNome,
           tecnicoNome: manutencao.value.tecnicoNome,
-          tipoManutencao: manutencao.value.tipoManutencao,
+          descricao: manutencao.value.descricao,
           dataAgendada: manutencao.value.dataAgendada,
         };
 
@@ -163,14 +203,18 @@ export default {
 
         alert(response.data || "Alterações salvas com sucesso!");
         editMode.value = false;
-        router.push("/manutencao");
+        router.push(`/dashboard/manutencao/editar/${manutencao.value.id}`);
       } catch (error) {
         console.error("Erro ao salvar alterações:", error);
         alert("Erro ao salvar alterações.");
       }
     };
 
-    return { manutencao, editMode, habilitarEdicao, salvarAlteracoes };
+    const cancelarEdicao = () => {
+      editMode.value = false;
+    };
+
+    return { manutencao, tecnicos, editMode, habilitarEdicao, salvarAlteracoes, cancelarEdicao };
   },
 };
 </script>
@@ -222,7 +266,8 @@ h2 {
 
 .horizontal-field input,
 .horizontal-field .p-calendar,
-.horizontal-field .p-textarea {
+.horizontal-field .p-textarea,
+.horizontal-field .p-dropdown {
   flex: 1;
 }
 
@@ -233,8 +278,21 @@ h2 {
   margin-top: 2rem;
 }
 
+.botoes-edit {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
 .textarea-custom {
   resize: vertical;
   min-height: 100px;
+}
+
+/* Destaque para campos editáveis */
+.editable-field {
+  border: 2px solid #007bff; /* azul */
+  background-color: #e6ffed; /* verde claro */
+  transition: 0.3s;
 }
 </style>

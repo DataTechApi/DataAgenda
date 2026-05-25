@@ -3,6 +3,7 @@ package br.com.datatech.DataAgenda.service;
 import br.com.datatech.DataAgenda.entity.*;
 import br.com.datatech.DataAgenda.entity.dto.request.FinalizarAtendimentoDTORequest;
 import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.request.ManutencaoDTORequestEditar;
 import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
@@ -130,6 +131,21 @@ public class ManutencaoServiceImpl implements ManutencaoService {
             finalizarAtendimento(manutencao, request);
             criarManutencaPreventiva(manutencao);
         }
+    }
+
+    @Override
+    public void editarManutencao(Long id, ManutencaoDTORequestEditar request) {
+        Optional<Manutencao> manutencao = manutencaoRepository.findById(id);
+        if(manutencao.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
+        manutencao.get().setDescricao(request.getDescricao());
+        manutencao.get().setDataAgendada(request.getDataAgendada());
+        if (request.getTecnicoId() != null) {
+            Tecnico tecnico = tecnicoRepository.findById(request.getTecnicoId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Técnico não encontrado"));
+            manutencao.get().setTecnico(tecnico);
+        }
+        manutencaoRepository.save(manutencao.get());
     }
 
     private void criarManutencaPreventiva(Optional<Manutencao> manutencao){
