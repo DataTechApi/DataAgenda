@@ -8,7 +8,7 @@ import br.com.datatech.DataAgenda.entity.dto.response.ManutencaoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
-import br.com.datatech.DataAgenda.utils.ValidacaoDataManutencao;
+import br.com.datatech.DataAgenda.utils.ValidacaoDadosManutencao;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -129,6 +129,10 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         if(manutencao.get().getTipoManutencao() == TipoManutencao.EMERGENCIAL){
            finalizarAtendimento(manutencao, request);
         }else {
+            if(!ValidacaoDadosManutencao.validarDataAtendimento(request.getDataAtendimento(), manutencao.get().getDataAgendada()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data de atendimento deve ser igual ou posterior à data agendada!!!");
+            if(!ValidacaoDadosManutencao.validarDescricao(request.getDescricaoAtendimento()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A descrição do atendimento deve ter pelo menos 20 caracteres!!!");
             finalizarAtendimento(manutencao, request);
             criarManutencaPreventiva(manutencao);
         }
@@ -140,7 +144,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         if(manutencao.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
 
-        if(!ValidacaoDataManutencao.validarDataAgendadada(request.getDataAgendada()))
+        if(!ValidacaoDadosManutencao.validarDataAgendadada(request.getDataAgendada()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
         manutencao.get().setDataAgendada(request.getDataAgendada());
         manutencao.get().setDescricao(request.getDescricao());

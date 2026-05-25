@@ -33,10 +33,12 @@
             <InputText id="status" v-model="manutencao.statusManutencao" disabled class="full-width" />
           </div>
         </div>
+
+        <!-- Data Agendamento -->
         <div class="p-field horizontal-field">
-          <label for="dataAtendimento">Data Atendimento</label>
+          <label for="dataAgendamento">Data Agendamento</label>
           <DatePicker 
-            id="dataAtendimento" 
+            id="dataAgendamento" 
             v-model="manutencao.dataAgendada" 
             dateFormat="dd/mm/yy"
             placeholder="dd/mm/aaaa"
@@ -44,6 +46,8 @@
             disabled
             class="full-width" />
         </div>
+
+        <!-- Descrição do Serviço (somente leitura) -->
         <div class="p-field p-col-12 horizontal-field full-width">
           <label for="descricao">Descrição do Serviço</label>
           <Textarea 
@@ -69,18 +73,31 @@
 
         <!-- Descrição (editável) -->
         <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="descricao">Descrição do Serviço</label>
+          <label for="descricaoAtendimento">Descrição do Serviço</label>
           <Textarea 
-            id="descricao" 
+            id="descricaoAtendimento" 
             v-model="manutencao.descricaoAtendimento"
             rows="4" 
             autoResize 
+            maxlength="500"
             class="full-width textarea-custom" />
+          <!-- Contador de caracteres -->
+          <small class="contador">
+            {{ contadorDescricao }}/500 caracteres
+          </small>
+        </div>
+
+        <!-- Mensagens -->
+        <div v-if="erro" class="erro-mensagem">
+          {{ erro }}
+        </div>
+        <div v-if="sucesso" class="sucesso-mensagem">
+          {{ sucesso }}
         </div>
 
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
-          <Button label="Salvar Alterações" icon="pi pi-check" type="submit" class="p-button-success" />
+          <Button label="Finalizar Atendimento" icon="pi pi-check" type="submit" class="p-button-success" />
         </div>
 
       </div>
@@ -89,7 +106,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import axios from "axios";
 import Textarea from "primevue/textarea";
@@ -118,6 +135,14 @@ export default {
       dataAgendada: null,
     });
 
+    const erro = ref("");
+    const sucesso = ref("");
+
+    // Computed para contador de caracteres
+    const contadorDescricao = computed(() => 
+      manutencao.value.descricaoAtendimento?.length || 0
+    );
+
     // Carregar dados da manutenção pelo ID vindo da rota
     onMounted(async () => {
       try {
@@ -125,10 +150,13 @@ export default {
         manutencao.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar manutenção:", error);
+        erro.value = "Erro ao carregar manutenção.";
       }
     });
 
     const finalizarAtendimento = async () => {
+      erro.value = "";
+      sucesso.value = "";
       try {
         const payload = {
           descricaoAtendimento: manutencao.value.descricaoAtendimento,
@@ -137,22 +165,23 @@ export default {
             : null,
         };
 
-        const response = await axios.patch(
+        await axios.patch(
           `${URL}/manutencao/finalizar-atendimento/${manutencao.value.id}`,
           payload
         );
 
-        alert(response.data || "Atendimento finalizado com sucesso!");
-
-        // Redireciona para a página Visualizar Tarefa
-        router.push("/atendimento");
+        alert("Atendimento finalizado com sucesso!");
+        setTimeout(() => router.push("/atendimento"), 2000);
       } catch (error) {
-        console.error("Erro ao finalizar atendimento:", error);
-        alert("Erro ao salvar alterações.");
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       }
     };
 
-    return { manutencao, finalizarAtendimento };
+    return { manutencao, finalizarAtendimento, erro, sucesso, contadorDescricao };
   },
 };
 </script>
@@ -221,5 +250,28 @@ h2 {
 .textarea-custom {
   resize: vertical;
   min-height: 100px;
+}
+
+.contador {
+  display: block;
+  text-align: right;
+  font-size: 0.85rem;
+  color: var(--text-secondary, #666);
+  margin-top: 0.3rem;
+  color:white
+}
+
+.erro-mensagem {
+  color: rgb(243, 240, 240);
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.sucesso-mensagem {
+  color: green;
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>
