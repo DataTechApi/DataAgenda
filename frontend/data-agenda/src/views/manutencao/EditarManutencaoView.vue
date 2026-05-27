@@ -319,4 +319,14 @@ h2 {
   background-color: #e6ffed; /* verde claro */
   transition: 0.3s;
 }
+.mensagem-erro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
 </style>

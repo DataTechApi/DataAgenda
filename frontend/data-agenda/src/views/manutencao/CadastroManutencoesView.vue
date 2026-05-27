@@ -80,6 +80,9 @@
             autoResize 
             class="full-width textarea-custom" />
         </div>
+         <div v-if="erro" class="mensagem-erro">
+        {{ erro }}
+      </div>
 
         <!-- Status -->
         <div class="p-field horizontal-field short-dropdown">
@@ -135,6 +138,7 @@ export default {
     const allSistemas = ref([]);
     const filteredSistemas = ref([]);
     const tecnicos = ref([]);
+    const erro = ref("");
 
     const tipoOptions = [
       { label: "Preventiva", value: "PREVENTIVA" },
@@ -192,9 +196,13 @@ export default {
         alert(response.data || "Manutenção cadastrada com sucesso!");
         limparFormulario();
       } catch (error) {
-        console.error("Erro ao salvar manutenção:", error);
-        alert("Erro ao cadastrar manutenção. Verifique os dados.");
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+            erro.value = "Erro ao salvar alterações.";
+        }
       }
+      
     };
 
     const limparFormulario = () => {
@@ -219,7 +227,8 @@ export default {
       filteredClientes,
       filteredSistemas,
       tecnicos,
-      buscarClientes
+      buscarClientes,
+      erro
     };
   },
 };
@@ -306,5 +315,11 @@ h2 {
 /* Dropdown mais curto (ex: status) */
 .short-dropdown {
   max-width: 300px;
+}
+.erro-mensagem {
+  color: rgb(243, 240, 240);
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>

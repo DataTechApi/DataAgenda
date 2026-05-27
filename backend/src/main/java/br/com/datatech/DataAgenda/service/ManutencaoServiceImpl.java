@@ -35,6 +35,8 @@ public class ManutencaoServiceImpl implements ManutencaoService {
 
     @Override
     public void cadastrarManutencao(ManutencaoDTORequest request) {
+        if(!ValidacaoDadosManutencao.validarDataAgendada(request.getDataAgendada()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
         Manutencao manutencao = new Manutencao();
         manutencao.setDescricao(request.getDescricao());
         manutencao.setDataAgendada(request.getDataAgendada());
@@ -165,7 +167,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         if(manutencao.isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Manutenção não encontrada!!!");
 
-        if(!ValidacaoDadosManutencao.validarDataAgendadada(request.getDataAgendada()))
+        if(!ValidacaoDadosManutencao.validarDataAgendada(request.getDataAgendada()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
         manutencao.get().setDataAgendada(request.getDataAgendada());
         manutencao.get().setDescricao(request.getDescricao());
