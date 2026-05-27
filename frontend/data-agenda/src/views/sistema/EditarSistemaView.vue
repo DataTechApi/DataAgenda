@@ -246,9 +246,9 @@ h2 {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: var(--error-bg, #ffe5e5);
-  color: var(--error-text, #b00020);
-  border: 1px solid var(--error-border, #b00020);
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }

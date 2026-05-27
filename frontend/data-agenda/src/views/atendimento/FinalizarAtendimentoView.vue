@@ -88,7 +88,7 @@
         </div>
 
         <!-- Mensagens -->
-        <div v-if="erro" class="erro-mensagem">
+        <div v-if="erro" class="mensagem-erro">
           {{ erro }}
         </div>
         <div v-if="sucesso" class="sucesso-mensagem">
@@ -260,12 +260,15 @@ h2 {
   margin-top: 0.3rem;
   color:white
 }
-
-.erro-mensagem {
-  color: rgb(243, 240, 240);
-  font-weight: bold;
-  margin-top: 1rem;
-  text-align: center;
+.mensagem-erro {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 
 .sucesso-mensagem {

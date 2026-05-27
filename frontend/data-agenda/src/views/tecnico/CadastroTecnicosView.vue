@@ -240,8 +240,13 @@ h2 {
   margin-top: 2rem;
 }
 .mensagem-erro {
-  color: var(--status-danger);
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 </style>
