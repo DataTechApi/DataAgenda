@@ -15,6 +15,8 @@ public interface ManutencaoService {
 
     List<ManutencaoDTOResponse> buscarManutencaoPorTecnico(Long id);
 
+    List<ManutencaoDTOResponse> buscarManutencaoPorCliente(Long id);
+
     void finalizarAtendimento(FinalizarAtendimentoDTORequest request);
 
     void editarManutencao(Long id, ManutencaoDTORequestEditar request);

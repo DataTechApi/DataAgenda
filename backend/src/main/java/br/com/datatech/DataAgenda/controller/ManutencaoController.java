@@ -52,6 +52,12 @@ public class ManutencaoController {
         return ResponseEntity.ok(manutencoes);
     }
 
+    @GetMapping("/listar-cliente/{id}")
+    public ResponseEntity<List<ManutencaoDTOResponse>> buscarManutencaoPorCliente(@PathVariable Long id) {
+        List<ManutencaoDTOResponse> manutencoes = manutencaoService.buscarManutencaoPorCliente(id);
+        return ResponseEntity.ok(manutencoes);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ManutencaoDTOResponse> buscarPorId(@PathVariable Long id) {
         ManutencaoDTOResponse manutencao = manutencaoService.buscarPorId(id);

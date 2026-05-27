@@ -121,6 +121,27 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
+    public List<ManutencaoDTOResponse> buscarManutencaoPorCliente(Long id) {
+        return manutencaoRepository.buscarManutencaoPorCliente(id).stream()
+                .map(m -> ManutencaoDTOResponse.builder()
+                        .id(m.getId())
+                        .descricao(m.getDescricao())
+                        .dataAgendada(m.getDataAgendada())
+                        .dataAtendimento(m.getDataAtendimento())
+                        .tipoManutencao(m.getTipoManutencao())
+                        .clienteLocalidade(m.getSistema().getCliente().getLocalidade())
+                        .descricaoAtendimento(m.getDescricaoAtendimento())
+                        .statusManutencao(m.getStatusManutencao())
+                        .tecnicoNome(m.getTecnico() != null ? m.getTecnico().getNome() : "N/A")
+                        .sistemaNome(m.getSistema() != null ? m.getSistema().getNome() : "N/A")
+                        .clienteNome(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getNome() : "N/A")
+                        .clienteLatitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLatitude() : null)
+                        .clienteLongitude(m.getSistema() != null && m.getSistema().getCliente() != null ? m.getSistema().getCliente().getLongitude() : null)
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
     @Transactional
     public void finalizarAtendimento(FinalizarAtendimentoDTORequest request) {
         Optional<Manutencao> manutencao = manutencaoRepository.findById(request.getId());

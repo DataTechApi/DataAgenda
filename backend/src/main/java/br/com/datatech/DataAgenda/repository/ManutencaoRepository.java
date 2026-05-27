@@ -30,5 +30,8 @@ public interface ManutencaoRepository extends JpaRepository<Manutencao, Long> {
     @Query("SELECT m FROM Manutencao m WHERE m.tecnico.id = :id AND m.statusManutencao = 'PENDENTE'")
     List<Manutencao> buscarManutencaoPorTecnico(@Param("id") Long id);
 
+    @Query("SELECT m FROM Manutencao m WHERE m.sistema.cliente.id = :clienteId")
+    List<Manutencao> buscarManutencaoPorCliente(@Param("clienteId") Long clienteId);
+
 
 }

@@ -27,6 +27,12 @@
               class="p-button-rounded p-button-danger p-button-sm"
               @click="excluirCliente(slotProps.data)" 
             />
+            <Button 
+              icon="pi pi-file-export" 
+              class="p-button-rounded p-button-success p-button-sm"
+              @click="exportarManutencoesCliente(slotProps.data)"
+              v-tooltip.top="'Exportar Manutenções'"
+            />
           </div>
         </template>
       </Column>
@@ -40,6 +46,9 @@ import axios from "axios";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
+import pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts.js";
+pdfMake.vfs = pdfFonts.default;
 
 const URL = import.meta.env.VITE_API_URL;
 const clientes = ref([]);
@@ -53,8 +62,89 @@ const carregarClientes = async () => {
   }
 };
 
-const editarCliente = (cliente) => {
-  alert(`Editar cliente: ${cliente.nome}`);
+const formatarData = (valor) => {
+  if (!valor) return "";
+  const data = new Date(valor);
+  const dia = String(data.getDate()).padStart(2, "0");
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const ano = data.getFullYear();
+  return `${dia}/${mes}/${ano}`;
+}
+
+const exportarManutencoesCliente = async (cliente) => {
+  try {
+    const response = await axios.get(`${URL}/manutencao/listar-cliente/${cliente.id}`);
+    const manutencoes = response.data;
+
+    if (manutencoes.length === 0) {
+      alert(`O cliente ${cliente.nome} não possui manutenções.`);
+      return;
+    }
+
+    const colunas = [
+      { text: 'Sistema', style: 'tableHeader' },
+      { text: 'Tipo', style: 'tableHeader' },
+      { text: 'Status', style: 'tableHeader' },
+      { text: 'Data Agendada', style: 'tableHeader' },
+      { text: 'Técnico', style: 'tableHeader' }
+    ];
+
+    const linhas = manutencoes.map(m => {
+      return [
+        m.sistemaNome,
+        m.tipoManutencao,
+        m.statusManutencao,
+        formatarData(m.dataAgendada),
+        m.tecnicoNome
+      ];
+    });
+
+    const docDefinition = {
+      content: [
+        { text: `Relatório de Manutenções`, style: 'header' },
+        { text: `Cliente: ${cliente.nome}`, style: 'subheader' },
+        {
+          style: 'table',
+          table: {
+            headerRows: 1,
+            widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+            body: [
+              colunas,
+              ...linhas
+            ]
+          }
+        }
+      ],
+      styles: {
+        header: {
+          fontSize: 18,
+          bold: true,
+          alignment: 'center',
+          margin: [0, 0, 0, 5]
+        },
+        subheader: {
+          fontSize: 14,
+          bold: false,
+          alignment: 'center',
+          margin: [0, 0, 0, 10]
+        },
+        tableHeader: {
+          bold: true,
+          fontSize: 12,
+          color: 'black'
+        },
+        table: {
+          margin: [0, 5, 0, 15]
+        }
+      }
+    };
+
+    pdfMake.createPdf(docDefinition).download(`manutencoes_${cliente.nome.replace(/\s+/g, '_')}.pdf`);
+
+  } catch (error) {
+    console.error(`Erro ao exportar manutenções para o cliente ${cliente.nome}:`, error);
+    alert(`Não foi possível gerar o relatório para o cliente ${cliente.nome}.`);
+  }
 };
 
 const excluirCliente = async (cliente) => {

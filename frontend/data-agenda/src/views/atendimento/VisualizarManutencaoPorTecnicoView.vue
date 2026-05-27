@@ -1,6 +1,15 @@
 <template>
   <div class="card">
-    <h2 class="page-title">Visualizar Manutenções</h2>
+    <div class="header">
+      <h2 class="page-title">Visualizar Manutenções</h2>
+      <Button 
+        label="Exportar PDF" 
+        icon="pi pi-file-pdf" 
+        class="p-button-secondary p-button-sm"
+        @click="exportarPDF" 
+        :disabled="manutencoes.length === 0"
+      />
+    </div>
 
     <!-- Botões para alternar entre os modos de visualização -->
     <div class="view-switcher">
@@ -10,7 +19,7 @@
         <Button label="Calendário" @click="modoDeExibicao = 'calendario'" :class="{ 'p-button-outlined': modoDeExibicao !== 'calendario' }" />
       </ButtonGroup>
     </div>
-    
+
     <!-- Visualização em Tabela -->
     <div v-if="modoDeExibicao === 'tabela'" class="table-container">
       <DataTable 
@@ -25,7 +34,7 @@
       >
         <Column field="clienteNome" header="Cliente" sortable></Column>
         <Column field="sistemaNome" header="Sistema" sortable></Column>
-        
+
         <Column field="tipoManutencao" header="Tipo" sortable>
           <template #body="slotProps">
             <span :class="'status-badge ' + (slotProps.data.tipoManutencao || '').toLowerCase()">
@@ -176,6 +185,10 @@ import Dialog from 'primevue/dialog';
 import { FilterMatchMode } from '@primevue/core/api';
 import Card from 'primevue/card';
 import MapView from '@/components/MapView.vue';
+import pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts.js";
+pdfMake.vfs = pdfFonts.default;
+
 
 // Estado para controlar qual visualização está ativa: 'tabela', 'card', ou 'calendario'
 const modoDeExibicao = ref('tabela');
@@ -313,6 +326,72 @@ const abrirDialogoManutencao = (manutencao) => {
 
 // --- FUNÇÕES GERAIS ---
 
+const exportarPDF = () => {
+  if (manutencoes.value.length === 0) return;
+
+  const tecnicoNome = manutencoes.value[0].tecnicoNome;
+
+  const colunas = [
+    { text: 'Cliente', style: 'tableHeader' },
+    { text: 'Sistema', style: 'tableHeader' },
+    { text: 'Tipo', style: 'tableHeader' },
+    { text: 'Status', style: 'tableHeader' },
+    { text: 'Data Agendada', style: 'tableHeader' }
+  ];
+
+  const linhas = manutencoes.value.map(m => {
+    return [
+      m.clienteNome,
+      m.sistemaNome,
+      m.tipoManutencao,
+      m.statusManutencao,
+      formatarData(m.dataAgendada)
+    ];
+  });
+
+  const docDefinition = {
+    content: [
+      { text: 'Relatório de Manutenções', style: 'header' },
+      { text: `Técnico: ${tecnicoNome}`, style: 'subheader' },
+      {
+        style: 'table',
+        table: {
+          headerRows: 1,
+          widths: ['*', '*', 'auto', 'auto', 'auto'],
+          body: [
+            colunas,
+            ...linhas
+          ]
+        }
+      }
+    ],
+    styles: {
+      header: {
+        fontSize: 18,
+        bold: true,
+        alignment: 'center',
+        margin: [0, 0, 0, 5]
+      },
+      subheader: {
+        fontSize: 14,
+        bold: false,
+        alignment: 'center',
+        margin: [0, 0, 0, 10]
+      },
+      tableHeader: {
+        bold: true,
+        fontSize: 12,
+        color: 'black'
+      },
+      table: {
+        margin: [0, 5, 0, 15]
+      }
+    }
+  };
+
+  pdfMake.createPdf(docDefinition).download(`manutencoes_${tecnicoNome.replace(/\s+/g, '_')}.pdf`);
+};
+
 // Busca as coordenadas de uma cidade usando a API Nominatim
 const geocodificarCidade = async (manutencao) => {
   const local = `${manutencao.clienteLocalidade}, Brasil`;
@@ -385,6 +464,13 @@ onMounted(carregarManutencoes);
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
 .view-switcher {
   display: flex;
   justify-content: center;
