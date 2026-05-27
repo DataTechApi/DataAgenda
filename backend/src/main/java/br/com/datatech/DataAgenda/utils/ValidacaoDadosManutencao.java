@@ -35,4 +35,13 @@ public class ValidacaoDadosManutencao {
         }
         return true;
     }
+    public static Boolean validarStatusManutencao(String statusManutencao) {
+        if(statusManutencao == null || statusManutencao.trim().isEmpty()) {
+            return false;
+        }
+        if (statusManutencao.equalsIgnoreCase("EXECUTADA")) {
+            return false;
+        }
+        return true;
+    }
 }

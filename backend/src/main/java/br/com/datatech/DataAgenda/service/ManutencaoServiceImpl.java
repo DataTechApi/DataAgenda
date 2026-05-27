@@ -37,6 +37,9 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     public void cadastrarManutencao(ManutencaoDTORequest request) {
         if(!ValidacaoDadosManutencao.validarDataAgendada(request.getDataAgendada()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
+        if(!ValidacaoDadosManutencao.validarStatusManutencao(String.valueOf(request.getStatusManutencao())))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Manutenção precisa ser criada para poder ser executada!!!");
+
         Manutencao manutencao = new Manutencao();
         manutencao.setDescricao(request.getDescricao());
         manutencao.setDataAgendada(request.getDataAgendada());
