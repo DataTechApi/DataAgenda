@@ -132,7 +132,7 @@ export default {
       try {
         const response = await axios.get(`${URL}/clientes/${route.params.id}`);
         cliente.value = response.data;
-       
+        clienteOriginal.value = { ...response.data };
       } catch (error) {
         console.error("Erro ao carregar cliente:", error);
         erro.value = "Erro ao carregar dados do cliente.";
