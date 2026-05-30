@@ -63,7 +63,7 @@ public class SistemaServiceImpl implements SistemaService {
         sistemaRepository.save(sistema);
 
         Manutencao manutencao = new Manutencao();
-        manutencao.setDescricao("Manutencção Preventiva");
+        manutencao.setDescricao("Manutenção Preventiva");
         manutencao.setTipoManutencao(TipoManutencao.PREVENTIVA);
         manutencao.setStatusManutencao(StatusManutencao.PENDENTE);
         Tecnico tecnicoEntity = model.map(tecnico, Tecnico.class);
