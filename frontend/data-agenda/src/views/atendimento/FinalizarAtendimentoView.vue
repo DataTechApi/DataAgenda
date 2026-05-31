@@ -1,280 +1,171 @@
 <template>
-  <div class="card">
-    <h2>Visualização de Manutenção</h2>
-    <form @submit.prevent="finalizarAtendimento">
-      <div class="p-fluid p-formgrid p-grid">
+  <div class="layout" :class="{ 'sidebar-open': sidebarAberta }">
+    <!-- Header Superior -->
+    <header class="header">
+      <img src="/src/assets/logoDataTech.jpeg" alt="Logo" class="logo" />
+      <span>DATA AGENDA</span>
 
-        <!-- Cliente (somente leitura) -->
-        <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="cliente">Cliente</label>
-          <InputText id="cliente" v-model="manutencao.clienteNome" disabled class="full-width" />
-        </div>
+      <!-- Botão Hamburger -->
+      <button
+        class="hamburger"
+        @click="sidebarAberta = !sidebarAberta"
+        title="Menu"
+      >
+        <i class="pi pi-bars"></i>
+      </button>
 
-        <!-- Sistemas + Técnicos (somente leitura) -->
-        <div class="row-pair">
-          <div class="p-field horizontal-field">
-            <label for="sistema">Sistema</label>
-            <InputText id="sistema" v-model="manutencao.sistemaNome" disabled class="full-width" />
-          </div>
-          <div class="p-field horizontal-field">
-            <label for="tecnico">Técnico</label>
-            <InputText id="tecnico" v-model="manutencao.tecnicoNome" disabled class="full-width" />
-          </div>
-        </div>
+      <!-- Botão de tema -->
+      <button
+        class="theme-toggle"
+        @click="themeStore.toggle()"
+        :title="themeStore.isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'"
+      >
+        <i :class="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+      </button>
+    </header>
 
-        <!-- Tipo + Status (somente leitura) -->
-        <div class="row-pair">
-          <div class="p-field horizontal-field">
-            <label for="tipo">Tipo</label>
-            <InputText id="tipo" v-model="manutencao.tipoManutencao" disabled class="full-width" />
-          </div>
-          <div class="p-field horizontal-field">
-            <label for="status">Status</label>
-            <InputText id="status" v-model="manutencao.statusManutencao" disabled class="full-width" />
-          </div>
-        </div>
+    <!-- Sidebar Lateral -->
+    <aside class="sidebar" v-if="sidebarAberta">
+      <ul>
+        <li>
+          <RouterLink to="/atendimento" class="router-link">
+            <div class="menu-item">
+              <div class="menu-label">
+                <i class="pi pi-check-circle"></i>
+                <span>Visualizar Manutenções</span>
+              </div>
+            </div>
+          </RouterLink>
+        </li>
+      </ul>
 
-        <!-- Data Agendamento -->
-        <div class="p-field horizontal-field">
-          <label for="dataAgendamento">Data Agendamento</label>
-          <DatePicker 
-            id="dataAgendamento" 
-            v-model="manutencao.dataAgendada" 
-            dateFormat="dd/mm/yy"
-            placeholder="dd/mm/aaaa"
-            showIcon
-            disabled
-            class="full-width" />
+      <!-- Rodapé com logout e usuário -->
+      <div class="sidebar-footer">
+        <button class="logout-btn" @click="logout">
+          <i class="pi pi-sign-out"></i>
+          <span>Efetuar Logout</span>
+        </button>
+        <div class="user-info">
+          <i class="pi pi-user"></i>
+          <span>{{ usuarioLogado }}</span>
         </div>
-
-        <!-- Descrição do Serviço (somente leitura) -->
-        <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="descricao">Descrição do Serviço</label>
-          <Textarea 
-            id="descricao" 
-            v-model="manutencao.descricao"
-            rows="4" 
-            autoResize 
-            disabled
-            class="full-width textarea-custom" />
-        </div>
-
-        <!-- Data do atendimento (editável) -->
-        <div class="p-field horizontal-field">
-          <label for="dataAtendimento">Data Atendimento</label>
-          <DatePicker 
-            id="dataAtendimento" 
-            v-model="manutencao.dataAtendimento" 
-            dateFormat="dd/mm/yy"
-            placeholder="dd/mm/aaaa"
-            showIcon
-            class="full-width" />
-        </div>
-
-        <!-- Descrição (editável) -->
-        <div class="p-field p-col-12 horizontal-field full-width">
-          <label for="descricaoAtendimento">Descrição do Serviço</label>
-          <Textarea 
-            id="descricaoAtendimento" 
-            v-model="manutencao.descricaoAtendimento"
-            rows="4" 
-            autoResize 
-            maxlength="500"
-            class="full-width textarea-custom" />
-          <!-- Contador de caracteres -->
-          <small class="contador">
-            {{ contadorDescricao }}/500 caracteres
-          </small>
-        </div>
-
-        <!-- Mensagens -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
-        </div>
-        <div v-if="sucesso" class="sucesso-mensagem">
-          {{ sucesso }}
-        </div>
-
-        <!-- Botões -->
-        <div class="p-field p-col-12 botoes">
-          <Button label="Finalizar Atendimento" icon="pi pi-check" type="submit" class="p-button-success" />
-        </div>
-
       </div>
-    </form>
+    </aside>
+
+    <!-- Conteúdo Dinâmico -->
+    <main class="content">
+      <RouterView />
+    </main>
   </div>
 </template>
 
-<script>
-import { ref, onMounted, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
-import Textarea from "primevue/textarea";
-import InputText from "primevue/inputtext";
-import Button from "primevue/button";
-import DatePicker from "primevue/datepicker";
+<script setup>
+import 'primeicons/primeicons.css'
+import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { useThemeStore } from '../../stores/theme'
 
-export default {
-  name: "VisualizacaoManutencao",
-  components: { Textarea, InputText, Button, DatePicker },
-  setup() {
-    const URL = import.meta.env.VITE_API_URL;
-    const route = useRoute();
-    const router = useRouter();
+const themeStore = useThemeStore()
+const router = useRouter()
 
-    const manutencao = ref({
-      id: null,
-      clienteNome: "",
-      sistemaNome: "",
-      tecnicoNome: "",
-      tipoManutencao: "",
-      statusManutencao: "",
-      descricao: "",
-      dataAtendimento: null,
-      descricaoAtendimento: "",
-      dataAgendada: null,
-    });
+let usuario = sessionStorage.getItem('usuario')
+let nomeUsuario = 'Usuário'
 
-    const erro = ref("");
-    const sucesso = ref("");
+if (usuario) {
+  try {
+    nomeUsuario = JSON.parse(usuario).nome || 'Usuário'
+  } catch (e) {
+    nomeUsuario = usuario
+  }
+}
 
-    // Computed para contador de caracteres
-    const contadorDescricao = computed(() => 
-      manutencao.value.descricaoAtendimento?.length || 0
-    );
+const usuarioLogado = ref(nomeUsuario)
+const sidebarAberta = ref(false)
 
-    // Carregar dados da manutenção pelo ID vindo da rota
-    onMounted(async () => {
-      try {
-        const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
-        manutencao.value = response.data;
-      } catch (error) {
-        console.error("Erro ao carregar manutenção:", error);
-        erro.value = "Erro ao carregar manutenção.";
-      }
-    });
-
-    const finalizarAtendimento = async () => {
-      erro.value = "";
-      sucesso.value = "";
-      try {
-        const payload = {
-          descricaoAtendimento: manutencao.value.descricaoAtendimento,
-          dataAtendimento: manutencao.value.dataAtendimento
-            ? new Date(manutencao.value.dataAtendimento).toISOString().split("T")[0]
-            : null,
-        };
-
-        await axios.patch(
-          `${URL}/manutencao/finalizar-atendimento/${manutencao.value.id}`,
-          payload
-        );
-
-        alert("Atendimento finalizado com sucesso!");
-        setTimeout(() => router.push("/atendimento"), 2000);
-      } catch (error) {
-        if (error.response && error.response.data) {
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
-        } else {
-          erro.value = "Erro ao salvar alterações.";
-        }
-      }
-    };
-
-    return { manutencao, finalizarAtendimento, erro, sucesso, contadorDescricao };
-  },
-};
+function logout() {
+  sessionStorage.clear()
+  router.push('/login')
+}
 </script>
 
 <style scoped>
-.card {
-  max-width: 1000px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: var(--bg-card);
-  box-shadow: var(--shadow);
-  border-radius: 12px;
+.layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  grid-template-rows: 80px 1fr;
+  grid-template-areas:
+    'header header'
+    'sidebar content';
+  height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* ---- Header ---- */
+.header {
+  grid-area: header;
+  background: var(--bg-header);
   color: var(--text-main);
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 2rem;
-  color: var(--text-main);
-}
-
-.row-pair {
-  display: flex;
-  gap: 1.5rem;
-  width: 100%;
-  margin-bottom: 0;
-}
-
-.row-pair .p-field {
-  flex: 1;
-}
-
-.full-width {
-  width: 100%;
-}
-
-.horizontal-field {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.horizontal-field label {
-  width: 140px;
-  min-width: 140px;
-  font-weight: 600;
-}
-
-.horizontal-field input,
-.horizontal-field .p-inputmask,
-.horizontal-field .p-dropdown,
-.horizontal-field .p-autocomplete,
-.horizontal-field .p-calendar,
-.horizontal-field .p-textarea {
-  flex: 1;
-}
-
-.botoes {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 2rem;
-}
-
-.textarea-custom {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.contador {
-  display: block;
-  text-align: right;
-  font-size: 0.85rem;
-  color: var(--text-secondary, #666);
-  margin-top: 0.3rem;
-  color:white
-}
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
-}
-
-.sucesso-mensagem {
-  color: green;
+  padding: 0 15px;
+  font-size: 1.5rem;
   font-weight: bold;
-  margin-top: 1rem;
-  text-align: center;
+  letter-spacing: 2px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+  height: 60px;
+  margin-right: 10px;
+}
+
+.theme-toggle,
+.hamburger {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.hamburger {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  grid-area: sidebar;
+  background: var(--bg-sidebar);
+  color: var(--text-main);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+}
+
+/* ---- Responsividade ---- */
+@media (max-width: 768px) {
+  .layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'content';
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 220px;
+    height: calc(100% - 80px);
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+
+  .layout.sidebar-open .sidebar {
+    transform: translateX(0);
+  }
 }
 </style>

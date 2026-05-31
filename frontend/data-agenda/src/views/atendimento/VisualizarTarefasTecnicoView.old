@@ -1,21 +1,10 @@
 <template>
-  <div class="layout" :class="{ 'sidebar-open': sidebarAberta }">
+  <div class="layout">
     <!-- Header Superior -->
     <header class="header">
       <img src="/src/assets/logoDataTech.jpeg" alt="Logo" class="logo" />
       <span>DATA AGENDA</span>
 
-      <!-- Botão Hamburger só no mobile -->
-      <button
-        class="hamburger"
-        v-if="isMobile"
-        @click="sidebarAberta = !sidebarAberta"
-        title="Menu"
-      >
-        <i class="pi pi-bars"></i>
-      </button>
-
-      <!-- Botão de tema -->
       <button
         class="theme-toggle"
         @click="themeStore.toggle()"
@@ -23,18 +12,10 @@
       >
         <i :class="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
       </button>
-
-      <!-- Usuário + Logout só no mobile -->
-      <div class="mobile-user" v-if="isMobile">
-        <span>{{ usuarioLogado }}</span>
-        <button class="logout-btn" @click="logout">
-          <i class="pi pi-sign-out"></i>
-        </button>
-      </div>
     </header>
 
     <!-- Sidebar Lateral -->
-    <aside class="sidebar" v-if="!isMobile || sidebarAberta">
+    <aside class="sidebar">
       <ul>
         <li>
           <RouterLink to="/atendimento" class="router-link">
@@ -48,8 +29,8 @@
         </li>
       </ul>
 
-      <!-- Rodapé com logout e usuário (só desktop) -->
-      <div class="sidebar-footer" v-if="!isMobile">
+      <!-- Rodapé com logout e usuário -->
+      <div class="sidebar-footer">
         <button class="logout-btn" @click="logout">
           <i class="pi pi-sign-out"></i>
           <span>Efetuar Logout</span>
@@ -71,7 +52,7 @@
 <script setup>
 import 'primeicons/primeicons.css'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 import { useThemeStore } from '../../stores/theme'
 
 const themeStore = useThemeStore()
@@ -89,26 +70,11 @@ if (usuario) {
 }
 
 const usuarioLogado = ref(nomeUsuario)
-const sidebarAberta = ref(false)
-const isMobile = ref(window.innerWidth <= 768)
 
 function logout() {
   sessionStorage.clear()
   router.push('/login')
 }
-
-function handleResize() {
-  isMobile.value = window.innerWidth <= 768
-  if (!isMobile.value) sidebarAberta.value = false
-}
-
-onMounted(() => {
-  window.addEventListener('resize', handleResize)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
 </script>
 
 <style scoped>
@@ -130,7 +96,7 @@ onBeforeUnmount(() => {
   color: var(--text-main);
   display: flex;
   align-items: center;
-  padding: 0 15px;
+  padding: 0 30px;
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 2px;
@@ -138,22 +104,30 @@ onBeforeUnmount(() => {
 }
 
 .logo {
-  height: 60px;
-  margin-right: 10px;
+  height: 80px;
+  margin-right: 15px;
 }
 
-.theme-toggle,
-.hamburger {
-  background: transparent;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  font-size: 1.5rem;
+.theme-toggle {
   margin-left: auto;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: background 0.2s, border-color 0.2s;
+  flex-shrink: 0;
 }
 
-.hamburger {
-  margin-right: 10px;
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* ---- Sidebar ---- */
@@ -164,7 +138,6 @@ onBeforeUnmount(() => {
   padding: 10px;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
 }
 
 .sidebar ul {
@@ -187,6 +160,7 @@ onBeforeUnmount(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 0;
 }
 
 .menu-label {
@@ -225,6 +199,7 @@ onBeforeUnmount(() => {
   align-items: center;
   color: inherit;
   font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .sidebar-footer {
@@ -247,43 +222,26 @@ onBeforeUnmount(() => {
   margin-right: 8px;
 }
 
-/* ---- Mobile ---- */
-@media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'header'
-      'content';
-  }
+/* ---- Light theme: sidebar/header têm fundo escuro, texto sempre branco ---- */
+.light-theme .header,
+.light-theme .sidebar {
+  color: #ffffff;
+}
 
-  .sidebar {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 220px;
-    height: calc(100% - 80px);
-    transform: translateX(-100%);
-    z-index: 1000;
-  }
+.light-theme .sidebar-footer {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
 
-  .layout.sidebar-open .sidebar {
-    transform: translateX(0);
-  }
+.light-theme .sidebar li:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
 
-  .mobile-user {
-    display: flex;
-    align-items: center;
-    margin-left: 15px;
-    color: #fff;
-    font-weight: bold;
-  }
+.light-theme .router-link {
+  color: #ffffff;
+}
 
-  .mobile-user .logout-btn {
-    margin-left: 10px;
-    background: none;
-    border: none;
-    color: inherit;
-    cursor: pointer;
-  }
+.light-theme .logout-btn {
+  color: #ffffff;
 }
 </style>
