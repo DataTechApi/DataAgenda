@@ -4,7 +4,7 @@
 
 # Documentação - Sprint 3
 
-> Status da Sprint: 🟨 Em progresso
+> Status da Sprint: 🟩 Concluido
 
 ---
 
@@ -24,13 +24,13 @@ Implementar correções de bugs e ajustes de lógica de negócio, desenvolver fu
 
 | Rank | Prioridade | User Story | Story Points | Sprint | Requisito | Dependência | Valor de Negócio | Status |
 |------|-----------|-----------|--------------|--------|-----------|-------------|------------------|--------|
-| 1 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | R02 | Facilita auditoria e análise operacional | 🟨 Doing |
-| 2 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos | 5 | 3 | R04 | R02 | Melhora acompanhamento operacional | 🟨 Doing |
-| 3 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | US01 | Auxilia auditoria e documentação | 🟨 Doing |
-| 4 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | US01 | Apoia tomada de decisão estratégica | 🟨 Doing |
-| 5 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | Login/Auth | Reforça segurança do sistema | 🟨 Doing |
-| 6 | Baixa | Como **usuário**, quero visualizar mapas dentro da aplicação, para localizar melhor chamados e sistemas | 5 | 3 | R04 | R02 | Facilita localização de atendimentos | ⬜ To Do |
-| 7 | Baixa | Como **usuário**, quero visualizar um painel de agenda, para ter maior noção do planejamento dos chamados | 5 | 3 | R04 | R02 | Melhora organização das atividades | ⬜ To Do |
+| 1 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | R02 | Facilita auditoria e análise operacional | 🟩 Done |
+| 2 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos | 5 | 3 | R04 | R02 | Melhora acompanhamento operacional | 🟩 Done |
+| 3 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | US01 | Auxilia auditoria e documentação | 🟩 Done |
+| 4 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | US01 | Apoia tomada de decisão estratégica | 🟩 Done |
+| 5 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | Login/Auth | Reforça segurança do sistema | 🟩 Done |
+| 6 | Baixa | Como **usuário**, quero visualizar mapas dentro da aplicação, para localizar melhor chamados e sistemas | 5 | 3 | R04 | R02 | Facilita localização de atendimentos | 🟩 Done |
+| 7 | Baixa | Como **usuário**, quero visualizar um painel de agenda, para ter maior noção do planejamento dos chamados | 5 | 3 | R04 | R02 | Melhora organização das atividades | 🟩 Done |
 
 ---
 
@@ -40,18 +40,17 @@ Implementar correções de bugs e ajustes de lógica de negócio, desenvolver fu
 
 | User Story | ID da Task | Tarefa Técnica | Responsável | Status |
 |---|---|---|---|---|
-| US01 - Histórico de manutenções | #58 | Correção da funcionalidade Editar | - | ⬜ Todo |
-| US01 - Histórico de manutenções | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
-| US02 - Painel de chamados | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
-| US03 - Relatórios de manutenção | #63 | Implementação versionamento SQL | Cauê | ⬜ Todo |
+| US01 - Histórico de manutenções | #58 | Correção da funcionalidade Editar | Jackson | 🟩 Done |
+| US01 - Histórico de manutenções | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟩 Done |
+| US02 - Painel de chamados | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟩 Done |
+| US03 - Relatórios de manutenção | #63 | Implementação versionamento SQL | Cauê |  🟩 Done |
 | US03 - Relatórios de manutenção | #64 | Melhorias na documentação | Cauê | 🟩 Done |
-| US04 - Estatísticas de manutenção | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
-| US05 - Gerenciamento de permissões | #55 | Validações para data de conclusão de chamado | - | ⬜ Todo |
-| US05 - Gerenciamento de permissões | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟨 In Progress |
-| US06 - Visualização de mapas | #61 | Implementação de localidade do chamado via mapa | Cleber Kirch | 🟨 In Progress |
-| US06 - Visualização de mapas | #62 | Validações e correções referentes ao mapa | Cleber Kirch | 🟨 In Progress |
-| US07 - Painel de agenda | #59 | Criação do FrontEnd de visualização da agenda de chamados | - | ⬜ Todo |
-| US07 - Painel de agenda | #60 | Implementação da lógica para agenda de chamados | - | ⬜ Todo |
+| US04 - Estatísticas de manutenção | #66 | Melhorias contínuas e correções gerais do sistema | Davi Gramacho | 🟩 Done |
+| US05 - Gerenciamento de permissões | #55 | Validações para data de conclusão de chamado | Jackson | 🟩 Done |
+| US06 - Visualização de mapas | #61 | Implementação de localidade do chamado via mapa | Cleber Kirch |🟩 Done |
+| US06 - Visualização de mapas | #62 | Validações e correções referentes ao mapa | Cleber Kirch | 🟩 Done |
+| US07 - Painel de agenda | #59 | Criação do FrontEnd de visualização da agenda de chamados | Cleber Kirch | 🟩 Done |
+| US07 - Painel de agenda | #60 | Implementação da lógica para agenda de chamados | Cleber Kirch | 🟩 Done |
 
 ---
 
