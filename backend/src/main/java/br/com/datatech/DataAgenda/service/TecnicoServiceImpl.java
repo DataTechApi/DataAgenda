@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.datatech.DataAgenda.entity.dto.response.TecnicoDTOResponse;
+import br.com.datatech.DataAgenda.utils.ValidacaoTecnico;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,8 @@ public class TecnicoServiceImpl implements TecnicoService {
 
     @Override
     public void cadastrarTecnico(TecnicoDTORequest request) {
+        if(!ValidacaoTecnico.validarTecnico(request))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do técnico inválidos, preencher todos os campos!");
         Tecnico tecnico = model.map(request, Tecnico.class);
         tecnicoRepository.save(tecnico);
     }
@@ -56,5 +59,17 @@ public class TecnicoServiceImpl implements TecnicoService {
     @Override
     public Long contarTecnicosAtivos() {
         return tecnicoRepository.contarTecnicosAtivos();
+    }
+
+    @Override
+    public void editartecnico(Long id, TecnicoDTORequest request) {
+        Optional<Tecnico> tecnicoEntity = tecnicoRepository.findById(id);
+        if (tecnicoEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Técnico não encontrado!");
+        if (!ValidacaoTecnico.validarTecnico(request))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do técnico inválidos, preencher todos os campos!");
+        Tecnico tecnico = model.map(request, Tecnico.class);
+        tecnico.setId(id);
+        tecnicoRepository.save(tecnico);
     }
 }

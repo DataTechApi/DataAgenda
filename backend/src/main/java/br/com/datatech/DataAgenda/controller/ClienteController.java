@@ -56,5 +56,11 @@ public class ClienteController {
     public ResponseEntity<String> deletarCliente(@PathVariable Long id) {
         clienteService.deletarCliente(id); 
         return ResponseEntity.ok("Cliente deletado com sucesso!!!");
-    } 
+    }
+    @PutMapping("/editar/{id}")
+    @Operation(summary = "Editar cliente", description = "Endpoint para editar um cliente pelo seu ID no DataAgenda")
+    public ResponseEntity<String> editarCliente(@PathVariable Long id, @RequestBody ClienteDTORequest request) {
+        clienteService.editarCliente(id, request);
+        return ResponseEntity.ok("Cliente editado com sucesso!!!");
+    }
 }

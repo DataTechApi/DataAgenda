@@ -21,6 +21,8 @@ public class ClienteDTOResponse {
     private Integer duracaoContrato;
     private Boolean isAtivo;
     private String localidade;
+    private Double latitude;
+    private Double longitude;
     private LocalDate dataInicioContrato;
     private LocalDate dataFimContrato;
 

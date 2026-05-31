@@ -6,13 +6,7 @@ import java.util.Optional;
 import br.com.datatech.DataAgenda.entity.dto.response.TecnicoDTOResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.com.datatech.DataAgenda.entity.Tecnico;
@@ -57,6 +51,12 @@ public class TecnicoController{
     public ResponseEntity<Long> contarTecnicosAtivos() {
         Long quantidade = tecnicoService.contarTecnicosAtivos();
         return ResponseEntity.ok(quantidade);
+    }
+    @PutMapping("/editar/{id}")
+    @Operation(summary = "Editar técnico", description = "Endpoint para editar um técnico existente no DataAgenda")
+    public ResponseEntity<String> editarTecnico(@PathVariable Long id, @RequestBody TecnicoDTORequest request) {
+        tecnicoService.editartecnico(id, request);
+        return ResponseEntity.ok("Técnico atualizado com sucesso!");
     }
 }
 

@@ -87,7 +87,7 @@ function finalizarTarefa() {
 
 <style scoped>
 .page {
-  color: #e2e8f0;
+  color: var(--text-main);
   padding: 30px;
 }
 
@@ -114,8 +114,8 @@ function finalizarTarefa() {
 }
 
 .card {
-  background: #020617;
-  border: 1px solid #1e293b;
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   padding: 25px;
   border-radius: 12px;
 }
@@ -134,7 +134,7 @@ function finalizarTarefa() {
 
 .label {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--text-muted);
 }
 
 .value {
@@ -148,8 +148,8 @@ function finalizarTarefa() {
 
 .desc-text {
   margin-top: 5px;
-  background: #020617;
-  border: 1px solid #1e293b;
+  background: var(--bg-input);
+  border: 1px solid var(--border-input);
   padding: 10px;
   border-radius: 8px;
 }
@@ -161,7 +161,7 @@ function finalizarTarefa() {
 }
 
 .btn-finish {
-  background: #22c55e;
+  background: var(--status-success);
   color: white;
   padding: 10px 18px;
   border: none;
@@ -171,6 +171,6 @@ function finalizarTarefa() {
 }
 
 .btn-finish:hover {
-  background: #16a34a;
+  background: var(--status-success);
 }
 </style>

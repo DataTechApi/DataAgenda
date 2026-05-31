@@ -80,6 +80,9 @@
             autoResize 
             class="full-width textarea-custom" />
         </div>
+         <div v-if="erro" class="mensagem-erro">
+        {{ erro }}
+      </div>
 
         <!-- Status -->
         <div class="p-field horizontal-field short-dropdown">
@@ -135,6 +138,7 @@ export default {
     const allSistemas = ref([]);
     const filteredSistemas = ref([]);
     const tecnicos = ref([]);
+    const erro = ref("");
 
     const tipoOptions = [
       { label: "Preventiva", value: "PREVENTIVA" },
@@ -192,9 +196,13 @@ export default {
         alert(response.data || "Manutenção cadastrada com sucesso!");
         limparFormulario();
       } catch (error) {
-        console.error("Erro ao salvar manutenção:", error);
-        alert("Erro ao cadastrar manutenção. Verifique os dados.");
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+            erro.value = "Erro ao salvar alterações.";
+        }
       }
+      
     };
 
     const limparFormulario = () => {
@@ -219,7 +227,8 @@ export default {
       filteredClientes,
       filteredSistemas,
       tecnicos,
-      buscarClientes
+      buscarClientes,
+      erro
     };
   },
 };
@@ -230,15 +239,16 @@ export default {
   max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 
 .row-pair {
@@ -289,9 +299,9 @@ h2 {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }
@@ -305,5 +315,11 @@ h2 {
 /* Dropdown mais curto (ex: status) */
 .short-dropdown {
   max-width: 300px;
+}
+.erro-mensagem {
+  color: rgb(243, 240, 240);
+  font-weight: bold;
+  margin-top: 1rem;
+  text-align: center;
 }
 </style>

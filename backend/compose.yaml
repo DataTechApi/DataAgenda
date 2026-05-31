@@ -1,7 +1,7 @@
 
 services:
   oracle-db:
-    image: gvenzl/oracle-xe:latest
+    image: gvenzl/oracle-xe:21
     container_name: agenda-db
     ports:
       - "1522:1521"

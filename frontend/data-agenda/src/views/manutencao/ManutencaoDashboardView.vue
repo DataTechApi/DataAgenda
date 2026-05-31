@@ -174,7 +174,7 @@ onMounted(carregarDashboard);
 
 :deep(.p-datatable-thead > tr > th) {
     background: var(--bg-header) !important;
-    color: var(--text-muted) !important;
+    color: var(--primary-text) !important;
     border-bottom: 1px solid var(--border-color) !important;
 }
 

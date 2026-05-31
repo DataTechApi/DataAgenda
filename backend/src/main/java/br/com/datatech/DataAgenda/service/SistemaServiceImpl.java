@@ -2,10 +2,12 @@ package br.com.datatech.DataAgenda.service;
 
 import br.com.datatech.DataAgenda.entity.*;
 import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequest;
+import br.com.datatech.DataAgenda.entity.dto.request.SistemaDTORequestEditar;
 import br.com.datatech.DataAgenda.entity.dto.response.SistemaDTOResponse;
 import br.com.datatech.DataAgenda.entity.dto.response.TecnicoDTOResponse;
 import br.com.datatech.DataAgenda.repository.ManutencaoRepository;
 import br.com.datatech.DataAgenda.repository.SistemaRepository;
+import br.com.datatech.DataAgenda.utils.ValidacaoSistema;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -37,13 +39,21 @@ public class SistemaServiceImpl implements SistemaService {
     @Override
     @Transactional
     public void cadastrarSistema(SistemaDTORequest request) {
-        if(request.getTipoSistema().isEmpty()||request.getTipoSistema().isBlank())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados inválidos!!!");;
+        if(!ValidacaoSistema.validarSistema(request))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do sistema inválidos, preencher todos os campos!");
         Optional<Cliente> cliente = clienteService.buscarPorId(request.getClienteId());
         TecnicoDTOResponse tecnico = tecnicoService.buscarPorId(request.getTecnicoId());
         Sistema sistema= new Sistema();
-        String nome =cliente.get().getNome()+"-"
-                + cliente.get().getLocalidade()+"-"+request.getTipoSistema();
+
+        StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(cliente.get().getNome());
+        if (cliente.get().getLocalidade() != null && !cliente.get().getLocalidade().isBlank()) {
+            nameBuilder.append("-").append(cliente.get().getLocalidade());
+        }
+
+        nameBuilder.append("-").append(request.getTipoSistema());
+        String nome = nameBuilder.toString();
+
         sistema.setNome(nome);
         sistema.setTipoSistema(TipoSistema.valueOf(request.getTipoSistema()));
         sistema.setDataCadastro(LocalDate.now());
@@ -53,7 +63,7 @@ public class SistemaServiceImpl implements SistemaService {
         sistemaRepository.save(sistema);
 
         Manutencao manutencao = new Manutencao();
-        manutencao.setDescricao("Manutencção Preventiva");
+        manutencao.setDescricao("Manutenção Preventiva");
         manutencao.setTipoManutencao(TipoManutencao.PREVENTIVA);
         manutencao.setStatusManutencao(StatusManutencao.PENDENTE);
         Tecnico tecnicoEntity = model.map(tecnico, Tecnico.class);
@@ -84,5 +94,19 @@ public class SistemaServiceImpl implements SistemaService {
     @Override
     public Long contarSistemas() {
         return sistemaRepository.contarSistemas();
+    }
+
+    @Override
+    public void editarSistema(Long id, SistemaDTORequestEditar request) {
+        if(request.getIntervaloManutencao() < 10 || request.getIntervaloManutencao() > 90)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Favor preencher o campo intervalo de manutenção com um valor entre 10 e 90 dias!");
+        Optional<Sistema> sistema = sistemaRepository.findById(id);
+        if(sistema.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Sistema não encontrado!");
+
+        Sistema sistemaEntity = sistema.get();
+        sistemaEntity.setIntervaloManutencao(request.getIntervaloManutencao());
+        sistemaRepository.save(sistemaEntity);
+
     }
 }

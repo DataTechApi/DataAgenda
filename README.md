@@ -1,4 +1,3 @@
-
 # API 4º Semestre BD  
 # DATAGENDA
 
@@ -7,7 +6,7 @@
 | [Desafio](#-desafio) | [Solução](#-solução) | [Backlog do Produto](#-Backlog-do-Produto) | [DoR](#-dor---definition-of-ready) | [DoD](#-dod---definition-of-done) | [Cronograma de Sprints](#-cronograma-de-sprints) | [Tecnologias](#-tecnologias) | [Manual de Instalação](#-manual-de-instalação) | [Equipe](#-equipe) |
 |--------|--------|--------|--------|--------|--------|--------|--------|--------|
 
-**Status do Projeto:** Em Desenvolvimento 🚧  
+**Status do Projeto:** Concluido
 
 **Documentação da API:** Swagger  
 
@@ -58,15 +57,17 @@ O objetivo é **facilitar a visualização e gerenciamento das manutenções pre
 | 3 | Alta | Como **gestor**, quero atribuir um técnico responsável ao chamado, para garantir que a manutenção seja executada | 3 | 2 | R02 | ✅ |
 | 4 | Alta | Como **técnico**, quero visualizar os chamados atribuídos a mim, para gerenciar minhas atividades | 3 | 2 | R03 | ✅ |
 | 5 | Alta | Como **técnico**, quero alterar o status do chamado, para refletir o andamento da manutenção | 3 | 2 | R03 | ✅ |
-| 6 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | ⬜ |
-| 7 | Alta | Como **administrador**, quero acessar um menu com todas as telas do sistema, para navegar entre as funcionalidades | 3 | 1 | R01 | ⬜ |
-| 8 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados, para acompanhar status e acessar detalhes de cada ativo | 3 | 1 | R01 | ⬜ |
-| 9 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados, para corrigir dados incorretos ou excluir ativos inativos | 5 | 2 | R01 | ⬜ |
-| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos| 5 | 3 | R04 | ⬜ |
-| 11 | Média | Como **técnico**, quero registrar observações da manutenção realizada, para registrar o atedimento e ter um histórico | 2 | 2 | R03 | ⬜ |
-| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | ⬜ |
-| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | ⬜ |
-| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | ⬜ |
+| 6 | Alta | Como **gestor**, quero visualizar o histórico de manutenções de um ativo, para análise e tomada de decisão | 3 | 3 | R04 | ✅ |
+| 7 | Alta | Como **administrador**, quero acessar um menu com todas as telas do sistema, para navegar entre as funcionalidades | 3 | 1 | R01 | ✅ |
+| 8 | Alta | Como **administrador**, quero visualizar a lista de ativos cadastrados, para acompanhar status e acessar detalhes de cada ativo | 3 | 1 | R01 | ✅ |
+| 9 | Alta | Como **administrador**, quero editar ou remover ativos cadastrados, para corrigir dados incorretos ou excluir ativos inativos | 5 | 2 | R01 | ✅ |
+| 10 | Média | Como **gestor**, quero visualizar um painel com todos os chamados e seus status, para monitorar os atendimentos| 5 | 3 | R04 | ✅ |
+| 11 | Média | Como **técnico**, quero registrar observações da manutenção realizada, para registrar o atedimento e ter um histórico | 2 | 2 | R03 |✅|
+| 12 | Média | Como **gestor**, quero gerar relatórios de manutenções realizadas, para controle e auditoria | 5 | 3 | R04 | ✅ |
+| 13 | Baixa | Como **gestor**, quero visualizar estatísticas de manutenções, para identificar padrões e melhorias | 3 | 3 | R04 | ✅ |
+| 14 | Baixa | Como **administrador**, quero gerenciar permissões de usuários, para controlar acessos ao sistema | 5 | 3 | R05 | ✅ |
+| 15 | Baixa | Como **Usuário**, quero visualizar mapas dentro da aplicação, para localizar melhor chamados/sistemas | 5 | 3 | R04 | ✅ |
+| 16 | Baixa | Como **Usuário**, quero visualizar um painel de agenda, para ter maior noção do planejamento dos chamados | 5 | 3 | R04 | ✅ |
 
 ---
 
@@ -155,17 +156,17 @@ Uma **User Story é considerada concluída** quando:
 
 | Sprint | Período | Principais Entregas |
 |------|------|------|
-| Sprint 1 | 08/09 – 28/09 | Estrutura do banco, backend inicial(Entidades e Endpoints), FrontEnd definido|
-| Sprint 2 | 06/10 – 26/10 | Sistema de alertas, gestão de chamados, segurança, implementação BackEnd->FrontEnd |
-| Sprint 3 | 03/11 – 23/11 | Relatórios, documentação, correções e deploy |
+| Sprint 1 | 16/03 – 05/04 | Estrutura do banco, backend inicial(Entidades e Endpoints), FrontEnd definido|
+| Sprint 2 | 13/04 – 03/05 | Sistema de alertas, gestão de chamados, segurança, implementação BackEnd->FrontEnd |
+| Sprint 3 | 11/05 – 31/05 | Relatórios, documentação, correções e deploy |
 
 ## Backlog das Sprints
 
 | Sprint | Link |
 |------|------|
 | Sprint1 | https://github.com/orgs/DataTechApi/projects/11 |
-| Sprint2 | https://github.com/orgs/DataTechApi/projects/13 |
-| Sprint3 | https://github.com/orgs/DataTechApi/projects/13 |
+| Sprint2 |[Docs/Processos/Sprints/Sprint2.md](https://github.com/DataTechApi/DataAgenda/blob/sprint3/Docs/Processos/Sprints/Sprint2.md)|
+| Sprint3 | [Docs/Processos/Sprints/Sprint3.md](https://github.com/DataTechApi/DataAgenda/blob/sprint3/Docs/Processos/Sprints/Sprint3.md) |
 
 ---
 
@@ -247,15 +248,6 @@ A estrutura básica de um commit segue o padrão:
 | `test` | Adição ou ajuste de testes |
 
 ---
-
-# Videos 
-
-## Video Sprint1 
-
-[Assistir vídeo](VideoSprint1.mp4)
-
----
-
 
 ## 👥 Equipe
 

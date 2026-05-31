@@ -10,15 +10,16 @@ import Aura from '@primeuix/themes/aura';
 import Button from 'primevue/button';
 import 'primeicons/primeicons.css';
 
-   
-
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(PrimeVue, {
     theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+            darkModeSelector: '.app-dark',
+        }
     }
 });
 app.component('Button', Button)

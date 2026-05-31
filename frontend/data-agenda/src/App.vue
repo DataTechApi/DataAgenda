@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router';
+import { onMounted } from 'vue'
+import { RouterView } from 'vue-router'
+import { useThemeStore } from './stores/theme'
+
+const themeStore = useThemeStore()
+
+onMounted(() => {
+  themeStore.apply()
+})
 </script>
 
 <template>
@@ -14,5 +22,6 @@ body {
   padding: 0;
   background-color: var(--bg-app);
   color: var(--text-main);
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 </style>

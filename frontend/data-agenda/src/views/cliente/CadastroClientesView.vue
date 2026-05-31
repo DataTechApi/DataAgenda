@@ -10,17 +10,19 @@
           <InputText id="nome" v-model="cliente.nome" required placeholder="Nome do Cliente" />
         </div>
 
-        <!-- CNPJ + Localidade -->
+        <!-- CNPJ + Cidade -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="cnpj">CNPJ</label>
             <InputMask id="cnpj" v-model="cliente.cnpj" mask="99.999.999/9999-99" placeholder="00.000.000/0000-00" required />
           </div>
           <div class="p-field horizontal-field">
-            <label for="localidade">Localidade</label>
-            <InputText id="localidade" v-model="cliente.localidade" placeholder="Cidade/Estado" />
+            <label for="cidade">Cidade</label>
+            <InputText id="cidade" v-model="cliente.localidade" placeholder="Ex: São Leopoldo - RS" />
           </div>
         </div>
+
+       
 
         <!-- Responsável + E-mail -->
         <div class="row-pair">
@@ -91,13 +93,7 @@ import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
 
-// Instância do axios com baseURL configurada
-const api = axios.create({
-  URL: import.meta.env.VITE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
+
 
 export default {
   name: "CadastroCliente",
@@ -114,12 +110,12 @@ export default {
     const cliente = ref({
       nome: "",
       cnpj: "",
+      cidade: "",
       localidade: "",
       nomeResponsavel: "",
       emailResponsavel: "",
       telefoneResponsavel: "",
       dataInicioContrato: "",
-      duracaoContrato: "",
       duracaoContrato: "",
     });
 
@@ -128,7 +124,7 @@ export default {
       erro.value = "";
 
       try {
-        const response = await api.post(`${URL}/clientes`, cliente.value);
+        const response = await axios.post(`${URL}/clientes`, cliente.value);
         console.log("Resposta da API:", response.data);
         alert("Cliente cadastrado com sucesso!");
         limparFormulario();
@@ -152,14 +148,14 @@ export default {
     const limparFormulario = () => {
       cliente.value = {
         nome: "",
-      cnpj: "",
-      localidade: "",
-      nomeResponsavel: "",
-      emailResponsavel: "",
-      telefoneResponsavel: "",
-      dataInicioContrato: "",
-      duracaoContrato: "",
-      duracaoContrato: "",
+        cnpj: "",
+        cidade: "",
+        localidade: "",
+        nomeResponsavel: "",
+        emailResponsavel: "",
+        telefoneResponsavel: "",
+        dataInicioContrato: "",
+        duracaoContrato: "",
       };
     };
 
@@ -173,15 +169,16 @@ export default {
   max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 
 .row-pair {
@@ -228,9 +225,9 @@ h2 {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }

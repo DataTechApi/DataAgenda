@@ -126,13 +126,6 @@ import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ,
-  timeout: 10000,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 export default {
   name: "CadastroTecnico",
@@ -178,15 +171,16 @@ export default {
       }
 
       try {
-        const response = await api.post(`${URL}/tecnico`, tecnico.value);
+        const response = await axios.post(`${URL}/tecnico`, tecnico.value);
         console.log("Técnico cadastrado:", response.data);
         alert("Técnico cadastrado com sucesso!");
         limparFormulario();
-      } catch (err) {
-        console.error("Erro ao cadastrar técnico:", err);
-        erro.value =
-          err.response?.data?.mensagem ||
-          "Erro ao cadastrar técnico. Tente novamente.";
+      } catch (error) {
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       } finally {
         carregando.value = false;
       }
@@ -207,14 +201,15 @@ export default {
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 .horizontal-field {
   display: flex;
@@ -245,8 +240,13 @@ h2 {
   margin-top: 2rem;
 }
 .mensagem-erro {
-  color: #e74c3c;
-  font-size: 0.875rem;
-  margin-bottom: 0.5rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
+  border-radius: 6px;
+  font-size: 0.9rem;
 }
 </style>

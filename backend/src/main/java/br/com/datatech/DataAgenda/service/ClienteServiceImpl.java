@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponse;
 import br.com.datatech.DataAgenda.entity.dto.response.ClienteDTOResponseSemSistema;
+import br.com.datatech.DataAgenda.utils.ValidacaoCliente;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,18 +21,34 @@ public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ModelMapper model;
+    private final NominatimService nominatimService;
 
-    public ClienteServiceImpl(ClienteRepository clienteRepository, ModelMapper model) {
+    public ClienteServiceImpl(ClienteRepository clienteRepository, ModelMapper model, NominatimService nominatimService) {
         this.clienteRepository = clienteRepository;
         this.model = model;
+        this.nominatimService = nominatimService;
     }
 
     @Override
     public void cadastrarCliente(ClienteDTORequest request) {
-
+        if(!ValidacaoCliente.validarCliente(request)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do cliente inválidos, preencha todos os campos!");
+        }
         Cliente clienteEntity = model.map(request, Cliente.class);
-        clienteRepository.save(clienteEntity);
 
+        // Geocode the address if localidade is provided
+        if (clienteEntity.getLocalidade() != null && !clienteEntity.getLocalidade().trim().isEmpty()) {
+            NominatimService.Coordinates coordinates = nominatimService.getCoordinates(clienteEntity.getLocalidade());
+            if (coordinates != null) {
+                clienteEntity.setLatitude(coordinates.getLatitude());
+                clienteEntity.setLongitude(coordinates.getLongitude());
+            } else {
+                // If coordinates are not found, latitude and longitude will remain null.
+                // This is the desired graceful failure behavior.
+            }
+        }
+
+        clienteRepository.save(clienteEntity);
     }
 
     @Override
@@ -42,8 +59,6 @@ public class ClienteServiceImpl implements ClienteService {
                 .toList();
         return clienteDTOResponses;
     }
-
-
 
     @Override
     public Optional<Cliente> buscarPorId(Long id) {
@@ -78,5 +93,18 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deletarCliente(id);
         
 
+    }
+
+    @Override
+    public void editarCliente(Long id, ClienteDTORequest request) {
+        Optional<Cliente> clienteEntity= clienteRepository.findById(id);
+        if(clienteEntity.isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não encontrado!");
+        if(!ValidacaoCliente.validarCliente(request)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do cliente inválidos, preencha todos os campos!");
+        }
+        Cliente clienteAtualizado = model.map(request, Cliente.class);
+        clienteAtualizado.setId(id);
+        clienteRepository.save(clienteAtualizado);
     }
 }

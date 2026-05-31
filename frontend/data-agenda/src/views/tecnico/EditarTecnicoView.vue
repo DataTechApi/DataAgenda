@@ -31,12 +31,28 @@
         <!-- Role + Nível -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
-            <label for="role">Role</label>
-            <InputText id="role" v-model="usuario.role" :disabled="!editando" />
+            <label for="role">Tipo de Usuário</label>
+            <Dropdown 
+              id="role" 
+              v-model="usuario.role" 
+              :options="tiposUsuario" 
+              optionLabel="label" 
+              optionValue="value" 
+              :disabled="!editando" 
+              placeholder="Selecione o tipo"
+            />
           </div>
           <div class="p-field horizontal-field">
             <label for="nivel">Nível</label>
-            <InputText id="nivel" v-model="usuario.nivel" :disabled="!editando" />
+            <Dropdown 
+              id="nivel" 
+              v-model="usuario.nivel" 
+              :options="niveis" 
+              optionLabel="label" 
+              optionValue="value" 
+              :disabled="!editando" 
+              placeholder="Selecione o nível"
+            />
           </div>
         </div>
 
@@ -87,20 +103,17 @@ import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Password from "primevue/password";
 import Button from "primevue/button";
-
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: { "Content-Type": "application/json" },
-});
+import Dropdown from "primevue/dropdown";
 
 export default {
   name: "EdicaoUsuario",
-  components: { InputText, InputMask, Password, Button },
+  components: { InputText, InputMask, Password, Button, Dropdown },
   setup() {
     const loading = ref(false);
     const erro = ref("");
     const editando = ref(false);
     const route = useRoute();
+    const URL = import.meta.env.VITE_API_URL;
 
     const usuarioOriginal = ref({
       id: null,
@@ -112,12 +125,23 @@ export default {
       nivel: "",
     });
 
+    const niveis = [
+      { label: "Júnior", value: "JUNIOR" },
+      { label: "Pleno",  value: "PLENO"  },
+      { label: "Sênior", value: "SENIOR" },
+    ];
+
+    const tiposUsuario = [
+      { label: "Administrador", value: "ADMIN" },
+      { label: "Técnico", value: "TECNICO" },
+    ];
+
     const usuario = ref({ ...usuarioOriginal.value });
 
     // Recupera dados do usuário ao montar
     onMounted(async () => {
       try {
-        const response = await api.get(`/tecnico/${route.params.id}`);
+        const response = await axios.get(`${URL}/tecnico/${route.params.id}`);
         usuario.value = response.data;
         usuarioOriginal.value = { ...response.data };
       } catch (error) {
@@ -130,7 +154,7 @@ export default {
       editando.value = true;
     };
 
-    const cancelarEdicao = () => {
+    const cancelarEdicao = () => {  
       editando.value = false;
       usuario.value = { ...usuarioOriginal.value };
     };
@@ -139,18 +163,22 @@ export default {
       loading.value = true;
       erro.value = "";
       try {
-        await api.put(`/tecnico/${usuario.value.id}`, usuario.value);
+        await axios.put(`${URL}/tecnico/editar/${usuario.value.id}`, usuario.value);
         alert("Alterações salvas com sucesso!");
         editando.value = false;
         usuarioOriginal.value = { ...usuario.value };
       } catch (error) {
-        erro.value = "Erro ao salvar alterações.";
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       } finally {
         loading.value = false;
       }
     };
 
-    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes };
+    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario };
   },
 };
 </script>
@@ -160,15 +188,16 @@ export default {
   max-width: 1000px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
+  color: var(--text-main);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 
 .row-pair {
@@ -200,7 +229,8 @@ h2 {
 
 .horizontal-field input,
 .horizontal-field .p-inputmask,
-.horizontal-field .p-password {
+.horizontal-field .p-password,
+.horizontal-field .p-dropdown {
   flex: 1;
 }
 
@@ -215,9 +245,9 @@ h2 {
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }

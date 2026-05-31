@@ -77,12 +77,6 @@ import axios from "axios";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 export default {
   name: "CadastroSistema",
@@ -112,7 +106,7 @@ export default {
 
     const carregarClientes = async () => {
       try {
-        const response = await api.get(`${URL}/clientes/buscartodos`);
+        const response = await axios.get(`${URL}/clientes/buscartodos`);
         clientes.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar clientes:", error);
@@ -122,7 +116,7 @@ export default {
 
     const carregarTecnicos = async () => {
       try {
-        const response = await api.get(`${URL}/tecnico/buscartodos`);
+        const response = await axios.get(`${URL}/tecnico/buscartodos`);
         tecnicos.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar técnicos:", error);
@@ -157,7 +151,7 @@ export default {
 
       loading.value = true;
       try {
-        const response = await api.post(`${URL}/sistema`, sistema.value);
+        const response = await axios.post(`${URL}/sistema`, sistema.value);
         console.log("Resposta da API:", response.data);
         limparFormulario();
         alert("Sistema cadastrado com sucesso!");
@@ -191,15 +185,15 @@ export default {
   max-width: 900px;
   margin: 2rem auto;
   padding: 2rem;
-  background: #0f0f0f;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  background: var(--bg-card);
+  box-shadow: var(--shadow);
   border-radius: 12px;
-  color: #f5f5f5;
+  color: var(--text-main);
 }
 h2 {
   text-align: center;
   margin-bottom: 2rem;
-  color: #2c3e50;
+  color: var(--text-main);
 }
 .horizontal-field {
   display: flex;
@@ -210,7 +204,7 @@ h2 {
 .horizontal-field label {
   width: 180px;
   font-weight: 600;
-  color: #f5f5f5;
+  color: var(--text-main);
 }
 .horizontal-field input, .horizontal-field .p-dropdown {
   flex: 1;
@@ -222,15 +216,12 @@ h2 {
   margin-top: 2rem;
 }
 .mensagem-erro {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
   width: 100%;
   padding: 0.75rem 1rem;
   margin-bottom: 1rem;
-  background-color: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--error-bg);
+  color: var(--error-text);
+  border: 1px solid var(--error-border);
   border-radius: 6px;
   font-size: 0.9rem;
 }
