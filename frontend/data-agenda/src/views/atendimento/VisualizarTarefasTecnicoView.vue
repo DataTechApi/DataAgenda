@@ -65,6 +65,13 @@
     <main class="content">
       <RouterView />
     </main>
+
+    <!-- Overlay para mobile quando sidebar aberto -->
+    <div
+      class="overlay"
+      v-if="isMobile && sidebarAberta"
+      @click="sidebarAberta = false"
+    ></div>
   </div>
 </template>
 
@@ -127,7 +134,7 @@ onBeforeUnmount(() => {
 .header {
   grid-area: header;
   background: var(--bg-header);
-  color: var(--text-main);
+  color: #fff; /* letras sempre brancas */
   display: flex;
   align-items: center;
   padding: 0 15px;
@@ -146,7 +153,7 @@ onBeforeUnmount(() => {
 .hamburger {
   background: transparent;
   border: none;
-  color: #ffffff;
+  color: #fff; /* ícones sempre brancos */
   cursor: pointer;
   font-size: 1.5rem;
   margin-left: auto;
@@ -160,7 +167,7 @@ onBeforeUnmount(() => {
 .sidebar {
   grid-area: sidebar;
   background: var(--bg-sidebar);
-  color: var(--text-main);
+  color: #fff; /* letras sempre brancas */
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -194,11 +201,13 @@ onBeforeUnmount(() => {
   align-items: center;
   padding: 12px;
   width: 100%;
+  color: #fff; /* força branco */
 }
 
 .sidebar i {
   margin-right: 10px;
   font-size: 1.2rem;
+  color: #fff; /* ícones brancos */
 }
 
 /* ---- Content ---- */
@@ -210,7 +219,7 @@ onBeforeUnmount(() => {
 }
 
 .router-link {
-  color: inherit;
+  color: #fff; /* links sempre brancos */
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -223,7 +232,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: inherit;
+  color: #fff; /* botão logout branco */
   font-weight: bold;
 }
 
@@ -234,17 +243,19 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  color: var(--text-main);
+  color: #fff; /* rodapé branco */
 }
 
 .user-info {
   display: flex;
   align-items: center;
   font-weight: bold;
+  color: #fff; /* texto usuário branco */
 }
 
 .user-info i {
   margin-right: 8px;
+  color: #fff; /* ícone usuário branco */
 }
 
 /* ---- Mobile ---- */
@@ -264,6 +275,8 @@ onBeforeUnmount(() => {
     height: calc(100% - 80px);
     transform: translateX(-100%);
     z-index: 1000;
+    background: var(--bg-sidebar);
+    color: #fff; /* força branco no mobile */
   }
 
   .layout.sidebar-open .sidebar {
@@ -282,8 +295,18 @@ onBeforeUnmount(() => {
     margin-left: 10px;
     background: none;
     border: none;
-    color: inherit;
+    color: #fff;
     cursor: pointer;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 80px);
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
   }
 }
 </style>

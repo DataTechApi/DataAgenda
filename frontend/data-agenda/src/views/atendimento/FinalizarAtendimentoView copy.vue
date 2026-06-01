@@ -207,6 +207,7 @@ h2 {
   display: flex;
   gap: 1.5rem;
   width: 100%;
+  margin-bottom: 0;
 }
 
 .row-pair .p-field {
@@ -255,10 +256,10 @@ h2 {
   display: block;
   text-align: right;
   font-size: 0.85rem;
+  color: var(--text-secondary, #666);
   margin-top: 0.3rem;
-  color: white;
+  color:white
 }
-
 .mensagem-erro {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -275,70 +276,5 @@ h2 {
   font-weight: bold;
   margin-top: 1rem;
   text-align: center;
-}
-
-/* Responsividade para celular */
-@media (max-width: 768px) {
-  .card {
-    padding: 1rem;
-    font-size: 0.9rem; /* letras menores */
-    text-align: center; /* centraliza conteúdo */
-  }
-
-  h2 {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .row-pair {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .horizontal-field {
-    flex-direction: column;
-    align-items: center; /* centraliza os labels e inputs */
-    text-align: center;
-  }
-
-  .horizontal-field label {
-    width: 100%;
-    min-width: unset;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-  }
-
-  .horizontal-field input,
-  .horizontal-field .p-inputmask,
-  .horizontal-field .p-dropdown,
-  .horizontal-field .p-autocomplete,
-  .horizontal-field .p-calendar,
-  .horizontal-field .p-textarea {
-    width: 100%;
-    flex: unset;
-    font-size: 0.9rem;
-  }
-
-  .botoes {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
-  }
-
-  .botoes button {
-    width: 100%;
-    font-size: 0.9rem;
-  }
-
-  .contador {
-    font-size: 0.75rem;
-    text-align: center;
-  }
-
-  .mensagem-erro,
-  .sucesso-mensagem {
-    font-size: 0.85rem;
-    text-align: center;
-  }
 }
 </style>
