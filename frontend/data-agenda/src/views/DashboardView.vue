@@ -129,7 +129,9 @@ const fetchDashboardData = async () => {
 }
 
 onMounted(() => {
-  fetchDashboardData()
+  
+    fetchDashboardData()
+ 
 })
 
 const sistemasChartData = computed(() => {

@@ -60,6 +60,7 @@ const router = createRouter({
     {
       path: '/dashboard',
       component: MainLayout,
+      meta: { requiresAdmin: true },
       children: [
         {
           path: '',
@@ -165,13 +166,12 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to, _from, next) => {
-  const isAuthenticated = !!sessionStorage.getItem('usuario') // ← era 'token'
+router.beforeEach((to, from, next) => {
+  const usuarioStr = sessionStorage.getItem('usuario')
+  const usuario = usuarioStr ? JSON.parse(usuarioStr) : null
 
-  if (to.name !== 'login' && !isAuthenticated) {
-    next({ name: 'login' })
-  } else if (to.name === 'login' && isAuthenticated) {
-    next({ name: 'dashboard' })
+  if (to.meta.requiresAdmin && (!usuario || usuario.role !== 'ADMIN')) {
+    next('/login') // redireciona para login
   } else {
     next()
   }
