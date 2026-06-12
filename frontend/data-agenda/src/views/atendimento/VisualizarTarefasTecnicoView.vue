@@ -165,6 +165,19 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 250px;
+  height: calc(100% - 80px);
+  z-index: 1000;
+
+  /* escondido por padrão no desktop */
+  transform: translateX(-230px); /* deixa 20px visível */
+}
+
+.sidebar:hover {
+  transform: translateX(0); /* aparece ao passar o mouse */
 }
 
 .sidebar ul {
@@ -257,17 +270,11 @@ onBeforeUnmount(() => {
   }
 
   .sidebar {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 220px;
-    height: calc(100% - 80px);
-    transform: translateX(-100%);
-    z-index: 1000;
+    transform: translateX(-100%); /* escondido totalmente no mobile */
   }
 
   .layout.sidebar-open .sidebar {
-    transform: translateX(0);
+    transform: translateX(0); /* aparece com botão hamburger */
   }
 
   .mobile-user {
