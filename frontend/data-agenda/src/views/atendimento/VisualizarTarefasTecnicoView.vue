@@ -114,11 +114,10 @@ onBeforeUnmount(() => {
 <style scoped>
 .layout {
   display: grid;
-  grid-template-columns: 250px 1fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas:
-    'header header'
-    'sidebar content';
+    'header'
+    'content';
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -158,7 +157,6 @@ onBeforeUnmount(() => {
 
 /* ---- Sidebar ---- */
 .sidebar {
-  grid-area: sidebar;
   background: var(--bg-sidebar);
   color: var(--text-main);
   padding: 10px;
@@ -220,6 +218,14 @@ onBeforeUnmount(() => {
   padding: 20px;
   background: var(--bg-app);
   overflow-y: auto;
+
+  /* ajuste automático conforme sidebar */
+  margin-left: 20px; /* quando sidebar está recolhido */
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar:hover ~ .content {
+  margin-left: 250px; /* quando sidebar aparece */
 }
 
 .router-link {
@@ -262,19 +268,16 @@ onBeforeUnmount(() => {
 
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'header'
-      'content';
-  }
-
   .sidebar {
     transform: translateX(-100%); /* escondido totalmente no mobile */
   }
 
   .layout.sidebar-open .sidebar {
     transform: translateX(0); /* aparece com botão hamburger */
+  }
+
+  .content {
+    margin-left: 0; /* no mobile ocupa toda a tela */
   }
 
   .mobile-user {
