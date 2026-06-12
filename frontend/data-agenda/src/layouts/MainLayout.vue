@@ -5,15 +5,21 @@
       <img src="../assets/logoDataTech.jpeg" alt="Logo" class="logo" />
       <span>DATA AGENDA</span>
 
-      <button class="theme-toggle" @click="themeStore.toggle()" :title="themeStore.isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'">
+      <button
+        class="theme-toggle"
+        @click="themeStore.toggle()"
+        :title="themeStore.isDark ? 'Mudar para modo claro' : 'Mudar para modo escuro'"
+      >
         <i :class="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
       </button>
     </header>
 
+    <!-- Zona de ativação invisível -->
+    <div class="sidebar-trigger"></div>
+
     <!-- Sidebar Lateral -->
     <aside class="sidebar">
       <ul>
-        <!-- Dashboard Geral -->
         <li>
           <RouterLink to="/dashboard" class="router-link">
             <div class="menu-item">
@@ -25,7 +31,7 @@
           </RouterLink>
         </li>
 
-        <!-- Menu Clientes -->
+        <!-- Clientes -->
         <li>
           <div class="menu-item">
             <RouterLink to="/dashboard/cliente/dashboard" class="router-link">
@@ -56,7 +62,7 @@
           </ul>
         </li>
 
-        <!-- Menu Manutenção -->
+        <!-- Manutenção -->
         <li>
           <div class="menu-item">
             <RouterLink to="/dashboard/manutencao/dashboard" class="router-link">
@@ -87,7 +93,7 @@
           </ul>
         </li>
 
-        <!-- Menu Sistemas -->
+        <!-- Sistemas -->
         <li>
           <div class="menu-item">
             <RouterLink to="/dashboard/sistema/dashboard" class="router-link">
@@ -118,7 +124,7 @@
           </ul>
         </li>
 
-        <!-- Menu Técnico -->
+        <!-- Técnico -->
         <li>
           <div class="menu-item">
             <RouterLink to="/dashboard/tecnico/dashboard" class="router-link">
@@ -210,11 +216,10 @@ function logout() {
 <style scoped>
 .layout {
   display: grid;
-  grid-template-columns: 250px 1fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas:
-    'header header'
-    'sidebar content';
+    'header'
+    'content';
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -231,34 +236,6 @@ function logout() {
   font-weight: bold;
   letter-spacing: 2px;
   border-bottom: 1px solid var(--border-color);
-  gap: 0;
-}
-
-/* No light theme, sidebar/header text stays white (navy bg) */
-.light-theme .header,
-.light-theme .sidebar {
-  color: #ffffff;
-}
-
-.light-theme .sidebar-footer {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-}
-
-.light-theme .sidebar li:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.light-theme .submenu li:hover {
-  background: rgba(255, 255, 255, 0.15);
-}
-
-.light-theme .router-link {
-  color: #ffffff;
-}
-
-.light-theme .logout-btn {
-  color: #ffffff;
 }
 
 .logo {
@@ -280,7 +257,6 @@ function logout() {
   cursor: pointer;
   font-size: 1.1rem;
   transition: background 0.2s, border-color 0.2s;
-  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -290,13 +266,35 @@ function logout() {
 
 /* ---- Sidebar ---- */
 .sidebar {
-  grid-area: sidebar;
+  position: fixed;
+  top: 80px;
+  left: -230px; /* escondida fora da tela */
+  width: 250px;
+  height: calc(100% - 80px);
   background: var(--bg-sidebar);
   color: var(--text-main);
   padding: 10px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  transition: left 0.3s ease;
+  z-index: 1000;
+}
+
+/* Zona invisível de ativação */
+.sidebar-trigger {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 20px; /* aumentada para facilitar hover */
+  height: calc(100% - 80px);
+  z-index: 2000; /* acima da sidebar */
+}
+
+/* Mostrar sidebar quando hover na zona ou nela própria */
+.sidebar-trigger:hover + .sidebar,
+.sidebar:hover {
+  left: 0;
 }
 
 .sidebar ul {
@@ -401,4 +399,5 @@ function logout() {
 .submenu .router-link {
   padding: 8px 12px;
 }
+
 </style>
