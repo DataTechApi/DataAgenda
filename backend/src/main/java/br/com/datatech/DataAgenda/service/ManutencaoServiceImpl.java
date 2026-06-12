@@ -25,12 +25,14 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     private final TecnicoRepository tecnicoRepository;
     private final SistemaRepository sistemaRepository;
     private final ModelMapper model;
+    private final EmailServiceImpl emailService;
 
-    public ManutencaoServiceImpl(ManutencaoRepository manutencaoRepository, TecnicoRepository tecnicoRepository, SistemaRepository sistemaRepository, ModelMapper model) {
+    public ManutencaoServiceImpl(ManutencaoRepository manutencaoRepository, TecnicoRepository tecnicoRepository, SistemaRepository sistemaRepository, ModelMapper model, EmailServiceImpl emailService) {
         this.manutencaoRepository = manutencaoRepository;
         this.tecnicoRepository = tecnicoRepository;
         this.sistemaRepository = sistemaRepository;
         this.model = model;
+        this.emailService = emailService;
     }
 
     @Override
@@ -59,6 +61,10 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         }
 
         manutencaoRepository.save(manutencao);
+        String tecnicoEmail = manutencao.getTecnico() != null ? manutencao.getTecnico().getEmail() : null;
+        String clienteEmail = manutencao.getSistema() != null && manutencao.getSistema().getCliente() != null ? manutencao.getSistema().getCliente().getEmailResponsavel() : null;
+        emailService.enviarEmail("Nova Manutenção Agendada", "Uma nova manutenção foi agendada para o sistema: "
+                + manutencao.getSistema().getNome() + " no dia " + manutencao.getDataAgendada(), tecnicoEmail, clienteEmail);
     }
 
     @Override
