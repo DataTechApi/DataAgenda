@@ -65,13 +65,6 @@
     <main class="content">
       <RouterView />
     </main>
-
-    <!-- Overlay para mobile quando sidebar aberto -->
-    <div
-      class="overlay"
-      v-if="isMobile && sidebarAberta"
-      @click="sidebarAberta = false"
-    ></div>
   </div>
 </template>
 
@@ -121,11 +114,10 @@ onBeforeUnmount(() => {
 <style scoped>
 .layout {
   display: grid;
-  grid-template-columns: 250px 1fr;
   grid-template-rows: 80px 1fr;
   grid-template-areas:
-    'header header'
-    'sidebar content';
+    'header'
+    'content';
   height: 100vh;
   font-family: 'Segoe UI', sans-serif;
 }
@@ -134,7 +126,7 @@ onBeforeUnmount(() => {
 .header {
   grid-area: header;
   background: var(--bg-header);
-  color: #fff; /* letras sempre brancas */
+  color: var(--text-main);
   display: flex;
   align-items: center;
   padding: 0 15px;
@@ -153,7 +145,7 @@ onBeforeUnmount(() => {
 .hamburger {
   background: transparent;
   border: none;
-  color: #fff; /* ícones sempre brancos */
+  color: #ffffff;
   cursor: pointer;
   font-size: 1.5rem;
   margin-left: auto;
@@ -165,13 +157,25 @@ onBeforeUnmount(() => {
 
 /* ---- Sidebar ---- */
 .sidebar {
-  grid-area: sidebar;
   background: var(--bg-sidebar);
-  color: #fff; /* letras sempre brancas */
+  color: var(--text-main);
   padding: 10px;
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 250px;
+  height: calc(100% - 80px);
+  z-index: 1000;
+
+  /* escondido por padrão no desktop */
+  transform: translateX(-230px); /* deixa 20px visível */
+}
+
+.sidebar:hover {
+  transform: translateX(0); /* aparece ao passar o mouse */
 }
 
 .sidebar ul {
@@ -201,13 +205,11 @@ onBeforeUnmount(() => {
   align-items: center;
   padding: 12px;
   width: 100%;
-  color: #fff; /* força branco */
 }
 
 .sidebar i {
   margin-right: 10px;
   font-size: 1.2rem;
-  color: #fff; /* ícones brancos */
 }
 
 /* ---- Content ---- */
@@ -216,10 +218,18 @@ onBeforeUnmount(() => {
   padding: 20px;
   background: var(--bg-app);
   overflow-y: auto;
+
+  /* ajuste automático conforme sidebar */
+  margin-left: 20px; /* quando sidebar está recolhido */
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar:hover ~ .content {
+  margin-left: 250px; /* quando sidebar aparece */
 }
 
 .router-link {
-  color: #fff; /* links sempre brancos */
+  color: inherit;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -232,7 +242,7 @@ onBeforeUnmount(() => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  color: #fff; /* botão logout branco */
+  color: inherit;
   font-weight: bold;
 }
 
@@ -243,44 +253,31 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  color: #fff; /* rodapé branco */
+  color: var(--text-main);
 }
 
 .user-info {
   display: flex;
   align-items: center;
   font-weight: bold;
-  color: #fff; /* texto usuário branco */
 }
 
 .user-info i {
   margin-right: 8px;
-  color: #fff; /* ícone usuário branco */
 }
 
 /* ---- Mobile ---- */
 @media (max-width: 768px) {
-  .layout {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      'header'
-      'content';
-  }
-
   .sidebar {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 220px;
-    height: calc(100% - 80px);
-    transform: translateX(-100%);
-    z-index: 1000;
-    background: var(--bg-sidebar);
-    color: #fff; /* força branco no mobile */
+    transform: translateX(-100%); /* escondido totalmente no mobile */
   }
 
   .layout.sidebar-open .sidebar {
-    transform: translateX(0);
+    transform: translateX(0); /* aparece com botão hamburger */
+  }
+
+  .content {
+    margin-left: 0; /* no mobile ocupa toda a tela */
   }
 
   .mobile-user {
@@ -295,18 +292,8 @@ onBeforeUnmount(() => {
     margin-left: 10px;
     background: none;
     border: none;
-    color: #fff;
+    color: inherit;
     cursor: pointer;
-  }
-
-  .overlay {
-    position: fixed;
-    top: 80px;
-    left: 0;
-    width: 100%;
-    height: calc(100% - 80px);
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 999;
   }
 }
 </style>
