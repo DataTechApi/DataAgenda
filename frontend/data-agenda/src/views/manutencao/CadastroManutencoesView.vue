@@ -80,9 +80,11 @@
             autoResize 
             class="full-width textarea-custom" />
         </div>
-         <div v-if="erro" class="mensagem-erro">
-        {{ erro }}
-      </div>
+
+        <!-- Mensagem de erro -->
+        <div v-if="erro" class="mensagem-erro">
+          {{ erro }}
+        </div>
 
         <!-- Status -->
         <div class="p-field horizontal-field short-dropdown">
@@ -101,12 +103,13 @@
           <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" />
           <Button label="Limpar" icon="pi pi-refresh" type="button" class="p-button-secondary" @click="limparFormulario" />
         </div>
-
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
-
 
 <script>
 import { ref, onMounted, watch } from "vue";
@@ -116,10 +119,11 @@ import Select from "primevue/select";
 import AutoComplete from "primevue/autocomplete";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "CadastroManutencao",
-  components: { Textarea, Select, AutoComplete, Button, DatePicker },
+  components: { Textarea, Select, AutoComplete, Button, DatePicker, ModalSucesso },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
 
@@ -139,6 +143,7 @@ export default {
     const filteredSistemas = ref([]);
     const tecnicos = ref([]);
     const erro = ref("");
+    const modalRef = ref(null);
 
     const tipoOptions = [
       { label: "Preventiva", value: "PREVENTIVA" },
@@ -193,16 +198,18 @@ export default {
 
         const payload = { ...manutencao.value, dataAgendada: dataFormatada };
         const response = await axios.post(`${URL}/manutencao`, payload);
-        alert(response.data || "Manutenção cadastrada com sucesso!");
-        limparFormulario();
+
+        modalRef.value.abrir("Manutenção cadastrada com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => limparFormulario(),
+        });
       } catch (error) {
         if (error.response && error.response.data) {
           erro.value = error.response.data.message || JSON.stringify(error.response.data);
         } else {
-            erro.value = "Erro ao salvar alterações.";
+          erro.value = "Erro ao salvar alterações.";
         }
       }
-      
     };
 
     const limparFormulario = () => {
@@ -228,11 +235,13 @@ export default {
       filteredSistemas,
       tecnicos,
       buscarClientes,
-      erro
+      erro,
+      modalRef
     };
   },
 };
 </script>
+
 
 <style scoped>
 .card {

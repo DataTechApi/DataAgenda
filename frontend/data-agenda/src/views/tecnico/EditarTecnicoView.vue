@@ -32,27 +32,11 @@
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="role">Tipo de Usuário</label>
-            <Dropdown 
-              id="role" 
-              v-model="usuario.role" 
-              :options="tiposUsuario" 
-              optionLabel="label" 
-              optionValue="value" 
-              :disabled="!editando" 
-              placeholder="Selecione o tipo"
-            />
+            <Dropdown id="role" v-model="usuario.role" :options="tiposUsuario" optionLabel="label" optionValue="value" :disabled="!editando" placeholder="Selecione o tipo" />
           </div>
           <div class="p-field horizontal-field">
             <label for="nivel">Nível</label>
-            <Dropdown 
-              id="nivel" 
-              v-model="usuario.nivel" 
-              :options="niveis" 
-              optionLabel="label" 
-              optionValue="value" 
-              :disabled="!editando" 
-              placeholder="Selecione o nível"
-            />
+            <Dropdown id="nivel" v-model="usuario.nivel" :options="niveis" optionLabel="label" optionValue="value" :disabled="!editando" placeholder="Selecione o nível" />
           </div>
         </div>
 
@@ -63,35 +47,15 @@
 
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
-          <Button
-            v-if="!editando"
-            label="Editar"
-            icon="pi pi-pencil"
-            type="button"
-            class="p-button-warning"
-            @click="ativarEdicao"
-          />
-          <Button
-            v-if="editando"
-            label="Salvar Alterações"
-            icon="pi pi-check"
-            type="submit"
-            class="p-button-success"
-            :loading="loading"
-            :disabled="loading"
-          />
-          <Button
-            v-if="editando"
-            label="Cancelar"
-            icon="pi pi-times"
-            type="button"
-            class="p-button-secondary"
-            @click="cancelarEdicao"
-          />
+          <Button v-if="!editando" label="Editar" icon="pi pi-pencil" type="button" class="p-button-warning" @click="ativarEdicao" />
+          <Button v-if="editando" label="Salvar Alterações" icon="pi pi-check" type="submit" class="p-button-success" :loading="loading" :disabled="loading" />
+          <Button v-if="editando" label="Cancelar" icon="pi pi-times" type="button" class="p-button-secondary" @click="cancelarEdicao" />
         </div>
-
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -104,16 +68,18 @@ import InputMask from "primevue/inputmask";
 import Password from "primevue/password";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "EdicaoUsuario",
-  components: { InputText, InputMask, Password, Button, Dropdown },
+  components: { InputText, InputMask, Password, Button, Dropdown, ModalSucesso },
   setup() {
     const loading = ref(false);
     const erro = ref("");
     const editando = ref(false);
     const route = useRoute();
     const URL = import.meta.env.VITE_API_URL;
+    const modalRef = ref(null);
 
     const usuarioOriginal = ref({
       id: null,
@@ -127,7 +93,7 @@ export default {
 
     const niveis = [
       { label: "Júnior", value: "JUNIOR" },
-      { label: "Pleno",  value: "PLENO"  },
+      { label: "Pleno", value: "PLENO" },
       { label: "Sênior", value: "SENIOR" },
     ];
 
@@ -138,7 +104,6 @@ export default {
 
     const usuario = ref({ ...usuarioOriginal.value });
 
-    // Recupera dados do usuário ao montar
     onMounted(async () => {
       try {
         const response = await axios.get(`${URL}/tecnico/${route.params.id}`);
@@ -154,7 +119,7 @@ export default {
       editando.value = true;
     };
 
-    const cancelarEdicao = () => {  
+    const cancelarEdicao = () => {
       editando.value = false;
       usuario.value = { ...usuarioOriginal.value };
     };
@@ -164,9 +129,14 @@ export default {
       erro.value = "";
       try {
         await axios.put(`${URL}/tecnico/editar/${usuario.value.id}`, usuario.value);
-        alert("Alterações salvas com sucesso!");
-        editando.value = false;
-        usuarioOriginal.value = { ...usuario.value };
+
+        modalRef.value.abrir("Alterações salvas com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => {
+            editando.value = false;
+            usuarioOriginal.value = { ...usuario.value };
+          },
+        });
       } catch (error) {
         if (error.response && error.response.data) {
           erro.value = error.response.data.message || JSON.stringify(error.response.data);
@@ -178,10 +148,11 @@ export default {
       }
     };
 
-    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario };
+    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario, modalRef };
   },
 };
 </script>
+
 
 <style scoped>
 .card {

@@ -29,12 +29,7 @@
             />
           </template>
           <template v-else>
-            <InputText 
-              id="tecnico" 
-              v-model="manutencao.tecnicoNome" 
-              disabled 
-              class="full-width" 
-            />
+            <InputText id="tecnico" v-model="manutencao.tecnicoNome" disabled class="full-width" />
           </template>
         </div>
       </div>
@@ -79,29 +74,16 @@
         />
       </div>
 
-      <!-- Data Atendimento (sempre desabilitado) -->
+      <!-- Data Atendimento -->
       <div class="p-field horizontal-field">
         <label for="dataAtendimento">Data Atendimento</label>
-        <DatePicker 
-          id="dataAtendimento" 
-          v-model="manutencao.dataAtendimento"
-          dateFormat="dd/mm/yy"
-          placeholder="dd/mm/aaaa"
-          showIcon
-          class="full-width"
-          disabled />
+        <DatePicker id="dataAtendimento" v-model="manutencao.dataAtendimento" dateFormat="dd/mm/yy" placeholder="dd/mm/aaaa" showIcon class="full-width" disabled />
       </div>
 
-      <!-- Descrição Atendimento (sempre desabilitado) -->
+      <!-- Descrição Atendimento -->
       <div class="p-field p-col-12 horizontal-field full-width">
         <label for="descricaoAtendimento">Descrição Atendimento</label>
-        <Textarea 
-          id="descricaoAtendimento" 
-          v-model="manutencao.descricaoAtendimento"
-          rows="4" 
-          autoResize 
-          class="full-width textarea-custom"
-          disabled />
+        <Textarea id="descricaoAtendimento" v-model="manutencao.descricaoAtendimento" rows="4" autoResize class="full-width textarea-custom" disabled />
       </div>
 
       <!-- Mensagem de erro -->
@@ -111,30 +93,16 @@
 
       <!-- Botões -->
       <div class="p-field p-col-12 botoes">
-        <Button 
-          v-if="!editMode"
-          label="Editar" 
-          icon="pi pi-pencil" 
-          class="p-button-warning" 
-          @click="habilitarEdicao" 
-        />
+        <Button v-if="!editMode" label="Editar" icon="pi pi-pencil" class="p-button-warning" @click="habilitarEdicao" />
         <div v-if="editMode" class="botoes-edit">
-          <Button 
-            label="Salvar Alterações" 
-            icon="pi pi-check" 
-            class="p-button-success" 
-            @click="salvarAlteracoes" 
-          />
-          <Button 
-            label="Cancelar" 
-            icon="pi pi-times" 
-            class="p-button-secondary" 
-            @click="cancelarEdicao" 
-          />
+          <Button label="Salvar Alterações" icon="pi pi-check" class="p-button-success" @click="salvarAlteracoes" />
+          <Button label="Cancelar" icon="pi pi-times" class="p-button-secondary" @click="cancelarEdicao" />
         </div>
       </div>
-
     </div>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -147,15 +115,17 @@ import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
 import Dropdown from "primevue/dropdown";
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "DetalhesManutencao",
-  components: { Textarea, InputText, Button, DatePicker, Dropdown },
+  components: { Textarea, InputText, Button, DatePicker, Dropdown, ModalSucesso },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
     const router = useRouter();
     const erro = ref("");
+    const modalRef = ref(null);
 
     const manutencao = ref({
       id: null,
@@ -170,79 +140,75 @@ export default {
       descricaoAtendimento: "",
     });
 
-    const manutencaoOriginal = ref(null); // guarda cópia original
+    const manutencaoOriginal = ref(null);
     const tecnicos = ref([]);
     const editMode = ref(false);
 
     onMounted(async () => {
-  try {
-    const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
-    
-    // Ajusta a data agendada para o fuso local
-    if (response.data.dataAgendada) {
-      const data = new Date(response.data.dataAgendada);
-      // Corrige para meia-noite local
-      response.data.dataAgendada = new Date(data.getTime() + data.getTimezoneOffset() * 60000);
-    }
+      try {
+        const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
+        if (response.data.dataAgendada) {
+          const data = new Date(response.data.dataAgendada);
+          response.data.dataAgendada = new Date(data.getTime() + data.getTimezoneOffset() * 60000);
+        }
+        manutencao.value = response.data;
+        manutencaoOriginal.value = { ...response.data };
 
-    manutencao.value = response.data;
-    manutencaoOriginal.value = { ...response.data };
+        const respTecnicos = await axios.get(`${URL}/tecnico/buscartodos`);
+        tecnicos.value = respTecnicos.data;
+      } catch (error) {
+        console.error("Erro ao carregar manutenção ou técnicos:", error);
+      }
+    });
 
-    const respTecnicos = await axios.get(`${URL}/tecnico/buscartodos`);
-    tecnicos.value = respTecnicos.data; 
-  } catch (error) {
-    console.error("Erro ao carregar manutenção ou técnicos:", error);
-  }
-});
-
-
-  const habilitarEdicao = () => {
-  erro.value = ""; // limpa qualquer erro anterior
-  if (manutencao.value.statusManutencao.toLowerCase() === "pendente") {
-    editMode.value = true;
-  } else {
-    alert("Somente manutenções pendentes podem ser editadas.");
-  }
-};
-
-const salvarAlteracoes = async () => {
-  try {
-    const payload = {
-      tecnicoNome: manutencao.value.tecnicoNome,
-      descricao: manutencao.value.descricao,
-      dataAgendada: manutencao.value.dataAgendada,
+    const habilitarEdicao = () => {
+      erro.value = "";
+      if (manutencao.value.statusManutencao.toLowerCase() === "pendente") {
+        editMode.value = true;
+      } else {
+        erro.value = "Somente manutenções pendentes podem ser editadas.";
+      }
     };
 
-    const response = await axios.patch(
-      `${URL}/manutencao/editar/${manutencao.value.id}`,
-      payload
-    );
+    const salvarAlteracoes = async () => {
+      try {
+        const payload = {
+          tecnicoNome: manutencao.value.tecnicoNome,
+          descricao: manutencao.value.descricao,
+          dataAgendada: manutencao.value.dataAgendada,
+        };
 
-    alert(response.data || "Alterações salvas com sucesso!");
-    editMode.value = false;
-    manutencaoOriginal.value = { ...manutencao.value };
-    erro.value = ""; // limpa erro após sucesso
-    router.push(`/dashboard/manutencao/editar/${manutencao.value.id}`);
-  } catch (error) {
-    if (error.response && error.response.data) {
-      erro.value = error.response.data.message || JSON.stringify(error.response.data);
-    } else {
-      erro.value = "Erro ao salvar alterações.";
-    }
-  }
-};
+        await axios.patch(`${URL}/manutencao/editar/${manutencao.value.id}`, payload);
 
-const cancelarEdicao = () => {
-  manutencao.value = { ...manutencaoOriginal.value };
-  editMode.value = false;
-  erro.value = ""; // limpa erro ao cancelar
-};
+        modalRef.value.abrir("Alterações salvas com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => {
+            editMode.value = false;
+            manutencaoOriginal.value = { ...manutencao.value };
+            router.push(`/dashboard/manutencao/editar/${manutencao.value.id}`);
+          },
+        });
+      } catch (error) {
+        if (error.response && error.response.data) {
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
+      }
+    };
 
+    const cancelarEdicao = () => {
+      manutencao.value = { ...manutencaoOriginal.value };
+      editMode.value = false;
+      erro.value = "";
+    };
 
-    return { manutencao, tecnicos, editMode, erro, habilitarEdicao, salvarAlteracoes, cancelarEdicao };
+    return { manutencao, tecnicos, editMode, erro, habilitarEdicao, salvarAlteracoes, cancelarEdicao, modalRef };
   },
 };
 </script>
+
+
 <style scoped>
 .card {
   max-width: 1000px;
