@@ -68,6 +68,9 @@
         </div>
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -76,24 +79,26 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
-
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "CadastroSistema",
   components: {
     Dropdown,
     Button,
+    ModalSucesso,
   },
   setup() {
     const loading = ref(false);
     const erro = ref("");
     const URL = import.meta.env.VITE_API_URL;
+    const modalRef = ref(null);
 
     const sistema = ref({
       tipoSistema: "",
       clienteId: "",
-      tecnicoId: "",          // novo campo
-      intervaloManutencao: null
+      tecnicoId: "",
+      intervaloManutencao: null,
     });
 
     const tipoSistema = [
@@ -153,8 +158,11 @@ export default {
       try {
         const response = await axios.post(`${URL}/sistema`, sistema.value);
         console.log("Resposta da API:", response.data);
-        limparFormulario();
-        alert("Sistema cadastrado com sucesso!");
+
+        modalRef.value.abrir("Sistema cadastrado com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => limparFormulario(),
+        });
       } catch (error) {
         console.error("Erro ao cadastrar sistema:", error);
 
@@ -175,10 +183,11 @@ export default {
       carregarTecnicos();
     });
 
-    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, tecnicos, loading, erro };
+    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, tecnicos, loading, erro, modalRef };
   },
 };
 </script>
+
 
 <style scoped>
 .card {

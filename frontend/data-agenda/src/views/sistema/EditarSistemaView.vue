@@ -28,43 +28,22 @@
           <InputText id="localidade" v-model="sistema.cliente.localidade" disabled class="full-width" />
         </div>
 
-        <!-- Datas: Próxima Manutenção + Cadastro -->
+        <!-- Datas -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
             <label for="dataUltimaManutencao">Próxima Manutenção</label>
-            <DatePicker 
-              id="dataUltimaManutencao" 
-              v-model="sistema.dataProximaManutencao"
-              dateFormat="dd/mm/yy"
-              placeholder="dd/mm/aaaa"
-              showIcon
-              class="full-width"
-              disabled
-            />
+            <DatePicker id="dataUltimaManutencao" v-model="sistema.dataProximaManutencao" dateFormat="dd/mm/yy" showIcon disabled class="full-width" />
           </div>
           <div class="p-field horizontal-field">
             <label for="dataCadastro">Data de Cadastro</label>
-            <DatePicker 
-              id="dataCadastro" 
-              v-model="sistema.dataCadastro"
-              dateFormat="dd/mm/yy"
-              placeholder="dd/mm/aaaa"
-              showIcon
-              class="full-width"
-              disabled
-            />
+            <DatePicker id="dataCadastro" v-model="sistema.dataCadastro" dateFormat="dd/mm/yy" showIcon disabled class="full-width" />
           </div>
         </div>
 
         <!-- Intervalo de Manutenção -->
         <div class="p-field p-col-12 horizontal-field full-width">
           <label for="intervaloManutencao">Intervalo de Manutenção (dias)</label>
-          <InputText 
-            id="intervaloManutencao" 
-            v-model="sistema.intervaloManutencao" 
-            :disabled="!editando" 
-            class="full-width" 
-          />
+          <InputText id="intervaloManutencao" v-model="sistema.intervaloManutencao" :disabled="!editando" class="full-width" />
         </div>
 
         <!-- Mensagem de erro -->
@@ -74,35 +53,15 @@
 
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
-          <Button
-            v-if="!editando"
-            label="Editar Intervalo"
-            icon="pi pi-pencil"
-            type="button"
-            class="p-button-warning"
-            @click="ativarEdicao"
-          />
-          <Button
-            v-if="editando"
-            label="Salvar Alterações"
-            icon="pi pi-check"
-            type="submit"
-            class="p-button-success"
-            :loading="loading"
-            :disabled="loading"
-          />
-          <Button
-            v-if="editando"
-            label="Cancelar"
-            icon="pi pi-times"
-            type="button"
-            class="p-button-secondary"
-            @click="cancelarEdicao"
-          />
+          <Button v-if="!editando" label="Editar Intervalo" icon="pi pi-pencil" type="button" class="p-button-warning" @click="ativarEdicao" />
+          <Button v-if="editando" label="Salvar Alterações" icon="pi pi-check" type="submit" class="p-button-success" :loading="loading" :disabled="loading" />
+          <Button v-if="editando" label="Cancelar" icon="pi pi-times" type="button" class="p-button-secondary" @click="cancelarEdicao" />
         </div>
-
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -113,10 +72,11 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import DatePicker from "primevue/datepicker";
 import Button from "primevue/button";
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "DetalhesSistema",
-  components: { InputText, DatePicker, Button },
+  components: { InputText, DatePicker, Button, ModalSucesso },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
@@ -129,18 +89,14 @@ export default {
       dataProximaManutencao: null,
       dataCadastro: null,
       intervaloManutencao: null,
-      cliente: {
-        id: null,
-        nome: "",
-        localidade: "",
-      },
+      cliente: { id: null, nome: "", localidade: "" },
     });
 
     const editando = ref(false);
     const loading = ref(false);
     const erro = ref("");
+    const modalRef = ref(null);
 
-    // Carregar sistema do banco ao montar
     onMounted(async () => {
       try {
         const response = await axios.get(`${URL}/sistema/${route.params.id}`);
@@ -169,9 +125,14 @@ export default {
         await axios.patch(`${URL}/sistema/editar/${sistema.value.id}`, {
           intervaloManutencao: sistema.value.intervaloManutencao,
         });
-        alert("Alterações salvas com sucesso!");
-        editando.value = false;
-        sistemaOriginal.value = { ...sistema.value };
+
+        modalRef.value.abrir("Alterações salvas com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => {
+            editando.value = false;
+            sistemaOriginal.value = { ...sistema.value };
+          },
+        });
       } catch (error) {
         console.error("Erro ao salvar alterações:", error);
         erro.value = error.response?.data?.message || "Erro ao salvar alterações.";
@@ -180,10 +141,11 @@ export default {
       }
     };
 
-    return { sistema, editando, loading, erro, ativarEdicao, cancelarEdicao, salvarAlteracoes };
+    return { sistema, editando, loading, erro, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
   },
 };
 </script>
+
 
 <style scoped>
 .card {
