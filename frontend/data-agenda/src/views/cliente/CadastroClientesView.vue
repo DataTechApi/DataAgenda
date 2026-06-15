@@ -22,8 +22,6 @@
           </div>
         </div>
 
-       
-
         <!-- Responsável + E-mail -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
@@ -83,6 +81,9 @@
 
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -92,8 +93,7 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
-
-
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "CadastroCliente",
@@ -101,11 +101,13 @@ export default {
     InputText,
     InputMask,
     Button,
+    ModalSucesso,
   },
   setup() {
     const loading = ref(false);
     const erro = ref("");
     const URL = import.meta.env.VITE_API_URL;
+    const modalRef = ref(null);
 
     const cliente = ref({
       nome: "",
@@ -126,8 +128,11 @@ export default {
       try {
         const response = await axios.post(`${URL}/clientes`, cliente.value);
         console.log("Resposta da API:", response.data);
-        alert("Cliente cadastrado com sucesso!");
-        limparFormulario();
+
+        modalRef.value.abrir("Cliente cadastrado com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => limparFormulario(),
+        });
       } catch (error) {
         console.error("Erro ao cadastrar cliente:", error);
 
@@ -159,7 +164,7 @@ export default {
       };
     };
 
-    return { cliente, loading, erro, salvarCliente, limparFormulario };
+    return { cliente, loading, erro, salvarCliente, limparFormulario, modalRef };
   },
 };
 </script>

@@ -91,6 +91,9 @@
 
       </div>
     </form>
+
+    <!-- Modal reutilizável -->
+    <ModalSucesso ref="modalRef" />
   </div>
 </template>
 
@@ -101,11 +104,11 @@ import axios from "axios";
 import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Button from "primevue/button";
-
+import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "EdicaoCliente",
-  components: { InputText, InputMask, Button },
+  components: { InputText, InputMask, Button, ModalSucesso },
   setup() {
     const loading = ref(false);
     const erro = ref("");
@@ -113,7 +116,7 @@ export default {
     const route = useRoute();
     const URL = import.meta.env.VITE_API_URL;
     const clienteOriginal = ref({});
-
+    const modalRef = ref(null);
 
     const cliente = ref({
       nome: "",
@@ -153,22 +156,27 @@ export default {
       erro.value = "";
       try {
         await axios.put(`${URL}/clientes/editar/${cliente.value.id}`, cliente.value);
-        alert("Alterações salvas com sucesso!");
-        editando.value = false;
-        clienteOriginal.value = { ...cliente.value };
-      }catch (error) {
-    if (error.response && error.response.data) {
-      // tenta pegar mensagem do backend
-      erro.value = error.response.data.message || JSON.stringify(error.response.data);
-    } else {
-      erro.value = "Erro ao salvar alterações.";
-    }
+
+        modalRef.value.abrir("Alterações salvas com sucesso!", {
+          tipo: "sucesso",
+          onConfirm: () => {
+            editando.value = false;
+            clienteOriginal.value = { ...cliente.value };
+          },
+        });
+      } catch (error) {
+        if (error.response && error.response.data) {
+          // tenta pegar mensagem do backend
+          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+        } else {
+          erro.value = "Erro ao salvar alterações.";
+        }
       } finally {
         loading.value = false;
       }
     };
 
-    return { cliente, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes };
+    return { cliente, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
   },
 };
 </script>
