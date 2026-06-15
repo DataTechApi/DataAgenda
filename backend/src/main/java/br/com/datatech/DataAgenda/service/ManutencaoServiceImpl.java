@@ -158,8 +158,8 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         if(manutencao.get().getTipoManutencao() == TipoManutencao.EMERGENCIAL){
            finalizarAtendimento(manutencao, request);
         }else {
-            if(!ValidacaoDadosManutencao.validarDataAtendimento(request.getDataAtendimento(), manutencao.get().getDataAgendada()))
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data de atendimento deve ser igual ou posterior à data agendada!!!");
+            if(!ValidacaoDadosManutencao.validarDataAtendimento(request.getDataAtendimento(), manutencao.get().getDataCriacao()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data de atendimento posterior à data de criação!!!");
             if(!ValidacaoDadosManutencao.validarDescricao(request.getDescricaoAtendimento()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A descrição do atendimento deve ter pelo menos 20 caracteres!!!");
             finalizarAtendimento(manutencao, request);

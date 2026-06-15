@@ -33,6 +33,8 @@ public class Manutencao {
 
     private LocalDate dataAgendada;
 
+    private LocalDate dataCriacao = LocalDate.now();
+
     private String descricaoAtendimento;
 
     @Enumerated(EnumType.STRING)
