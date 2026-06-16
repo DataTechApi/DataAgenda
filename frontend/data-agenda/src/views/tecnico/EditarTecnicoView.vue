@@ -40,11 +40,6 @@
           </div>
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
-        </div>
-
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
           <Button v-if="!editando" label="Editar" icon="pi pi-pencil" type="button" class="p-button-warning" @click="ativarEdicao" />
@@ -75,7 +70,6 @@ export default {
   components: { InputText, InputMask, Password, Button, Dropdown, ModalSucesso },
   setup() {
     const loading = ref(false);
-    const erro = ref("");
     const editando = ref(false);
     const route = useRoute();
     const URL = import.meta.env.VITE_API_URL;
@@ -111,7 +105,8 @@ export default {
         usuarioOriginal.value = { ...response.data };
       } catch (error) {
         console.error("Erro ao carregar usuário:", error);
-        erro.value = "Erro ao carregar dados do usuário.";
+        const msg = error.response?.data?.message || "Erro ao carregar dados do usuário.";
+        modalRef.value.abrir(msg, { tipo: "erro" });
       }
     });
 
@@ -126,7 +121,6 @@ export default {
 
     const salvarAlteracoes = async () => {
       loading.value = true;
-      erro.value = "";
       try {
         await axios.put(`${URL}/tecnico/editar/${usuario.value.id}`, usuario.value);
 
@@ -138,21 +132,25 @@ export default {
           },
         });
       } catch (error) {
+        console.error("Erro ao salvar alterações:", error);
+
+        let msg = "";
         if (error.response && error.response.data) {
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+          msg = error.response.data.message || "Erro ao salvar alterações.";
         } else {
-          erro.value = "Erro ao salvar alterações.";
+          msg = "Erro inesperado ao salvar alterações.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         loading.value = false;
       }
     };
 
-    return { usuario, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario, modalRef };
+    return { usuario, loading, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, niveis, tiposUsuario, modalRef };
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -164,62 +162,43 @@ export default {
   border-radius: 12px;
   color: var(--text-main);
 }
-
 h2 {
   text-align: center;
   margin-bottom: 2rem;
   color: var(--text-main);
 }
-
 .row-pair {
   display: flex;
   gap: 1.5rem;
   width: 100%;
   margin-bottom: 1.25rem;
 }
-
 .row-pair .p-field {
   flex: 1;
 }
-
 .full-width {
   width: 100%;
 }
-
 .horizontal-field {
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-
 .horizontal-field label {
   width: 140px;
   min-width: 140px;
   font-weight: 600;
 }
-
 .horizontal-field input,
 .horizontal-field .p-inputmask,
 .horizontal-field .p-password,
 .horizontal-field .p-dropdown {
   flex: 1;
 }
-
 .botoes {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>

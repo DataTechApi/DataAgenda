@@ -46,11 +46,6 @@
           <InputText id="intervaloManutencao" v-model="sistema.intervaloManutencao" :disabled="!editando" class="full-width" />
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
-        </div>
-
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
           <Button v-if="!editando" label="Editar Intervalo" icon="pi pi-pencil" type="button" class="p-button-warning" @click="ativarEdicao" />
@@ -94,7 +89,6 @@ export default {
 
     const editando = ref(false);
     const loading = ref(false);
-    const erro = ref("");
     const modalRef = ref(null);
 
     onMounted(async () => {
@@ -104,7 +98,8 @@ export default {
         sistemaOriginal.value = { ...response.data };
       } catch (error) {
         console.error("Erro ao carregar sistema:", error);
-        erro.value = error.response?.data?.message || "Erro ao carregar dados do sistema.";
+        const msg = error.response?.data?.message || "Erro ao carregar dados do sistema.";
+        modalRef.value.abrir(msg, { tipo: "erro" });
       }
     });
 
@@ -115,12 +110,10 @@ export default {
     const cancelarEdicao = () => {
       editando.value = false;
       sistema.value = { ...sistemaOriginal.value };
-      erro.value = "";
     };
 
     const salvarAlteracoes = async () => {
       loading.value = true;
-      erro.value = "";
       try {
         await axios.patch(`${URL}/sistema/editar/${sistema.value.id}`, {
           intervaloManutencao: sistema.value.intervaloManutencao,
@@ -135,17 +128,17 @@ export default {
         });
       } catch (error) {
         console.error("Erro ao salvar alterações:", error);
-        erro.value = error.response?.data?.message || "Erro ao salvar alterações.";
+        const msg = error.response?.data?.message || "Erro ao salvar alterações.";
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         loading.value = false;
       }
     };
 
-    return { sistema, editando, loading, erro, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
+    return { sistema, editando, loading, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -157,61 +150,42 @@ export default {
   border-radius: 12px;
   color: var(--text-main);
 }
-
 h2 {
   text-align: center;
   margin-bottom: 2rem;
   color: var(--text-main);
 }
-
 .row-pair {
   display: flex;
   gap: 1.5rem;
   width: 100%;
   margin-bottom: 1.25rem;
 }
-
 .row-pair .p-field {
   flex: 1;
 }
-
 .full-width {
   width: 100%;
 }
-
 .horizontal-field {
   display: flex;
   align-items: center;
   gap: 1rem;
   margin-bottom: 1.25rem;
 }
-
 .horizontal-field label {
   width: 160px;
   min-width: 160px;
   font-weight: 600;
 }
-
 .horizontal-field input,
 .horizontal-field .p-calendar {
   flex: 1;
 }
-
 .botoes {
   display: flex;
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>

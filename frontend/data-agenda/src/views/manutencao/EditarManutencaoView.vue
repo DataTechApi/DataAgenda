@@ -86,11 +86,6 @@
         <Textarea id="descricaoAtendimento" v-model="manutencao.descricaoAtendimento" rows="4" autoResize class="full-width textarea-custom" disabled />
       </div>
 
-      <!-- Mensagem de erro -->
-      <div v-if="erro" class="mensagem-erro">
-        {{ erro }}
-      </div>
-
       <!-- Botões -->
       <div class="p-field p-col-12 botoes">
         <Button v-if="!editMode" label="Editar" icon="pi pi-pencil" class="p-button-warning" @click="habilitarEdicao" />
@@ -124,7 +119,6 @@ export default {
     const URL = import.meta.env.VITE_API_URL;
     const route = useRoute();
     const router = useRouter();
-    const erro = ref("");
     const modalRef = ref(null);
 
     const manutencao = ref({
@@ -158,15 +152,15 @@ export default {
         tecnicos.value = respTecnicos.data;
       } catch (error) {
         console.error("Erro ao carregar manutenção ou técnicos:", error);
+        modalRef.value.abrir("Erro ao carregar manutenção ou técnicos.", { tipo: "erro" });
       }
     });
 
     const habilitarEdicao = () => {
-      erro.value = "";
       if (manutencao.value.statusManutencao.toLowerCase() === "pendente") {
         editMode.value = true;
       } else {
-        erro.value = "Somente manutenções pendentes podem ser editadas.";
+        modalRef.value.abrir("Somente manutenções pendentes podem ser editadas.", { tipo: "erro" });
       }
     };
 
@@ -189,21 +183,25 @@ export default {
           },
         });
       } catch (error) {
+        console.error("Erro ao salvar alterações:", error);
+
+        let msg = "";
         if (error.response && error.response.data) {
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+          msg = error.response.data.message || "Erro ao salvar alterações.";
         } else {
-          erro.value = "Erro ao salvar alterações.";
+          msg = "Erro inesperado ao salvar alterações.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       }
     };
 
     const cancelarEdicao = () => {
       manutencao.value = { ...manutencaoOriginal.value };
       editMode.value = false;
-      erro.value = "";
     };
 
-    return { manutencao, tecnicos, editMode, erro, habilitarEdicao, salvarAlteracoes, cancelarEdicao, modalRef };
+    return { manutencao, tecnicos, editMode, habilitarEdicao, salvarAlteracoes, cancelarEdicao, modalRef };
   },
 };
 </script>

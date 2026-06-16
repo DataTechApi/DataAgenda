@@ -81,11 +81,6 @@
             class="full-width textarea-custom" />
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
-        </div>
-
         <!-- Status -->
         <div class="p-field horizontal-field short-dropdown">
           <label for="status">Status</label>
@@ -142,7 +137,6 @@ export default {
     const allSistemas = ref([]);
     const filteredSistemas = ref([]);
     const tecnicos = ref([]);
-    const erro = ref("");
     const modalRef = ref(null);
 
     const tipoOptions = [
@@ -167,6 +161,7 @@ export default {
         tecnicos.value = resTecnicos.data;
       } catch (error) {
         console.error("Erro ao carregar dados do banco:", error);
+        modalRef.value.abrir("Erro ao carregar dados do banco.", { tipo: "erro" });
       }
     };
 
@@ -197,18 +192,23 @@ export default {
           : null;
 
         const payload = { ...manutencao.value, dataAgendada: dataFormatada };
-        const response = await axios.post(`${URL}/manutencao`, payload);
+        await axios.post(`${URL}/manutencao`, payload);
 
         modalRef.value.abrir("Manutenção cadastrada com sucesso!", {
           tipo: "sucesso",
           onConfirm: () => limparFormulario(),
         });
       } catch (error) {
+        console.error("Erro ao salvar manutenção:", error);
+
+        let msg = "";
         if (error.response && error.response.data) {
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+          msg = error.response.data.message || "Erro ao salvar manutenção.";
         } else {
-          erro.value = "Erro ao salvar alterações.";
+          msg = "Erro inesperado ao salvar manutenção.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       }
     };
 
@@ -235,7 +235,6 @@ export default {
       filteredSistemas,
       tecnicos,
       buscarClientes,
-      erro,
       modalRef
     };
   },

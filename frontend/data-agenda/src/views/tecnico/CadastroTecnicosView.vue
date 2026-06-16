@@ -46,11 +46,6 @@
           </div>
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="p-field p-col-12 mensagem-erro">
-          {{ erro }}
-        </div>
-
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
           <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" :loading="carregando" :disabled="carregando" />
@@ -98,34 +93,36 @@ export default {
     ];
 
     const carregando = ref(false);
-    const erro = ref(null);
     const URL = import.meta.env.VITE_API_URL;
     const modalRef = ref(null);
 
     const salvarTecnico = async () => {
-      erro.value = null;
       carregando.value = true;
 
       if (!tecnico.value.senha || tecnico.value.senha.length < 6) {
-        erro.value = "A senha deve ter pelo menos 6 caracteres.";
+        modalRef.value.abrir("A senha deve ter pelo menos 6 caracteres.", { tipo: "erro" });
         carregando.value = false;
         return;
       }
 
       try {
-        const response = await axios.post(`${URL}/tecnico`, tecnico.value);
-        console.log("Técnico cadastrado:", response.data);
+        await axios.post(`${URL}/tecnico`, tecnico.value);
 
         modalRef.value.abrir("Técnico cadastrado com sucesso!", {
           tipo: "sucesso",
           onConfirm: () => limparFormulario(),
         });
       } catch (error) {
+        console.error("Erro ao cadastrar técnico:", error);
+
+        let msg = "";
         if (error.response && error.response.data) {
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+          msg = error.response.data.message || "Erro ao cadastrar técnico.";
         } else {
-          erro.value = "Erro ao salvar alterações.";
+          msg = "Erro inesperado ao cadastrar técnico.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         carregando.value = false;
       }
@@ -133,14 +130,12 @@ export default {
 
     const limparFormulario = () => {
       tecnico.value = { nome: "", telefone: "", email: "", senha: "", nivel: null, role: null };
-      erro.value = null;
     };
 
-    return { tecnico, niveis, tiposUsuario, carregando, erro, salvarTecnico, limparFormulario, modalRef };
+    return { tecnico, niveis, tiposUsuario, carregando, salvarTecnico, limparFormulario, modalRef };
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -184,15 +179,5 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>

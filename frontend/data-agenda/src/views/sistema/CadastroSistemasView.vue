@@ -55,12 +55,6 @@
           />
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          <i class="pi pi-exclamation-triangle"></i>
-          {{ erro }}
-        </div>
-
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
           <Button label="Salvar" icon="pi pi-check" type="submit" class="p-button-success" :loading="loading" />
@@ -83,14 +77,9 @@ import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "CadastroSistema",
-  components: {
-    Dropdown,
-    Button,
-    ModalSucesso,
-  },
+  components: { Dropdown, Button, ModalSucesso },
   setup() {
     const loading = ref(false);
-    const erro = ref("");
     const URL = import.meta.env.VITE_API_URL;
     const modalRef = ref(null);
 
@@ -115,7 +104,7 @@ export default {
         clientes.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar clientes:", error);
-        erro.value = "Não foi possível carregar a lista de clientes.";
+        modalRef.value.abrir("Não foi possível carregar a lista de clientes.", { tipo: "erro" });
       }
     };
 
@@ -125,39 +114,31 @@ export default {
         tecnicos.value = response.data;
       } catch (error) {
         console.error("Erro ao carregar técnicos:", error);
-        erro.value = "Não foi possível carregar a lista de técnicos.";
+        modalRef.value.abrir("Não foi possível carregar a lista de técnicos.", { tipo: "erro" });
       }
     };
 
     const limparFormulario = () => {
       sistema.value = { tipoSistema: "", clienteId: "", tecnicoId: "", intervaloManutencao: "" };
-      erro.value = "";
     };
 
     const salvarSistema = async () => {
-      erro.value = "";
-
       if (!sistema.value.tipoSistema) {
-        erro.value = "Selecione o tipo de sistema.";
-        return;
+        return modalRef.value.abrir("Selecione o tipo de sistema.", { tipo: "erro" });
       }
       if (!sistema.value.clienteId) {
-        erro.value = "Selecione um cliente.";
-        return;
+        return modalRef.value.abrir("Selecione um cliente.", { tipo: "erro" });
       }
       if (!sistema.value.tecnicoId) {
-        erro.value = "Selecione um técnico.";
-        return;
+        return modalRef.value.abrir("Selecione um técnico.", { tipo: "erro" });
       }
       if (!sistema.value.intervaloManutencao || sistema.value.intervaloManutencao <= 0) {
-        erro.value = "Informe um intervalo de manutenção válido.";
-        return;
+        return modalRef.value.abrir("Informe um intervalo de manutenção válido.", { tipo: "erro" });
       }
 
       loading.value = true;
       try {
-        const response = await axios.post(`${URL}/sistema`, sistema.value);
-        console.log("Resposta da API:", response.data);
+        await axios.post(`${URL}/sistema`, sistema.value);
 
         modalRef.value.abrir("Sistema cadastrado com sucesso!", {
           tipo: "sucesso",
@@ -166,13 +147,16 @@ export default {
       } catch (error) {
         console.error("Erro ao cadastrar sistema:", error);
 
+        let msg = "";
         if (error.response) {
-          erro.value = `Erro ${error.response.status}: ${error.response.data?.message || "Falha ao cadastrar sistema."}`;
+          msg = `Erro ${error.response.status}: ${error.response.data?.message || "Falha ao cadastrar sistema."}`;
         } else if (error.request) {
-          erro.value = "Servidor não respondeu. Verifique se o backend está rodando.";
+          msg = "Servidor não respondeu. Verifique se o backend está rodando.";
         } else {
-          erro.value = "Erro inesperado. Tente novamente.";
+          msg = "Erro inesperado. Tente novamente.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         loading.value = false;
       }
@@ -183,11 +167,10 @@ export default {
       carregarTecnicos();
     });
 
-    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, tecnicos, loading, erro, modalRef };
+    return { sistema, salvarSistema, limparFormulario, tipoSistema, clientes, tecnicos, loading, modalRef };
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -223,15 +206,5 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>
