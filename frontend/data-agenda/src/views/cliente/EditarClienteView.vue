@@ -22,7 +22,6 @@
           </div>
         </div>
 
-
         <!-- Responsável + E-mail -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
@@ -53,11 +52,6 @@
             <label for="duracao">Duração (meses)</label>
             <InputText id="duracao" v-model="cliente.duracaoContrato" type="number" min="1" :disabled="!editando" />
           </div>
-        </div>
-
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
         </div>
 
         <!-- Botões -->
@@ -111,7 +105,6 @@ export default {
   components: { InputText, InputMask, Button, ModalSucesso },
   setup() {
     const loading = ref(false);
-    const erro = ref("");
     const editando = ref(false);
     const route = useRoute();
     const URL = import.meta.env.VITE_API_URL;
@@ -129,7 +122,6 @@ export default {
       duracaoContrato: "",
     });
 
-
     // Recupera dados do cliente ao montar o componente
     onMounted(async () => {
       try {
@@ -138,7 +130,7 @@ export default {
         clienteOriginal.value = { ...response.data };
       } catch (error) {
         console.error("Erro ao carregar cliente:", error);
-        erro.value = "Erro ao carregar dados do cliente.";
+        modalRef.value.abrir("Erro ao carregar dados do cliente.", { tipo: "erro" });
       }
     });
 
@@ -153,7 +145,6 @@ export default {
 
     const salvarAlteracoes = async () => {
       loading.value = true;
-      erro.value = "";
       try {
         await axios.put(`${URL}/clientes/editar/${cliente.value.id}`, cliente.value);
 
@@ -165,22 +156,25 @@ export default {
           },
         });
       } catch (error) {
+        console.error("Erro ao salvar alterações:", error);
+
+        let msg = "";
         if (error.response && error.response.data) {
-          // tenta pegar mensagem do backend
-          erro.value = error.response.data.message || JSON.stringify(error.response.data);
+          msg = error.response.data.message || "Erro ao salvar alterações.";
         } else {
-          erro.value = "Erro ao salvar alterações.";
+          msg = "Erro inesperado ao salvar alterações.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         loading.value = false;
       }
     };
 
-    return { cliente, loading, erro, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
+    return { cliente, loading, editando, ativarEdicao, cancelarEdicao, salvarAlteracoes, modalRef };
   },
 };
 </script>
-
 
 <style scoped>
 .card {
@@ -237,16 +231,5 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>

@@ -54,11 +54,6 @@
           </div>
         </div>
 
-        <!-- Mensagem de erro -->
-        <div v-if="erro" class="mensagem-erro">
-          {{ erro }}
-        </div>
-
         <!-- Botões -->
         <div class="p-field p-col-12 botoes">
           <Button
@@ -105,7 +100,6 @@ export default {
   },
   setup() {
     const loading = ref(false);
-    const erro = ref("");
     const URL = import.meta.env.VITE_API_URL;
     const modalRef = ref(null);
 
@@ -123,7 +117,6 @@ export default {
 
     const salvarCliente = async () => {
       loading.value = true;
-      erro.value = "";
 
       try {
         const response = await axios.post(`${URL}/clientes`, cliente.value);
@@ -136,15 +129,16 @@ export default {
       } catch (error) {
         console.error("Erro ao cadastrar cliente:", error);
 
+        let msg = "";
         if (error.response) {
-          // Erro retornado pelo servidor (4xx, 5xx)
-          erro.value = `Erro ${error.response.status}: ${error.response.data?.message || "Falha ao cadastrar cliente."}`;
+          msg = ` ${error.response.data?.message || "Falha ao cadastrar cliente."}`;
         } else if (error.request) {
-          // Sem resposta do servidor
-          erro.value = "Servidor não respondeu. Verifique se o backend está rodando.";
+          msg = "Servidor não respondeu. Verifique se o backend está rodando.";
         } else {
-          erro.value = "Erro inesperado. Tente novamente.";
+          msg = "Erro inesperado. Tente novamente.";
         }
+
+        modalRef.value.abrir(msg, { tipo: "erro" });
       } finally {
         loading.value = false;
       }
@@ -164,7 +158,7 @@ export default {
       };
     };
 
-    return { cliente, loading, erro, salvarCliente, limparFormulario, modalRef };
+    return { cliente, loading, salvarCliente, limparFormulario, modalRef };
   },
 };
 </script>
@@ -224,16 +218,5 @@ h2 {
   justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
-}
-
-.mensagem-erro {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  background-color: var(--error-bg);
-  color: var(--error-text);
-  border: 1px solid var(--error-border);
-  border-radius: 6px;
-  font-size: 0.9rem;
 }
 </style>
