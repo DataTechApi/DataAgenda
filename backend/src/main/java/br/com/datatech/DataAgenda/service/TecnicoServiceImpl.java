@@ -9,6 +9,7 @@ import br.com.datatech.DataAgenda.utils.ValidacaoTecnico;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +36,8 @@ public class TecnicoServiceImpl implements TecnicoService {
         if(!ValidacaoTecnico.validarTecnico(request))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do técnico inválidos, preencher todos os campos!");
         Tecnico tecnico = model.map(request, Tecnico.class);
+        String senhaEncryptada= new BCryptPasswordEncoder().encode(request.getSenha());
+        tecnico.setSenha(senhaEncryptada);
         tecnicoRepository.save(tecnico);
     }
 

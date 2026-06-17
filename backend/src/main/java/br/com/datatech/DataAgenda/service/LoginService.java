@@ -6,13 +6,29 @@ import br.com.datatech.DataAgenda.entity.dto.response.LoginDTOResponse;
 import br.com.datatech.DataAgenda.repository.TecnicoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class LoginService {
+public class LoginService implements UserDetailsService {
 
     private final ModelMapper model;
+    private final TecnicoRepository tecnicoRepository;
+
+    public LoginService(ModelMapper model, TecnicoRepository tecnicoRepository) {
+        this.model = model;
+        this.tecnicoRepository = tecnicoRepository;
+    }
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return tecnicoRepository.findByEmail(email);
+    }
+
+
+    /*private final ModelMapper model;
     private final TecnicoRepository tecnicoRepository;
 
     public LoginService(ModelMapper model, TecnicoRepository tecnicoRepository) {
@@ -31,5 +47,5 @@ public class LoginService {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos!");
 
         return model.map(tecnico, LoginDTOResponse.class);
-    }
+    }*/
 }

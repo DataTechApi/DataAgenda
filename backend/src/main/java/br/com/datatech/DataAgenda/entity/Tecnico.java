@@ -1,5 +1,6 @@
 package br.com.datatech.DataAgenda.entity;
 
+import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -12,12 +13,15 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Data   
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tecnico {
+public class Tecnico implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,4 +40,45 @@ public class Tecnico {
     
     @OneToMany(mappedBy = "tecnico")  
     private List<Manutencao> manutencoes;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.role == Role.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_TECNICO"));
+        } else {
+                return List.of(new SimpleGrantedAuthority("ROLE_TECNICO"));
+        }
+
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

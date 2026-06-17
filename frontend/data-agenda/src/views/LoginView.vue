@@ -65,8 +65,10 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import api from '@/services/api' // Axios configurado
 import { useThemeStore } from '@/stores/theme'
+import { jwtDecode } from "jwt-decode"
+
 
 const themeStore = useThemeStore()
 import InputText from 'primevue/inputtext'
@@ -78,29 +80,40 @@ const router = useRouter()
 const credentials = ref({ email: '', senha: '' })
 const loading = ref(false)
 const erro = ref('')
-const URL = import.meta.env.VITE_API_URL;
 
 const handleLogin = async () => {
   erro.value = ''
   loading.value = true
 
   try {
-    const { data } = await axios.post(`${URL}/login`, {
+    const { data } = await api.post('/login', {
       email: credentials.value.email,
       senha: credentials.value.senha,
     })
-    console.log('Resposta da API:', data) 
+    console.log('Resposta da API:', data)
 
-    // Salva os dados do usuário na sessão
-    sessionStorage.setItem('usuario', JSON.stringify(data))
+    // Salva o token JWT
+    sessionStorage.setItem('token', data.token)
 
-    // Verifica o papel do usuário e redireciona
-    if (data.role === 'ADMIN') {
+    // Decodifica o token
+    const decoded = jwtDecode(data.token)
+    console.log('Payload decodificado:', decoded)
+
+    // Exemplo: extrair role e email do payload
+    const role = decoded.role || data.role
+    const email = decoded.email || data.email
+
+    // Salva dados básicos do usuário
+    sessionStorage.setItem('usuario', JSON.stringify({ email, role }))
+    console.log('Role recebido:', role)
+
+    // Redireciona conforme o papel
+    if (role === 'ROLE_ADMIN') {
       router.push({ name: 'dashboard' })
-    } else if (data.role === 'TECNICO') {
+    } else if (role === 'ROLE_TECNICO') {
       router.push({ name: 'atendimento-visualizar' })
     } else {
-      router.push({ name: 'login' }) // fallback
+      router.push({ name: 'login' })
     }
 
   } catch (err) {

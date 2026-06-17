@@ -95,7 +95,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import axios from 'axios'
+import axios from '@/services/api' 
 import Chart from 'primevue/chart'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'

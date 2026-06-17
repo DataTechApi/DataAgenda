@@ -4,7 +4,6 @@ import LoginView from '../views/LoginView.vue'
 
 // Dashboards
 import DashboardView from '../views/DashboardView.vue'
-// Usando lazy loading para os dashboards que ainda serão criados
 const ClienteDashboardView = () => import('../views/cliente/ClienteDashboardView.vue')
 const ManutencaoDashboardView = () => import('../views/manutencao/ManutencaoDashboardView.vue')
 const SistemaDashboardView = () => import('../views/sistema/SistemaDashboardView.vue')
@@ -55,7 +54,6 @@ const router = createRouter({
     {
       path: '/',
       redirect: 'login',
-      
     },
     {
       path: '/dashboard',
@@ -153,8 +151,6 @@ const router = createRouter({
           name: 'tecnico-visualizar',
           component: VisualizarTecnicoView,
         },
-        
-        
         {
           path: 'tecnico/tarefa/:id',
           name: 'tecnico-tarefa-detalhe',
@@ -166,7 +162,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-  const isAuthenticated = !!sessionStorage.getItem('usuario') // ← era 'token'
+  const token = sessionStorage.getItem('token')
+  const isAuthenticated = !!token
 
   if (to.name !== 'login' && !isAuthenticated) {
     next({ name: 'login' })
