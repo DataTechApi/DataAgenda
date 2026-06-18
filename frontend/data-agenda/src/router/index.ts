@@ -26,6 +26,16 @@ import EditarClienteView from '../views/cliente/EditarClienteView.vue'
 import EditarSistemaView from '../views/sistema/EditarSistemaView.vue'
 import EditarTecnicoView from '../views/tecnico/EditarTecnicoView.vue'
 
+// Função para decodificar JWT
+function decodeToken(token) {
+  try {
+    const payload = token.split('.')[1]
+    return JSON.parse(atob(payload))
+  } catch {
+    return null
+  }
+}
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -37,17 +47,20 @@ const router = createRouter({
     {
       path: '/atendimento',
       component: VisualizarTarefasTecnicoView,
+      meta: { requiresAuth: true, roles: ['ROLE_TECNICO'] },
       children:[
         {
           path: '',
           name: 'atendimento-visualizar',
           component: VisualizarManutencaoPorTecnicoView,
+          meta: { roles: ['ROLE_TECNICO'] }
         },
         {
-          path: '/manutencao/:id',
+          path: '/atendimento/:id',
           name: 'atendimento-finalizar',
           component: FinalizarAtendimentoView,
-          props: true
+          props: true,
+          meta: { roles: ['ROLE_TECNICO'] }
         },
       ],
     },
@@ -58,120 +71,149 @@ const router = createRouter({
     {
       path: '/dashboard',
       component: MainLayout,
+      meta: { requiresAuth: true, roles: ['ROLE_ADMIN'] },
       children: [
         {
           path: '',
           name: 'dashboard',
           component: DashboardView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         // Cliente Routes
         {
           path: 'cliente/dashboard',
           name: 'cliente-dashboard',
           component: ClienteDashboardView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'cliente/cadastrar',
           name: 'cliente-cadastrar',
           component: CadastroClientesView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'cliente/editar/:id',
           name: 'cliente-editar',
           component: EditarClienteView,
-          props:true
+          props:true,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'cliente/visualizar',
           name: 'cliente-visualizar',
           component: VisualizarClienteView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         // Manutencao Routes
         {
           path: 'manutencao/dashboard',
           name: 'manutencao-dashboard',
           component: ManutencaoDashboardView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'manutencao/cadastrar',
           name: 'manutencao-cadastrar',
           component: CadastroManutencoesView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'manutencao/editar/:id',
           name: 'manutencao-editar',
           component: EditarManutencaoView,
-          props: true
+          props: true,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'manutencao/visualizar',
           name: 'manutencao-visualizar',
           component: VisualizarManutencoesView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         // Sistema Routes
         {
           path: 'sistema/dashboard',
           name: 'sistema-dashboard',
           component: SistemaDashboardView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'sistema/cadastrar',
           name: 'sistema-cadastrar',
           component: CadastroSistemasView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'sistema/editar/:id',
           name: 'sistema-editar',
           component: EditarSistemaView,
-          props:true
+          props:true,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'sistema/visualizar',
           name: 'sistema-visualizar',
           component: VisualizarSistemaView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         // Tecnico Routes
         {
           path: 'tecnico/dashboard',
           name: 'tecnico-dashboard',
           component: TecnicoDashboardView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'tecnico/cadastrar',
           name: 'tecnico-cadastrar',
           component: CadastroTecnicosView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'tecnico/editar/:id',
           name: 'tecnico-editar',
           component: EditarTecnicoView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'tecnico/visualizar',
           name: 'tecnico-visualizar',
           component: VisualizarTecnicoView,
+          meta: { roles: ['ROLE_ADMIN'] }
         },
         {
           path: 'tecnico/tarefa/:id',
           name: 'tecnico-tarefa-detalhe',
           component: () => import('../views/tecnico/DetalheTarefaView.vue'),
+          meta: { roles: ['ROLE_ADMIN'] }
         },
       ],
     },
   ],
 })
 
+// Guarda de rota
 router.beforeEach((to, _from, next) => {
   const token = sessionStorage.getItem('token')
   const isAuthenticated = !!token
+  const decoded = token ? decodeToken(token) : null
+  const role = decoded?.role
 
-  if (to.name !== 'login' && !isAuthenticated) {
-    next({ name: 'login' })
-  } else if (to.name === 'login' && isAuthenticated) {
-    next({ name: 'dashboard' })
-  } else {
-    next()
+  if (to.meta?.requiresAuth && !isAuthenticated) {
+    return next({ name: 'login' })
   }
+const roles = to.meta && to.meta.roles ? to.meta.roles : []
+if (roles.length > 0 && !roles.includes(role)) {
+  return next({ name: 'login' })
+}
+
+
+  if (to.name === 'login' && isAuthenticated) {
+    return next({ name: 'dashboard' })
+  }
+
+  next()
 })
 
 export default router

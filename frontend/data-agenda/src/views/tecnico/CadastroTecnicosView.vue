@@ -61,7 +61,7 @@
 
 <script>
 import { ref } from "vue";
-import axios from "axios";
+import axios from '@/services/api' 
 import InputText from "primevue/inputtext";
 import InputMask from "primevue/inputmask";
 import Dropdown from "primevue/dropdown";

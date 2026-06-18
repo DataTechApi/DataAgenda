@@ -44,8 +44,8 @@ public class Tecnico implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == Role.ADMIN) {
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"),
-                    new SimpleGrantedAuthority("ROLE_TECNICO"));
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+
         } else {
                 return List.of(new SimpleGrantedAuthority("ROLE_TECNICO"));
         }

@@ -70,7 +70,7 @@
 
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from '@/services/api' 
 import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import ModalSucesso from "@/components/ModalSucesso.vue";

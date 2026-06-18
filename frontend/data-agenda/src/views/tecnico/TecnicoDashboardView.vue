@@ -32,9 +32,10 @@
     </div>
   </div>
 </template>
+
 <script>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from '@/services/api' 
 
 export default {
   name: "DashboardTecnicos",

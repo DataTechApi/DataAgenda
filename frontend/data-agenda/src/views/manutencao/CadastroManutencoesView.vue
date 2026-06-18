@@ -108,7 +108,7 @@
 
 <script>
 import { ref, onMounted, watch } from "vue";
-import axios from "axios";
+import axios from '@/services/api' 
 import Textarea from "primevue/textarea";
 import Select from "primevue/select";
 import AutoComplete from "primevue/autocomplete";

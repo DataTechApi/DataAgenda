@@ -104,7 +104,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from '@/services/api' 
 import Textarea from "primevue/textarea";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";

@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import axios from "axios";
+import axios from '@/services/api' 
 import { ref, onMounted } from "vue";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";

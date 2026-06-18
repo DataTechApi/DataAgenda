@@ -174,162 +174,104 @@
 </template>
 
 <script setup>
-// Importações de bibliotecas e componentes
-import { ref, onMounted, computed } from 'vue';
-import axios from 'axios';
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import ButtonGroup from 'primevue/buttongroup';
-import Dialog from 'primevue/dialog';
-import { FilterMatchMode } from '@primevue/core/api';
-import Card from 'primevue/card';
-import MapView from '@/components/MapView.vue';
-import pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from "pdfmake/build/vfs_fonts.js";
-pdfMake.vfs = pdfFonts.default;
+import { ref, onMounted, computed } from 'vue'
+import axios from '@/services/api'
+import DataTable from 'primevue/datatable'
+import Column from 'primevue/column'
+import Button from 'primevue/button'
+import ButtonGroup from 'primevue/buttongroup'
+import Dialog from 'primevue/dialog'
+import { FilterMatchMode } from '@primevue/core/api'
+import Card from 'primevue/card'
+import MapView from '@/components/MapView.vue'
+import pdfMake from "pdfmake/build/pdfmake"
+import * as pdfFonts from "pdfmake/build/vfs_fonts.js"
+pdfMake.vfs = pdfFonts.default
 
-
-// Estado para controlar qual visualização está ativa: 'tabela', 'card', ou 'calendario'
-const modoDeExibicao = ref('tabela');
-const URL = import.meta.env.VITE_API_URL;
-const manutencoes = ref([]); // Array para armazenar as manutenções buscadas da API
-
-// Lógica para ordenar as manutenções por data, usada na visualização de cards
-const manutencoesOrdenadas = computed(() => {
-  // Cria uma cópia do array para não modificar o original
-  return [...manutencoes.value].sort((a, b) => {
-    const dateA = new Date(a.dataAgendada);
-    const dateB = new Date(b.dataAgendada);
-    // Ordena da data mais antiga para a mais nova
-    return dateA.getTime() - dateB.getTime();
-  });
-});
+// Estado principal
+const modoDeExibicao = ref('tabela')
+const URL = import.meta.env.VITE_API_URL
+const manutencoes = ref([])
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-});
+})
+const manutencaoSelecionada = ref(null)
+const mapaDialogoVisivel = ref(false)
+const manutencaoDialogoVisivel = ref(false)
 
-// Estado para controlar os dialogs (modais)
-const manutencaoSelecionada = ref(null); // Guarda a manutenção que foi clicada
-const mapaDialogoVisivel = ref(false); // Controla a visibilidade do dialog do mapa
-const manutencaoDialogoVisivel = ref(false); // Controla a visibilidade do dialog de detalhes
+// --- AUTENTICAÇÃO COM JWT ---
+const token = sessionStorage.getItem('token')
 
-// Recupera o ID do técnico logado
-let usuario = sessionStorage.getItem('usuario');
-let tecnico = JSON.parse(usuario).id;
-const tecnicoId = ref(tecnico);
+function decodeToken(token) {
+  try {
+    const payload = token.split('.')[1]
+    return JSON.parse(atob(payload))
+  } catch (e) {
+    console.error('Erro ao decodificar token:', e)
+    return null
+  }
+}
+
+let tecnicoId = ref(null)
+if (token) {
+  const decoded = decodeToken(token)
+  tecnicoId.value = decoded?.id || null
+}
 
 // --- LÓGICA DO CALENDÁRIO ---
+const dataAtual = ref(new Date())
+const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
-// Guarda a data atual para saber qual mês exibir
-const dataAtual = ref(new Date()); 
-// Nomes dos dias da semana para o cabeçalho do calendário
-const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
-
-// Agrupa as manutenções por data para fácil acesso
 const manutencoesPorData = computed(() => {
-  return manutencoes.value.reduce((acc, manutencao) => {
-    const data = new Date(manutencao.dataAgendada).toISOString().split('T')[0];
-    if (!acc[data]) {
-      acc[data] = [];
-    }
-    acc[data].push(manutencao);
-    return acc;
-  }, {});
-});
+  return manutencoes.value.reduce((acc, m) => {
+    const data = new Date(m.dataAgendada).toISOString().split('T')[0]
+    if (!acc[data]) acc[data] = []
+    acc[data].push(m)
+    return acc
+  }, {})
+})
 
-// Obtém o nome do mês atual para o título do calendário
-const nomeDoMesAtual = computed(() => {
-  return dataAtual.value.toLocaleString('pt-BR', { month: 'long' });
-});
+const nomeDoMesAtual = computed(() =>
+  dataAtual.value.toLocaleString('pt-BR', { month: 'long' })
+)
+const anoAtual = computed(() => dataAtual.value.getFullYear())
 
-// Obtém o ano atual para o título do calendário
-const anoAtual = computed(() => {
-  return dataAtual.value.getFullYear();
-});
-
-// Gera os dias que serão exibidos no grid do calendário
-const diasDoCalendario = computed(() => {
-  const ano = dataAtual.value.getFullYear();
-  const mes = dataAtual.value.getMonth();
-  const primeiroDiaDoMes = new Date(ano, mes, 1);
-  const ultimoDiaDoMes = new Date(ano, mes + 1, 0);
-  const diasNoMes = ultimoDiaDoMes.getDate();
-  const diaDaSemanaInicial = primeiroDiaDoMes.getDay();
-
-  const dias = [];
-
-  // Adiciona os últimos dias do mês anterior para preencher o início do calendário
-  const ultimoDiaDoMesAnterior = new Date(ano, mes, 0).getDate();
-  for (let i = diaDaSemanaInicial; i > 0; i--) {
-    const dia = ultimoDiaDoMesAnterior - i + 1;
-    const data = new Date(ano, mes - 1, dia);
-    dias.push({
-      day: dia,
-      date: data.toISOString().split('T')[0],
-      isCurrentMonth: false,
-      manutencoes: manutencoesPorData.value[data.toISOString().split('T')[0]] || []
-    });
-  }
-
-  // Adiciona os dias do mês atual
-  for (let i = 1; i <= diasNoMes; i++) {
-    const data = new Date(ano, mes, i);
-    dias.push({
-      day: i,
-      date: data.toISOString().split('T')[0],
-      isCurrentMonth: true,
-      manutencoes: manutencoesPorData.value[data.toISOString().split('T')[0]] || []
-    });
-  }
-
-  // Adiciona os primeiros dias do próximo mês para preencher o final do calendário
-  const diaDaSemanaFinal = ultimoDiaDoMes.getDay();
-  for (let i = 1; i < 7 - diaDaSemanaFinal; i++) {
-    const data = new Date(ano, mes + 1, i);
-    dias.push({
-      day: i,
-      date: data.toISOString().split('T')[0],
-      isCurrentMonth: false,
-      maintenances: manutencoesPorData.value[data.toISOString().split('T')[0]] || []
-    });
-  }
-
-  return dias;
-});
-
-// Funções para navegar entre os meses
 function mesAnterior() {
-  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() - 1));
+  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() - 1))
 }
 function proximoMes() {
-  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() + 1));
+  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() + 1))
 }
 
-// Retorna uma cor baseada no status da manutenção
 function obterCorDoStatus(status) {
-  if (!status) return '#cccccc'; // Cor padrão
+  if (!status) return '#cccccc'
   switch (status.toLowerCase()) {
-    case 'preventiva': return '#27ae60';
-    case 'emergencial': return '#e74c3c';
-    case 'pendente': return '#f39c12';
-    case 'executada': return '#2980b9';
-    default: return '#cccccc';
+    case 'preventiva': return '#27ae60'
+    case 'emergencial': return '#e74c3c'
+    case 'pendente': return '#f39c12'
+    case 'executada': return '#2980b9'
+    default: return '#cccccc'
   }
 }
 
-// Abre o dialog de detalhes da manutenção
 const abrirDialogoManutencao = (manutencao) => {
-  manutencaoSelecionada.value = manutencao;
-  manutencaoDialogoVisivel.value = true;
-};
+  manutencaoSelecionada.value = manutencao
+  manutencaoDialogoVisivel.value = true
+}
 
 // --- FUNÇÕES GERAIS ---
+function formatarData(valor) {
+  if (!valor) return ""
+  const data = new Date(valor)
+  const dia = String(data.getDate()).padStart(2, "0")
+  const mes = String(data.getMonth() + 1).padStart(2, "0")
+  const ano = data.getFullYear()
+  return `${dia}/${mes}/${ano}`
+}
 
 const exportarPDF = () => {
-  if (manutencoes.value.length === 0) return;
-
-  const tecnicoNome = manutencoes.value[0].tecnicoNome;
+  if (manutencoes.value.length === 0) return
+  const tecnicoNome = manutencoes.value[0].tecnicoNome
 
   const colunas = [
     { text: 'Cliente', style: 'tableHeader' },
@@ -337,17 +279,15 @@ const exportarPDF = () => {
     { text: 'Tipo', style: 'tableHeader' },
     { text: 'Status', style: 'tableHeader' },
     { text: 'Data Agendada', style: 'tableHeader' }
-  ];
+  ]
 
-  const linhas = manutencoes.value.map(m => {
-    return [
-      m.clienteNome,
-      m.sistemaNome,
-      m.tipoManutencao,
-      m.statusManutencao,
-      formatarData(m.dataAgendada)
-    ];
-  });
+  const linhas = manutencoes.value.map(m => [
+    m.clienteNome,
+    m.sistemaNome,
+    m.tipoManutencao,
+    m.statusManutencao,
+    formatarData(m.dataAgendada)
+  ])
 
   const docDefinition = {
     content: [
@@ -358,110 +298,69 @@ const exportarPDF = () => {
         table: {
           headerRows: 1,
           widths: ['*', '*', 'auto', 'auto', 'auto'],
-          body: [
-            colunas,
-            ...linhas
-          ]
+          body: [colunas, ...linhas]
         }
       }
     ],
     styles: {
-      header: {
-        fontSize: 18,
-        bold: true,
-        alignment: 'center',
-        margin: [0, 0, 0, 5]
-      },
-      subheader: {
-        fontSize: 14,
-        bold: false,
-        alignment: 'center',
-        margin: [0, 0, 0, 10]
-      },
-      tableHeader: {
-        bold: true,
-        fontSize: 12,
-        color: 'black'
-      },
-      table: {
-        margin: [0, 5, 0, 15]
-      }
+      header: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 5] },
+      subheader: { fontSize: 14, alignment: 'center', margin: [0, 0, 0, 10] },
+      tableHeader: { bold: true, fontSize: 12, color: 'black' },
+      table: { margin: [0, 5, 0, 15] }
     }
-  };
+  }
 
-  pdfMake.createPdf(docDefinition).download(`manutencoes_${tecnicoNome.replace(/\s+/g, '_')}.pdf`);
-};
+  pdfMake.createPdf(docDefinition).download(`manutencoes_${tecnicoNome.replace(/\s+/g, '_')}.pdf`)
+}
 
-// Busca as coordenadas de uma cidade usando a API Nominatim
 const geocodificarCidade = async (manutencao) => {
-  const local = `${manutencao.clienteLocalidade}, Brasil`;
-
+  const local = `${manutencao.clienteLocalidade}, Brasil`
   try {
     const response = await fetch(
       `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(local)}&limit=1`
-    );
-    const data = await response.json();
-
+    )
+    const data = await response.json()
     if (data.length > 0) {
-      return {
-        latitude: parseFloat(data[0].lat),
-        longitude: parseFloat(data[0].lon)
-      };
+      return { latitude: parseFloat(data[0].lat), longitude: parseFloat(data[0].lon) }
     }
   } catch (error) {
-    console.error('Erro ao geocodificar:', error);
+    console.error('Erro ao geocodificar:', error)
   }
-
-  return null;
-};
-
-// Carrega as manutenções do técnico a partir da API
-const carregarManutencoes = async () => {
-  try {
-    const response = await axios.get(`${URL}/manutencao/listar-tecnico/${tecnicoId.value}`);
-    manutencoes.value = response.data;
-  } catch (error) {
-    console.error("Erro ao carregar manutenções:", error);
-  }
-};
-
-// Exibe o mapa com a localização do cliente
-const mostrarMapa = async (manutencao) => {
-  // Se já temos as coordenadas, apenas abre o mapa
-  if (manutencao.clienteLatitude && manutencao.clienteLongitude) {
-    manutencaoSelecionada.value = manutencao;
-    mapaDialogoVisivel.value = true;
-    return;
-  }
-
-  // Senão, busca as coordenadas primeiro
-  manutencao.loadingMap = true;
-  const coords = await geocodificarCidade(manutencao);
-  manutencao.loadingMap = false;
-
-  if (coords) {
-    manutencao.clienteLatitude = coords.latitude;
-    manutencao.clienteLongitude = coords.longitude;
-    manutencaoSelecionada.value = manutencao;
-    mapaDialogoVisivel.value = true;
-  } else {
-    alert('Não foi possível encontrar a localização do cliente.');
-  }
-};
-
-// Formata uma data para o formato dd/mm/yyyy
-function formatarData(valor) {
-  if (!valor) return "";
-  const data = new Date(valor);
-  const dia = String(data.getDate()).padStart(2, "0");
-  const mes = String(data.getMonth() + 1).padStart(2, "0");
-  const ano = data.getFullYear();
-  return `${dia}/${mes}/${ano}`;
+  return null
 }
 
-// Executa ao montar o componente
-onMounted(carregarManutencoes);
+const carregarManutencoes = async () => {
+  try {
+    const response = await axios.get(`${URL}/atendimento/listar-tecnico/${tecnicoId.value}`)
+    manutencoes.value = response.data
+  } catch (error) {
+    console.error("Erro ao carregar manutenções:", error)
+  }
+}
+
+const mostrarMapa = async (manutencao) => {
+  if (manutencao.clienteLatitude && manutencao.clienteLongitude) {
+    manutencaoSelecionada.value = manutencao
+    mapaDialogoVisivel.value = true
+    return
+  }
+  manutencao.loadingMap = true
+  const coords = await geocodificarCidade(manutencao)
+  manutencao.loadingMap = false
+  if (coords) {
+    manutencao.clienteLatitude = coords.latitude
+    manutencao.clienteLongitude = coords.longitude
+    manutencaoSelecionada.value = manutencao
+    mapaDialogoVisivel.value = true
+  } else {
+    alert('Não foi possível encontrar a localização do cliente.')
+  }
+}
+
+// Executa ao montar
+onMounted(carregarManutencoes)
 </script>
+
 
 <style scoped>
 .header {

@@ -29,21 +29,31 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
+                        // Login liberado para todos
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/dashboard/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/tecnico/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/tecnico/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/tecnico/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/tecnico/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/clientes/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/clientes/**").hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/clientes/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll()
+
+                        // Rotas de atendimento: técnico e admin podem acessar
+                        .requestMatchers("/atendimento/**").hasAnyAuthority("ROLE_TECNICO", "ROLE_ADMIN")
+
+                        // Rotas de dashboard: apenas admin
+                        .requestMatchers("/dashboard/**").hasAuthority("ROLE_ADMIN")
+
+                        // Swagger liberado
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        // Qualquer outra requisição precisa estar autenticada
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {

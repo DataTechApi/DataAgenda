@@ -72,6 +72,8 @@ public class TecnicoServiceImpl implements TecnicoService {
         if (!ValidacaoTecnico.validarTecnico(request))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Dados do técnico inválidos, preencher todos os campos!");
         Tecnico tecnico = model.map(request, Tecnico.class);
+        String senhaEncryptada = new BCryptPasswordEncoder().encode(request.getSenha());
+        tecnico.setSenha(senhaEncryptada);
         tecnico.setId(id);
         tecnicoRepository.save(tecnico);
     }

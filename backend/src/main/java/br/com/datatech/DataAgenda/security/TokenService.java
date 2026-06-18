@@ -22,6 +22,8 @@ public class TokenService {
             String token = JWT.create()
                     .withIssuer("DataAgenda")
                     .withSubject(tecnico.getEmail())
+                    .withClaim("nome", tecnico.getNome())
+                    .withClaim("id", tecnico.getId())
                     .withClaim("role", tecnico.getRole().getRole())
                     .withExpiresAt(LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00")))
                     .sign(algoritmo);

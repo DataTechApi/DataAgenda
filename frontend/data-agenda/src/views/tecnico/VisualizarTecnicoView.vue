@@ -23,7 +23,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import axios from "axios";
+import axios from '@/services/api' 
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";

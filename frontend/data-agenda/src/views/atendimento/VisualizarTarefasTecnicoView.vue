@@ -74,17 +74,33 @@ import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useThemeStore } from '../../stores/theme'
 
+// Store de tema
 const themeStore = useThemeStore()
 const router = useRouter()
 
-let usuario = sessionStorage.getItem('usuario')
+// Função para decodificar JWT
+function decodeToken(token) {
+  try {
+    const payload = token.split('.')[1]
+    const decoded = JSON.parse(atob(payload))
+    return decoded
+  } catch (e) {
+    console.error('Erro ao decodificar token:', e)
+    return null
+  }
+}
+
+// Buscar token no sessionStorage
+const token = sessionStorage.getItem('token')
 let nomeUsuario = 'Usuário'
 
-if (usuario) {
-  try {
-    nomeUsuario = JSON.parse(usuario).nome || 'Usuário'
-  } catch (e) {
-    nomeUsuario = usuario
+if (token) {
+  const decoded = decodeToken(token)
+  if (decoded && decoded.nome) {
+    nomeUsuario = decoded.nome
+  } else if (decoded && decoded.sub) {
+    // fallback para o campo "sub" do JWT
+    nomeUsuario = decoded.sub
   }
 }
 
@@ -110,6 +126,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', handleResize)
 })
 </script>
+
 
 <style scoped>
 .layout {

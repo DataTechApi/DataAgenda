@@ -103,7 +103,7 @@
 <script>
 import { ref, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import axios from "axios";
+import axios from '@/services/api' 
 import Textarea from "primevue/textarea";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
@@ -141,7 +141,7 @@ export default {
     // Carregar dados da manutenção pelo ID vindo da rota
     onMounted(async () => {
       try {
-        const response = await axios.get(`${URL}/manutencao/${route.params.id}`);
+        const response = await axios.get(`${URL}/atendimento/${route.params.id}`);
         manutencao.value = response.data;
       } catch (error) {
         modalRef.value.abrir("Erro ao carregar manutenção.", { tipo: "erro" });
@@ -158,7 +158,7 @@ export default {
         };
 
         await axios.patch(
-          `${URL}/manutencao/finalizar-atendimento/${manutencao.value.id}`,
+          `${URL}/atendimento/finalizar-atendimento/${manutencao.value.id}`,
           payload
         );
 
