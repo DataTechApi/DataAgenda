@@ -62,8 +62,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         }
 
         manutencaoRepository.save(manutencao);
-        enviarEmailNotificacao(manutencao);
-
+        enviarEmail(manutencao);
     }
 
     @Override
@@ -184,9 +183,10 @@ public class ManutencaoServiceImpl implements ManutencaoService {
             manutencao.get().setTecnico(tecnico);
         }
         manutencaoRepository.save(manutencao.get());
+        enviarEmail(manutencao.get());
     }
 
-    private void criarManutencaPreventiva(Optional<Manutencao> manutencao){
+    private void criarManutencaPreventiva(Optional<Manutencao> manutencao) {
         Manutencao manutencaoNova = new Manutencao();
         manutencaoNova.setStatusManutencao(StatusManutencao.PENDENTE);
         manutencaoNova.setDataAgendada(manutencao.get().getDataAtendimento()
@@ -196,28 +196,30 @@ public class ManutencaoServiceImpl implements ManutencaoService {
         manutencaoNova.setTipoManutencao(TipoManutencao.PREVENTIVA);
         manutencaoNova.setDescricao("Manuteção Preventiva ");
         manutencaoRepository.save(manutencaoNova);
-        enviarEmailNotificacao(manutencaoNova);
+        enviarEmail(manutencaoNova);
+
     }
     private void finalizarAtendimento(Optional<Manutencao> manutencao, FinalizarAtendimentoDTORequest request){
         manutencao.get().setDescricaoAtendimento(request.getDescricaoAtendimento());
         manutencao.get().setDataAtendimento(request.getDataAtendimento());
         manutencao.get().setStatusManutencao(StatusManutencao.EXECUTADA);
         manutencaoRepository.save(manutencao.get());
-
-
+        enviarEmail(manutencao.get());
     }
-    private void enviarEmailNotificacao(Manutencao manutencao){
-        String tecnicoEmail = manutencao.getTecnico() != null ? manutencao.getTecnico().getEmail() : null;
-        String clienteEmail = manutencao.getSistema() != null && manutencao.getSistema().getCliente() != null ? manutencao.getSistema().getCliente().getEmailResponsavel() : null;
-        String corpo = new StringBuilder()
-                .append("Uma nova manutenção foi agendada para o sistema: ")
-                .append(manutencao.getSistema().getNome())
-                .append(" no dia ")
-                .append(manutencao.getDataAgendada())
-                .append(" no cliente: ")
-                .append(manutencao.getSistema().getCliente().getNome())
-                .toString();
+    private void enviarEmail(Manutencao manutencao) {
 
-        emailService.enviarEmail("Nova Manutenção Agendada", corpo, tecnicoEmail, clienteEmail);
+        try {
+            emailService.enviarEmail(
+                    manutencao.getDescricao(),
+                    manutencao.getTecnico() != null ? manutencao.getTecnico().getNome() : "N/A",
+                    manutencao.getSistema() != null && manutencao.getSistema().getCliente() != null ? manutencao.getSistema().getCliente().getNome() : "N/A",
+                    manutencao.getDataAgendada().toString(),
+                    manutencao.getSistema() != null ? manutencao.getSistema().getNome() : "N/A",
+                    manutencao.getTecnico() != null ? manutencao.getTecnico().getEmail() : null,
+                    manutencao.getSistema() != null && manutencao.getSistema().getCliente() != null ? manutencao.getSistema().getCliente().getEmailResponsavel() : null
+            );
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao enviar email!!!");
+        }
     }
 }

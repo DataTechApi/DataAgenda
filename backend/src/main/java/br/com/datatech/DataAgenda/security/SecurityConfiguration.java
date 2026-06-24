@@ -45,6 +45,7 @@ public class SecurityConfiguration {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
+                        .requestMatchers("/images/**").permitAll()
 
                         // Qualquer outra requisição precisa estar autenticada
                         .anyRequest().authenticated()
