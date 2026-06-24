@@ -2,6 +2,7 @@ package br.com.datatech.DataAgenda.service;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 
@@ -14,7 +15,8 @@ public class EmailServiceImpl {
     public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
     }
-
+    
+    @Async
     public void enviarEmail(String assunto, String mensagem, String... destinatarios) {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(destinatarios);

@@ -36,6 +36,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
     }
 
     @Override
+    @Transactional
     public void cadastrarManutencao(ManutencaoDTORequest request) {
         if(!ValidacaoDadosManutencao.validarDataAgendada(request.getDataAgendada()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "A data agendada deve ser posterior à data atual!!!");
@@ -213,7 +214,7 @@ public class ManutencaoServiceImpl implements ManutencaoService {
                 .append(manutencao.getSistema().getNome())
                 .append(" no dia ")
                 .append(manutencao.getDataAgendada())
-                .append("no cliente: ")
+                .append(" no cliente: ")
                 .append(manutencao.getSistema().getCliente().getNome())
                 .toString();
 
