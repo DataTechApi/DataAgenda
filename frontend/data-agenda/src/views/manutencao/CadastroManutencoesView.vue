@@ -7,21 +7,20 @@
         <!-- Cliente -->
         <div class="p-field p-col-12 horizontal-field full-width">
           <label for="cliente">Cliente</label>
-          <AutoComplete 
-            id="cliente" 
-            v-model="selectedCliente" 
-            :suggestions="filteredClientes" 
-            @complete="buscarClientes" 
+          <Select 
+            id="cliente"
+            v-model="selectedCliente"
+            :options="allClientes"
             optionLabel="nome"
-            forceSelection
-            placeholder="Digite para procurar..." 
+            optionValue="id"
+            placeholder="Selecione o cliente"
             class="full-width" />
         </div>
 
         <!-- Sistemas + Técnicos -->
         <div class="row-pair">
           <div class="p-field horizontal-field">
-            <label for="sistema">Sistemas</label>
+            <label for="sistema">Sistema</label>
             <Select 
               id="sistema" 
               v-model="manutencao.sistemaId" 
@@ -33,7 +32,7 @@
               :disabled="!selectedCliente" />
           </div>
           <div class="p-field horizontal-field">
-            <label for="tecnico">Técnicos</label>
+            <label for="tecnico">Técnico</label>
             <Select 
               id="tecnico" 
               v-model="manutencao.tecnicoId" 
@@ -111,14 +110,13 @@ import { ref, onMounted, watch } from "vue";
 import axios from '@/services/api' 
 import Textarea from "primevue/textarea";
 import Select from "primevue/select";
-import AutoComplete from "primevue/autocomplete";
 import Button from "primevue/button";
 import DatePicker from "primevue/datepicker";
 import ModalSucesso from "@/components/ModalSucesso.vue";
 
 export default {
   name: "CadastroManutencao",
-  components: { Textarea, Select, AutoComplete, Button, DatePicker, ModalSucesso },
+  components: { Textarea, Select, Button, DatePicker, ModalSucesso },
   setup() {
     const URL = import.meta.env.VITE_API_URL;
 
@@ -133,7 +131,6 @@ export default {
 
     const selectedCliente = ref(null);
     const allClientes = ref([]);
-    const filteredClientes = ref([]);
     const allSistemas = ref([]);
     const filteredSistemas = ref([]);
     const tecnicos = ref([]);
@@ -167,18 +164,11 @@ export default {
 
     onMounted(carregarDados);
 
-    const buscarClientes = (event) => {
-      const query = event.query.toLowerCase();
-      filteredClientes.value = allClientes.value.filter(c =>
-        c.nome.toLowerCase().includes(query)
-      );
-    };
-
     watch(selectedCliente, (newVal) => {
       manutencao.value.sistemaId = null;
-      if (newVal && newVal.id) {
+      if (newVal) {
         filteredSistemas.value = allSistemas.value.filter(s =>
-          s.cliente && s.cliente.id === newVal.id
+          s.cliente && s.cliente.id === newVal
         );
       } else {
         filteredSistemas.value = [];
@@ -191,7 +181,7 @@ export default {
           ? manutencao.value.dataAgendada.toISOString().split('T')[0]
           : null;
 
-        const payload = { ...manutencao.value, dataAgendada: dataFormatada };
+        const payload = { ...manutencao.value, dataAgendada: dataFormatada, clienteId: selectedCliente.value };
         await axios.post(`${URL}/manutencao`, payload);
 
         modalRef.value.abrir("Manutenção cadastrada com sucesso!", {
@@ -222,6 +212,7 @@ export default {
         sistemaId: null,
       };
       selectedCliente.value = null;
+      filteredSistemas.value = [];
     };
 
     return {
@@ -231,16 +222,14 @@ export default {
       limparFormulario,
       statusOptions,
       tipoOptions,
-      filteredClientes,
+      allClientes,
       filteredSistemas,
       tecnicos,
-      buscarClientes,
       modalRef
     };
   },
 };
 </script>
-
 
 <style scoped>
 .card {

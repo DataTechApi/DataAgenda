@@ -185,19 +185,22 @@ import 'primeicons/primeicons.css'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 import { ref } from 'vue'
 import { useThemeStore } from '../stores/theme'
+import { jwtDecode } from "jwt-decode"
 
 const themeStore = useThemeStore()
 const openMenu = ref(null)
 const router = useRouter()
 
-let usuario = sessionStorage.getItem('usuario')
+let token = sessionStorage.getItem('token')
 let nomeUsuario = 'Usuário'
 
-if (usuario) {
+if (token) {
   try {
-    nomeUsuario = JSON.parse(usuario).nome || 'Usuário'
+    const decoded = jwtDecode(token)
+    // supondo que o backend inclua "nome" no payload do JWT
+    nomeUsuario = decoded.nome || decoded.username || decoded.sub || 'Usuário'
   } catch (e) {
-    nomeUsuario = usuario
+    console.error('Erro ao decodificar token:', e)
   }
 }
 
@@ -212,6 +215,7 @@ function logout() {
   router.push('/login')
 }
 </script>
+
 
 <style scoped>
 .layout {
