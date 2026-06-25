@@ -692,4 +692,11 @@ onMounted(carregarManutencoes)
   justify-content: flex-end;
   gap: 0.5rem;
 }
+:deep(th) {
+  text-align: center !important;
+}
+
+:deep(th > div) {
+  justify-content: center !important;
+}
 </style>

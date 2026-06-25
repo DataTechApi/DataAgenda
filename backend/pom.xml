@@ -15,7 +15,7 @@
 
     <groupId>br.com.datatech</groupId>
     <artifactId>DataAgenda</artifactId>
-    <version>1.0.2-SNAPSHOT</version>
+    <version>1.0.3-SNAPSHOT</version>
     <name>DataAgenda</name>
     <description>Agenda de manutenao de Sistema</description>
 
