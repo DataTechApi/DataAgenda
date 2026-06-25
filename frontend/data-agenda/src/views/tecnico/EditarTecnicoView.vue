@@ -92,8 +92,8 @@ export default {
     ];
 
     const tiposUsuario = [
-      { label: "Administrador", value: "ADMIN" },
-      { label: "Técnico", value: "TECNICO" },
+      { label: "Administrador", value: "ROLE_ADMIN" },
+      { label: "Técnico", value: "ROLE_TECNICO" },
     ];
 
     const usuario = ref({ ...usuarioOriginal.value });

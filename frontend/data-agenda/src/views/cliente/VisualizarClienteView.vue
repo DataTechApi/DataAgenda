@@ -22,11 +22,7 @@
               class="p-button-rounded p-button-warning p-button-sm"
               @click="$router.push({name:'cliente-editar', params: { id: slotProps.data.id }})" 
             />
-            <Button 
-              icon="pi pi-trash" 
-              class="p-button-rounded p-button-danger p-button-sm"
-              @click="excluirCliente(slotProps.data)" 
-            />
+            
             <Button 
               icon="pi pi-file-export" 
               class="p-button-rounded p-button-success p-button-sm"
@@ -215,5 +211,12 @@ onMounted(carregarClientes);
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+}
+:deep(th) {
+  text-align: center !important;
+}
+
+:deep(th > div) {
+  justify-content: center !important;
 }
 </style>

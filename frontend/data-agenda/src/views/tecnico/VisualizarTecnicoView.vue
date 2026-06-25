@@ -12,8 +12,7 @@
           <div class="acoes">
             <Button icon="pi pi-pencil" class="p-button-rounded p-button-warning p-button-sm"
               @click="$router.push({name:'tecnico-editar', params: { id: slotProps.data.id }})" />
-            <Button icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-sm"
-              @click="$router.push({name:'tecnico-editar', params: { id: slotProps.data.id }})" />
+            
           </div>
         </template>
       </Column>
@@ -111,5 +110,15 @@ onMounted(carregarTecnicos);
   display: flex;
   justify-content: center;
   gap: 0.5rem;
+}
+:deep(.p-datatable-custom .p-datatable-thead > tr > th .p-column-header-content) {
+  justify-content: center;
+}
+:deep(th) {
+  text-align: center !important;
+}
+
+:deep(th > div) {
+  justify-content: center !important;
 }
 </style>

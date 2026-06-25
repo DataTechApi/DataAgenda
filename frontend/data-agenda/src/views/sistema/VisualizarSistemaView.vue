@@ -24,11 +24,7 @@
               class="p-button-rounded p-button-warning p-button-sm"
               @click="$router.push({name:'sistema-editar', params: { id: slotProps.data.id }})" 
             />
-            <Button
-              icon="pi pi-trash"
-              class="p-button-rounded p-button-danger p-button-sm"
-              @click="excluirSistema(slotProps.data)"
-            />
+            
           </div>
         </template>
       </Column>
@@ -132,5 +128,12 @@ onMounted(carregarSistemas);
   display: flex;
   gap: 0.5rem;
   justify-content: center;
+}
+:deep(th) {
+  text-align: center !important;
+}
+
+:deep(th > div) {
+  justify-content: center !important;
 }
 </style>

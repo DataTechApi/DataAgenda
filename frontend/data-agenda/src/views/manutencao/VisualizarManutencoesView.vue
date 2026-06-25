@@ -214,4 +214,11 @@ onMounted(carregarManutencoes);
   text-align: center;
   padding: 20px;
 }
+:deep(th) {
+  text-align: center !important;
+}
+
+:deep(th > div) {
+  justify-content: center !important;
+}
 </style>
