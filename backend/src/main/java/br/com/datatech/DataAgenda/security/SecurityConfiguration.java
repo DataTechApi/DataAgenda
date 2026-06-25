@@ -29,13 +29,13 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authz -> authz
-                        // Login liberado para todos
+                        // Login liberado
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
 
-                        // Rotas de atendimento: técnico e admin podem acessar
+                        // Rotas de atendimento
                         .requestMatchers("/atendimento/**").hasAnyAuthority("ROLE_TECNICO", "ROLE_ADMIN")
 
-                        // Rotas de dashboard: apenas admin
+                        // Rotas de dashboard
                         .requestMatchers("/dashboard/**").hasAuthority("ROLE_ADMIN")
 
                         // Swagger liberado
@@ -45,7 +45,17 @@ public class SecurityConfiguration {
                                 "/swagger-resources/**",
                                 "/webjars/**"
                         ).permitAll()
-                        .requestMatchers("/images/**").permitAll()
+
+                        // Vue liberado
+                        .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/favicon.ico",
+                                "/css/**",
+                                "/js/**",
+                                "/assets/**",
+                                "/images/**"
+                        ).permitAll()
 
                         // Qualquer outra requisição precisa estar autenticada
                         .anyRequest().authenticated()
@@ -53,7 +63,6 @@ public class SecurityConfiguration {
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
-
 
 
     @Bean

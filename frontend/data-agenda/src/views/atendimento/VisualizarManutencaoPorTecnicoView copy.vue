@@ -107,10 +107,6 @@
           </div>
         </template>
       </Card>
-
-      <div v-if="manutencoesOrdenadas.length === 0" class="empty-state">
-        <p class="placeholder-text">Nenhuma manutenção encontrada.</p>
-      </div>
     </div>
 
     <!-- Visualização em Calendário -->
@@ -122,12 +118,7 @@
       </div>
       <div class="calendar-grid">
         <div v-for="dia in diasDaSemana" :key="dia" class="weekday">{{ dia }}</div>
-        <div 
-          v-for="dia in diasDoCalendario" 
-          :key="dia.date" 
-          class="calendar-day" 
-          :class="{ 'not-current-month': !dia.isCurrentMonth }"
-        >
+        <div v-for="dia in diasDoCalendario" :key="dia.date" class="calendar-day" :class="{ 'not-current-month': !dia.isCurrentMonth }">
           <div class="day-number">{{ dia.day }}</div>
           <div class="maintenance-entries">
             <div 
@@ -221,7 +212,7 @@ function decodeToken(token) {
   }
 }
 
-const tecnicoId = ref(null)
+let tecnicoId = ref(null)
 if (token) {
   const decoded = decodeToken(token)
   tecnicoId.value = decoded?.id || null
@@ -233,75 +224,11 @@ const diasDaSemana = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb']
 
 const manutencoesPorData = computed(() => {
   return manutencoes.value.reduce((acc, m) => {
-    if (!m.dataAgendada) return acc
-    // Evita o problema de fuso horário ao parsear apenas a data
-    const [ano, mes, dia] = m.dataAgendada.toString().split('T')[0].split('-')
-    const data = `${ano}-${mes}-${dia}`
+    const data = new Date(m.dataAgendada).toISOString().split('T')[0]
     if (!acc[data]) acc[data] = []
     acc[data].push(m)
     return acc
   }, {})
-})
-
-// ✅ CORRIGIDO: manutencoesOrdenadas estava faltando
-const manutencoesOrdenadas = computed(() => {
-  return [...manutencoes.value].sort((a, b) => {
-    return new Date(a.dataAgendada) - new Date(b.dataAgendada)
-  })
-})
-
-// ✅ CORRIGIDO: diasDoCalendario estava faltando
-const diasDoCalendario = computed(() => {
-  const ano = dataAtual.value.getFullYear()
-  const mes = dataAtual.value.getMonth()
-
-  const primeiroDia = new Date(ano, mes, 1)
-  const ultimoDia = new Date(ano, mes + 1, 0)
-
-  const dias = []
-
-  // Dias do mês anterior para preencher a primeira semana
-  const diaSemanaInicio = primeiroDia.getDay()
-  for (let i = diaSemanaInicio - 1; i >= 0; i--) {
-    const d = new Date(ano, mes, -i)
-    const dateStr = toDateString(d)
-    dias.push({
-      date: dateStr,
-      day: d.getDate(),
-      isCurrentMonth: false,
-      manutencoes: manutencoesPorData.value[dateStr] || []
-    })
-  }
-
-  // Dias do mês atual
-  for (let i = 1; i <= ultimoDia.getDate(); i++) {
-    const d = new Date(ano, mes, i)
-    const dateStr = toDateString(d)
-    dias.push({
-      date: dateStr,
-      day: i,
-      isCurrentMonth: true,
-      manutencoes: manutencoesPorData.value[dateStr] || []
-    })
-  }
-
-  // Dias do próximo mês para completar a última semana
-  const restante = dias.length % 7
-  if (restante !== 0) {
-    const completar = 7 - restante
-    for (let i = 1; i <= completar; i++) {
-      const d = new Date(ano, mes + 1, i)
-      const dateStr = toDateString(d)
-      dias.push({
-        date: dateStr,
-        day: i,
-        isCurrentMonth: false,
-        manutencoes: manutencoesPorData.value[dateStr] || []
-      })
-    }
-  }
-
-  return dias
 })
 
 const nomeDoMesAtual = computed(() =>
@@ -309,35 +236,21 @@ const nomeDoMesAtual = computed(() =>
 )
 const anoAtual = computed(() => dataAtual.value.getFullYear())
 
-// ✅ CORRIGIDO: navegação de meses sem mutar o objeto original
 function mesAnterior() {
-  const d = new Date(dataAtual.value)
-  d.setMonth(d.getMonth() - 1)
-  dataAtual.value = d
+  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() - 1))
 }
-
 function proximoMes() {
-  const d = new Date(dataAtual.value)
-  d.setMonth(d.getMonth() + 1)
-  dataAtual.value = d
-}
-
-// Helper para formatar data como "YYYY-MM-DD" sem problemas de fuso
-function toDateString(date) {
-  const ano = date.getFullYear()
-  const mes = String(date.getMonth() + 1).padStart(2, '0')
-  const dia = String(date.getDate()).padStart(2, '0')
-  return `${ano}-${mes}-${dia}`
+  dataAtual.value = new Date(dataAtual.value.setMonth(dataAtual.value.getMonth() + 1))
 }
 
 function obterCorDoStatus(status) {
   if (!status) return '#cccccc'
   switch (status.toLowerCase()) {
-    case 'preventiva':  return '#27ae60'
+    case 'preventiva': return '#27ae60'
     case 'emergencial': return '#e74c3c'
-    case 'pendente':    return '#f39c12'
-    case 'executada':   return '#2980b9'
-    default:            return '#cccccc'
+    case 'pendente': return '#f39c12'
+    case 'executada': return '#2980b9'
+    default: return '#cccccc'
   }
 }
 
@@ -349,10 +262,11 @@ const abrirDialogoManutencao = (manutencao) => {
 // --- FUNÇÕES GERAIS ---
 function formatarData(valor) {
   if (!valor) return ""
-  // Evita problema de fuso ao usar split direto na string ISO
-  const partes = valor.toString().split('T')[0].split('-')
-  if (partes.length < 3) return ""
-  return `${partes[2]}/${partes[1]}/${partes[0]}`
+  const data = new Date(valor)
+  const dia = String(data.getDate()).padStart(2, "0")
+  const mes = String(data.getMonth() + 1).padStart(2, "0")
+  const ano = data.getFullYear()
+  return `${dia}/${mes}/${ano}`
 }
 
 const exportarPDF = () => {
@@ -360,10 +274,10 @@ const exportarPDF = () => {
   const tecnicoNome = manutencoes.value[0].tecnicoNome
 
   const colunas = [
-    { text: 'Cliente',       style: 'tableHeader' },
-    { text: 'Sistema',       style: 'tableHeader' },
-    { text: 'Tipo',          style: 'tableHeader' },
-    { text: 'Status',        style: 'tableHeader' },
+    { text: 'Cliente', style: 'tableHeader' },
+    { text: 'Sistema', style: 'tableHeader' },
+    { text: 'Tipo', style: 'tableHeader' },
+    { text: 'Status', style: 'tableHeader' },
     { text: 'Data Agendada', style: 'tableHeader' }
   ]
 
@@ -389,10 +303,10 @@ const exportarPDF = () => {
       }
     ],
     styles: {
-      header:      { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 5] },
-      subheader:   { fontSize: 14, alignment: 'center', margin: [0, 0, 0, 10] },
+      header: { fontSize: 18, bold: true, alignment: 'center', margin: [0, 0, 0, 5] },
+      subheader: { fontSize: 14, alignment: 'center', margin: [0, 0, 0, 10] },
       tableHeader: { bold: true, fontSize: 12, color: 'black' },
-      table:       { margin: [0, 5, 0, 15] }
+      table: { margin: [0, 5, 0, 15] }
     }
   }
 
@@ -443,8 +357,10 @@ const mostrarMapa = async (manutencao) => {
   }
 }
 
+// Executa ao montar
 onMounted(carregarManutencoes)
 </script>
+
 
 <style scoped>
 .header {
@@ -459,7 +375,6 @@ onMounted(carregarManutencoes)
   justify-content: center;
   margin-bottom: 2rem;
 }
-
 .card {
   max-width: 1200px;
   margin: 2rem auto;
@@ -573,7 +488,6 @@ onMounted(carregarManutencoes)
   padding: 20px;
 }
 
-/* Cards */
 .card-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -610,11 +524,7 @@ onMounted(carregarManutencoes)
   gap: 0.5rem;
 }
 
-.empty-state {
-  grid-column: 1 / -1;
-}
 
-/* Calendário */
 .calendar-view {
   color: var(--text-main);
 }
@@ -628,7 +538,6 @@ onMounted(carregarManutencoes)
 
 .calendar-header h2 {
   color: var(--text-main);
-  text-transform: capitalize;
 }
 
 .calendar-grid {
@@ -641,7 +550,6 @@ onMounted(carregarManutencoes)
   text-align: center;
   font-weight: bold;
   color: var(--text-muted);
-  padding: 0.5rem 0;
 }
 
 .calendar-day {
@@ -656,7 +564,7 @@ onMounted(carregarManutencoes)
 }
 
 .not-current-month {
-  opacity: 0.4;
+  color: var(--text-muted);
 }
 
 .maintenance-entries {
@@ -669,7 +577,7 @@ onMounted(carregarManutencoes)
 .maintenance-entry {
   padding: 2px 4px;
   border-radius: 4px;
-  color: #fff;
+  color: var(--text-table);
   font-size: 0.75rem;
   cursor: pointer;
   white-space: nowrap;
@@ -677,11 +585,6 @@ onMounted(carregarManutencoes)
   text-overflow: ellipsis;
 }
 
-.maintenance-entry:hover {
-  opacity: 0.85;
-}
-
-/* Dialog */
 .maintenance-details p {
   margin: 0.5rem 0;
 }

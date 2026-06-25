@@ -51,15 +51,3 @@ public class EmailServiceImpl {
     }
 }
 
-
-
-
-    /*@Async
-    public void enviarEmail(String assunto, String mensagem, String... destinatarios) {
-        SimpleMailMessage email = new SimpleMailMessage();
-        email.setTo(destinatarios);
-        email.setSubject(assunto);
-        email.setText(mensagem);
-        mailSender.send(email);
-    }*/
-

@@ -14,15 +14,7 @@
         filterDisplay="menu"
         :globalFilterFields="['descricao', 'tecnico.nome', 'sistema.nome', 'sistema.cliente.nome']"
       >
-        <template #header>
-            <div class="table-header">
-                <span class="p-input-icon-left search-container">
-                    <i class="pi pi-search"></i>
-                    <InputText v-model="filters['global'].value" placeholder="Pesquisar..." class="search-input" />
-                </span>
-                <Button label="Agendar Nova" icon="pi pi-plus" class="p-button-success p-button-sm" @click="$router.push('/manutencao/cadastrar')" />
-            </div>
-        </template>
+        
 
         <Column field="dataAgendada" header="Data" sortable>
             <template #body="slotProps">
